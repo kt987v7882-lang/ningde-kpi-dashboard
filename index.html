@@ -437,13 +437,20 @@ function renderMatrix(){
   dims.forEach(dim=>{
     const d=data[dim];
     html+='<tr><td class="dim-name">'+dim+'</td>';
-    for(let j=0;j<12;j++){
+    for(let j=0;j<11;j++){
       const comp=d.comp[j],push=d.push[j];
       let cls,txt;
       if(push===0){cls='cell-gray';txt='—';}
       else{const r=comp/push;cls=cellClass(r);txt=fmtPct(r)+'<br><small>'+comp+'/'+push+'</small>';}
       html+='<td class="'+cls+'">'+txt+'</td>';
     }
+    // 汇总列
+    const totalComp=d.comp.reduce((a,b)=>a+b,0);
+    const totalPush=d.push.reduce((a,b)=>a+b,0);
+    const totalRate=totalPush>0?totalComp/totalPush:null;
+    const totalCls=totalRate===null?'cell-gray':cellClass(totalRate);
+    const totalTxt=totalRate===null?'—':fmtPct(totalRate)+'<br><small>'+totalComp+'/'+totalPush+'</small>';
+    html+='<td class="'+totalCls+'" style="font-weight:600">'+totalTxt+'</td>';
     html+='</tr>';
   });
   html+='</tbody></table>';
