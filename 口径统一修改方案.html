@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宁德·配送日看板 口径统一修改方案</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;padding:24px;max-width:1100px;margin:0 auto}
+h1{font-size:22px;color:#1a3a5c;margin-bottom:4px}
+.meta{font-size:12px;color:#888;margin-bottom:24px}
+h2{font-size:16px;color:#1a3a5c;border-left:4px solid #2F5496;padding-left:10px;margin:28px 0 12px}
+h3{font-size:14px;color:#333;margin:16px 0 8px}
+.card{background:#fff;border-radius:8px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-red{border-left:4px solid #e74c3c}
+.card-yellow{border-left:4px solid #f39c12}
+.card-green{border-left:4px solid #27ae60}
+.card-blue{border-left:4px solid #2F5496}
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;margin-right:6px}
+.tag-red{background:#fde8e8;color:#c0392b}
+.tag-yellow{background:#fef3cd;color:#856404}
+.tag-green{background:#d4edda;color:#155724}
+.tag-blue{background:#d6e9f8;color:#1a3a5c}
+.tag-gray{background:#e9ecef;color:#495057}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th{background:#1a3a5c;color:#fff;padding:6px 8px;text-align:center}
+td{padding:5px 8px;border:1px solid #e8e8e8;text-align:center}
+tr:hover{background:#f5f7fa}
+.dim-name{font-weight:600;text-align:left;background:#f8f9fb}
+.cell-green{background:#c6efce;color:#006100}
+.cell-yellow{background:#ffeb9c;color:#9c6500}
+.cell-red{background:#ffc7ce;color:#9c0006}
+.cell-gray{background:#d9d9d9;color:#666}
+.summary{background:#f0f2f5;border-radius:6px;padding:12px;margin:12px 0;font-size:13px;line-height:1.8}
+.summary b{color:#1a3a5c}
+code{background:#f0f2f5;padding:2px 6px;border-radius:3px;font-size:12px}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}
+.before{background:#fff0f0;border:1px solid #fdd;border-radius:6px;padding:12px}
+.after{background:#f0fff0;border:1px solid #bfb;border-radius:6px;padding:12px}
+.before h4,.after h4{font-size:13px;margin-bottom:6px}
+.before h4{color:#c0392b}
+.after h4{color:#27ae60}
+.footer{text-align:center;padding:16px;color:#999;font-size:11px}
+</style>
+</head>
+<body>
+
+<h1>宁德·配送日看板 — 口径统一修改方案</h1>
+<div class="meta">整理时间：2026/7/12 · 基于index.html v2.1(7/11数据) · 共6项修改</div>
+
+<!-- ======== 总览 ======== -->
+<div class="card card-blue">
+  <h3 style="margin-top:0">修改总览</h3>
+  <table>
+    <tr><th>编号</th><th>问题</th><th>优先级</th><th>影响范围</th><th>修改类型</th></tr>
+    <tr><td><span class="tag tag-red">P0</span> 1</td><td>矩阵汇总列NaN/undefined</td><td>P0·Bug</td><td>推完率矩阵</td><td>JS逻辑修复</td></tr>
+    <tr><td><span class="tag tag-red">P0</span> 2</td><td>push/comp时段维度混用导致推完率>100%</td><td>P0·口径</td><td>推完率矩阵</td><td>口径统一</td></tr>
+    <tr><td><span class="tag tag-red">P0</span> 3</td><td>夜宵2时段全维度comp=0显示异常</td><td>P0·口径</td><td>推完率矩阵</td><td>口径统一(同#2)</td></tr>
+    <tr><td><span class="tag tag-yellow">P1</span> 4</td><td>KPI卡片n/d与矩阵汇总comp/push不一致</td><td>P1·口径</td><td>KPI卡片+矩阵</td><td>口径统一</td></tr>
+    <tr><td><span class="tag tag-yellow">P1</span> 5</td><td>ot3i/ot3o口径不一致导致趋势断崖</td><td>P1·口径</td><td>超时率趋势</td><td>口径统一</td></tr>
+    <tr><td><span class="tag tag-gray">P2</span> 6</td><td>CROWD_DATA与MATRIX众包分时段不一致</td><td>P2·口径</td><td>众包盘点</td><td>口径统一</td></tr>
+  </table>
+</div>
+
+<!-- ======== P0-1 ======== -->
+<h2>P0-1：矩阵汇总列 NaN/undefined 【Bug修复】</h2>
+
+<div class="card">
+  <h3>现状</h3>
+  <p>renderMatrix()中循环<code>for(let j=0;j&lt;12;j++)</code>循环12次，但comp/push数组只有11个元素(index 0-10)。j=11时<code>comp[11]=undefined, push[11]=undefined</code>，渲染为<code>NaN%/undefined/undefined</code>。</p>
+  
+  <h3>根因</h3>
+  <p>表头写了11个时段列+1个"汇总"列=12列，但代码把12列全部当做时段处理，汇总列的数据从数组第12个元素取(越界)。</p>
+
+  <div class="before-after">
+    <div class="before">
+      <h4>修改前(有Bug)</h4>
+      <pre style="font-size:11px;white-space:pre-wrap">for(let j=0;j&lt;12;j++){
+  const comp=d.comp[j],push=d.push[j];
+  // j=11时: comp=undefined, push=undefined
+  // → NaN%/undefined/undefined
+}</pre>
+    </div>
+    <div class="after">
+      <h4>修改后</h4>
+      <pre style="font-size:11px;white-space:pre-wrap">// 11个时段
+for(let j=0;j&lt;11;j++){
+  const comp=d.comp[j],push=d.push[j];
+  ...
+}
+// 单独计算汇总列
+const totalComp=d.comp.reduce((a,b)=>a+b,0);
+const totalPush=d.push.reduce((a,b)=>a+b,0);
+// 汇总推完率 = 全天总完成/全天总推单
+</pre>
+    </div>
+  </div>
+
+  <h3>修改内容</h3>
+  <p>renderMatrix()函数：将<code>j&lt;12</code>改为<code>j&lt;11</code>，循环结束后单独计算并渲染汇总列（sum(comp)/sum(push)）。</p>
+</div>
+
+<!-- ======== P0-2 ======== -->
+<h2>P0-2：矩阵push/comp时段维度混用 【口径统一】</h2>
+
+<div class="card card-red">
+  <h3>现状</h3>
+  <p>矩阵中<strong>push按"商家推单时间"分时段，comp按"送达时间"分时段</strong>，两个时段维度不同，导致：</p>
+  <ul style="padding-left:20px;margin-top:8px;font-size:13px;line-height:2">
+    <li>26个单元格推完率>100%（comp>push）</li>
+    <li>夜宵1(20-22)最严重：城北站181%、天茂站186%、金涵站188%</li>
+    <li>夜宵2(22-24)全维度comp=0</li>
+  </ul>
+
+  <h3>根因分析</h3>
+  <div class="summary">
+    <b>示例：夜宵1(20:00-22:00)</b><br>
+    商家在20:30推单 → push计入"夜宵1" ✓<br>
+    骑手22:15送达 → comp计入"夜宵2(22-24)" ✗<br>
+    → 夜宵1有push无对应comp，夜宵2有comp但push不在此时段<br><br>
+    <b>示例：夜宵2(22:00-24:00)</b><br>
+    商家23:00推单 → push计入"夜宵2"<br>
+    骑手次日00:30送达 → comp计入次日"夜宵3" ✗<br>
+    → 夜宵2的comp=0，所有单都跨日完成了
+  </div>
+
+  <h3>统一方案</h3>
+  <div class="card card-green" style="margin-top:8px">
+    <p><span class="tag tag-green">推荐方案</span> <b>统一按"商家推单时间"分时段</b>（push和comp都用推单时间）</p>
+    <table style="margin-top:8px">
+      <tr><th>方案</th><th>时段维度</th><th>优点</th><th>缺点</th></tr>
+      <tr style="background:#f0fff0"><td><b>方案A：按推单时间</b>（推荐）</td><td>push和comp都按推单时间分</td><td>推完率=comp/push物理含义清晰；无>100%异常；与推完表口径一致</td><td>需回溯订单详情重新分时段</td></tr>
+      <tr><td>方案B：按送达时间</td><td>push和comp都按送达时间分</td><td>反映实际运营节奏</td><td>需回溯订单详情重新分时段</td></tr>
+    </table>
+    <p style="margin-top:8px;font-size:12px;color:#666">理由：推完率的本质是"推了N单，完成了M单"，按推单时间归集最自然。夜宵2推的单就算次日完成，推完率仍应反映该时段的推单完成情况。</p>
+  </div>
+
+  <h3>修改范围</h3>
+  <p>需从订单详情重新清洗，将comp也按<strong>商家推单时间</strong>分时段（而非送达时间）：</p>
+  <ol style="padding-left:20px;margin-top:8px;font-size:13px;line-height:2">
+    <li>MATRIX.data中所有维度的comp数组 → 重新按时段归集</li>
+    <li>MATRIX.data中所有维度的push数组 → 保持不变（已经按推单时间）</li>
+    <li>STATION_DATA中cancel/complete/push → 同理重新按时段归集</li>
+    <li>CROWD_DATA → 同理重新按时段归集</li>
+  </ol>
+</div>
+
+<!-- ======== P0-3 ======== -->
+<h2>P0-3：夜宵2时段显示异常 【口径统一，同P0-2解决】</h2>
+
+<div class="card">
+  <p>夜宵2(22-24)全维度comp=0/push>0，渲染为<code>0.00%</code>。统一口径后（push和comp都按推单时间分），该时段的推完率将恢复正常的88%-98%区间。</p>
+  <p>此问题随P0-2一并解决，无需单独修改。</p>
+</div>
+
+<!-- ======== P1-4 ======== -->
+<h2>P1-4：KPI卡片n/d 与矩阵汇总comp/push 不一致 【口径统一】</h2>
+
+<div class="card card-yellow">
+  <h3>现状</h3>
+  <table>
+    <tr><th>指标</th><th>KPI卡片</th><th>矩阵汇总</th><th>差异</th><th>来源</th></tr>
+    <tr><td>完成(n/comp)</td><td>28,871</td><td>29,665</td><td class="cell-red">+794</td><td>KPI←推完表 / 矩阵←订单详情</td></tr>
+    <tr><td>推单(d/push)</td><td>29,406</td><td>31,822</td><td class="cell-red">+2,416</td><td>KPI←推完表美配口径 / 矩阵←全部外卖</td></tr>
+    <tr><td>推完率</td><td>98.18%</td><td>93.22%</td><td class="cell-red">-4.96pp</td><td>—</td></tr>
+  </table>
+
+  <h3>根因</h3>
+  <ul style="padding-left:20px;margin-top:8px;font-size:13px;line-height:2">
+    <li><b>KPI卡片</b>：数据来自推完表（美配口径），推完率=加盟完成率分子+众包完成率分子 / 推完表美配分母</li>
+    <li><b>矩阵汇总</b>：数据从订单详情清洗（全部外卖口径，含跑腿/海葵可能已过滤但统计范围不同）</li>
+    <li>两个数据源的统计口径不同，导致完成量差794单、推单量差2416单</li>
+  </ul>
+
+  <h3>统一方案</h3>
+  <p><span class="tag tag-green">推荐</span> <b>矩阵数据统一使用推完表口径</b>（与KPI卡片一致）</p>
+  <ol style="padding-left:20px;margin-top:8px;font-size:13px;line-height:2">
+    <li>MATRIX的comp/push数值 → 来自推完表（而非订单详情），确保与KPI卡片的n/d一致</li>
+    <li>或：KPI卡片改为使用矩阵汇总数据，但需要额外计算jm_pr/zb_pr等衍生指标</li>
+  </ol>
+  <p style="font-size:12px;color:#666;margin-top:8px">注：订单详情可继续用于STATION_DATA的分时段统计（推完表无分时段数据），但MATRIX汇总列和KPI卡片必须用同一数据源。</p>
+</div>
+
+<!-- ======== P1-5 ======== -->
+<h2>P1-5：ot3i/ot3o口径不一致导致趋势断崖 【口径统一】</h2>
+
+<div class="card card-yellow">
+  <h3>现状</h3>
+  <table>
+    <tr><th>日期</th><th>ot3i(3km内)</th><th>ot3o(3km外)</th><th>数据来源</th></tr>
+    <tr><td>7/1 - 7/9</td><td>4.79%~5.33%</td><td>8.68%~9.28%</td><td>体验表·全运力绝对超时</td></tr>
+    <tr><td>7/10</td><td class="cell-green">0.84%</td><td class="cell-green">2.36%</td><td>外部看板（口径不明）</td></tr>
+    <tr><td>7/11</td><td class="cell-red">4.90%</td><td class="cell-red">8.46%</td><td>体验表·全运力绝对超时</td></tr>
+  </table>
+  <p style="margin-top:8px">7/10的值突然降低5倍，7/11又跳回来，趋势图出现明显断崖。</p>
+
+  <h3>根因</h3>
+  <p>7/10的ot3i/ot3o来自外部看板独立数据源，计算口径与7/1-9、7/11不同（此前多次验证无法从体验表列精确还原）。</p>
+
+  <h3>统一方案</h3>
+  <p><span class="tag tag-green">推荐</span> <b>所有日期统一用体验表口径计算ot3i/ot3o</b></p>
+  <ol style="padding-left:20px;margin-top:8px;font-size:13px;line-height:2">
+    <li>将7/10的ot3i/ot3o改用体验表数据计算（需确认7/10体验表列的精确计算方式）</li>
+    <li>如果体验表计算方式仍无法精确匹配，则统一标注"口径：体验表绝对超时"并接受该口径</li>
+    <li>目标：消除趋势图断崖，使7/1-7/11的超时率趋势平滑</li>
+  </ol>
+</div>
+
+<!-- ======== P2-6 ======== -->
+<h2>P2-6：CROWD_DATA与MATRIX众包分时段不一致 【口径统一】</h2>
+
+<div class="card">
+  <h3>现状</h3>
+  <table>
+    <tr><th>时段</th><th>CROWD推完率</th><th>MATRIX众包推完率</th><th>差异</th></tr>
+    <tr><td>夜宵3</td><td>79.12%</td><td>69.20%</td><td class="cell-red">-9.92pp</td></tr>
+    <tr><td>夜宵4</td><td>91.08%</td><td>106.46%</td><td class="cell-red">+15.38pp</td></tr>
+    <tr><td>午高峰</td><td>88.01%</td><td>84.87%</td><td class="cell-yellow">-3.14pp</td></tr>
+    <tr><td>夜宵1</td><td>80.46%</td><td>147.82%</td><td class="cell-red">+67.36pp</td></tr>
+    <tr><td>夜宵2</td><td>53.57%</td><td>0.00%</td><td class="cell-red">+53.57pp</td></tr>
+    <tr><td><b>全天</b></td><td><b>86.78%</b></td><td><b>86.78%</b></td><td class="cell-green">0.00pp ✓</td></tr>
+  </table>
+
+  <h3>根因</h3>
+  <p>全天数据完全一致(11505/13258)，但分时段差异巨大。两个数据源的分时段方式不同：
+  <br>• MATRIX众包：push按推单时间、comp按送达时间（混用）
+  <br>• CROWD_DATA：push和comp都按推单时间分（统一）</p>
+
+  <h3>统一方案</h3>
+  <p>随P0-2统一口径后，MATRIX众包的分时段数据也改为"全部按推单时间"，此时CROWD和MATRIX众包的分时段将自动一致。</p>
+</div>
+
+<!-- ======== 执行计划 ======== -->
+<h2>执行计划</h2>
+
+<div class="card card-green">
+  <h3 style="margin-top:0">第一步：Bug修复（立即）</h3>
+  <ol style="padding-left:20px;font-size:13px;line-height:2.2">
+    <li>修复renderMatrix()的<code>j&lt;12</code> → <code>j&lt;11</code>，增加汇总列计算</li>
+    <li>修复cellClass/cellText增加undefined guard</li>
+  </ol>
+
+  <h3>第二步：口径统一（需确认后执行）</h3>
+  <ol style="padding-left:20px;font-size:13px;line-height:2.2">
+    <li><b>确认矩阵分时段口径</b>：推荐全部按"商家推单时间"分时段</li>
+    <li>从订单详情重新清洗comp（按推单时间分时段），push保持不变</li>
+    <li>更新MATRIX.data、STATION_DATA、CROWD_DATA</li>
+  </ol>
+
+  <h3>第三步：KPI数据源统一</h3>
+  <ol style="padding-left:20px;font-size:13px;line-height:2.2">
+    <li>确认矩阵汇总与KPI卡片使用同一数据源</li>
+    <li>统一ot3i/ot3o口径（全部用体验表计算）</li>
+  </ol>
+
+  <h3>第四步：重新部署</h3>
+  <ol style="padding-left:20px;font-size:13px;line-height:2.2">
+    <li>本地验证 → 推送GitHub Pages → 上传WPS云文档</li>
+  </ol>
+</div>
+
+<!-- ======== 确认项 ======== -->
+<h2>需要你确认的决策点</h2>
+
+<div class="card card-blue">
+  <table>
+    <tr><th>决策点</th><th>选项A</th><th>选项B</th><th>推荐</th></tr>
+    <tr>
+      <td><b>矩阵分时段口径</b></td>
+      <td>全部按"商家推单时间"</td>
+      <td>全部按"送达时间"</td>
+      <td><span class="tag tag-green">A</span></td>
+    </tr>
+    <tr>
+      <td><b>矩阵数据源</b></td>
+      <td>继续从订单详情清洗</td>
+      <td>改用推完表数据</td>
+      <td><span class="tag tag-green">A</span><br><span style="font-size:11px;color:#666">推完表无分时段数据</span></td>
+    </tr>
+    <tr>
+      <td><b>超时率口径</b></td>
+      <td>全部用体验表计算</td>
+      <td>全部用外部看板数据</td>
+      <td><span class="tag tag-green">A</span><br><span style="font-size:11px;color:#666">可从体验表稳定计算</span></td>
+    </tr>
+  </table>
+</div>
+
+<div class="footer">宁德美团外卖 · 配送数据看板 · 口径统一修改方案</div>
+
+</body>
+</html>
