@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宁德7月KPI看板 · V5 算分口径</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;font-size:13px;line-height:1.5}
+.container{max-width:1400px;margin:0 auto;padding:16px 32px}
+
+/* Banner */
+.banner{background:#1e3a5f;color:#ffffff;padding:8px 24px;border-radius:6px;margin:0 0 16px 0;box-shadow:none;position:relative;overflow:hidden;max-width:fit-content}
+/* banner装饰已去除 */
+.banner h1{font-size:20px;font-weight:800;margin-bottom:2px;letter-spacing:3px;text-shadow:0 1px 2px rgba(0,0,0,0.1);position:relative;z-index:1}
+.banner .header-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
+.banner .header-left{flex:1;min-width:0}
+.banner .sub{font-size:11px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:4px 10px;margin-bottom:4px;position:relative;z-index:1}
+.banner .sub span{background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:3px;font-weight:400;font-size:11px}
+.banner .tags{display:flex;flex-wrap:wrap;gap:4px;position:relative;z-index:1}
+.banner .tags i{font-style:normal;font-size:11px;background:rgba(255,255,255,0.08);padding:2px 8px;border-radius:3px;color:rgba(255,255,255,0.85);font-weight:400}
+.banner .date-pill{background:rgba(255,255,255,0.15);padding:5px 12px;border-radius:16px;font-size:11px;font-weight:500;color:#ffffff;white-space:nowrap;position:relative;z-index:1;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.15);align-self:flex-start;margin-top:0;flex-shrink:0}
+@media(max-width:640px){.banner{padding:10px 14px;max-width:100%}.banner h1{font-size:16px;letter-spacing:1px}.banner .date-pill{margin-top:6px;align-self:stretch;text-align:center}}
+
+/* Log area */
+.log-wrap{background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;margin-bottom:14px;overflow:hidden}
+.log-header{background:#ffffff;padding:8px 14px;font-size:12px;font-weight:600;color:#4e5969;border-bottom:1px solid #e5e7eb;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.log-header:hover{background:#ffffff}
+.log-body{padding:8px 14px;font-size:11.5px;color:#6b7280;line-height:1.7;max-height:200px;overflow-y:auto}
+.log-body div{padding:1px 0}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:10px;margin-top:0;background:transparent;border:none;border-radius:0;overflow:visible}
+.tab-btn{padding:8px 18px;border:1px solid #e5e7eb;cursor:pointer;font-size:13px;font-weight:500;background:#ffffff;color:#6b7280;transition:all 0.15s;position:relative;border-radius:4px}
+.tab-btn:hover{background:#eff6ff;color:#1d2129;border-color:#bfdbfe}
+.tabs{width:100%}
+.tab-btn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab-btn.active{background:#eff6ff;color:#1e3a5f;font-weight:600;border-color:#bfdbfe}
+.tw-overview{flex:1 1 0}
+.tw-period1{flex:1.2 1 0}
+.tw-period2{flex:1.2 1 0}
+.tw-gz{flex:1 1 0}
+.tw-ylt{flex:0.9 1 0}
+.tw-calib{flex:0.9 1 0}
+.tw-target{flex:0.9 1 0}
+@media(max-width:900px){.tw-period1,.tw-period2{flex:0 0 22%}.tw-overview,.tw-gz{flex:0 0 13%}}
+.tab-content{display:none;width:100%}
+.tab-content.active{display:block;width:100%;padding-top:0}
+
+/* W1/W2 Sub Tabs inside period1 */
+.sub-tabs{display:flex;gap:4px;margin-bottom:12px;border:none;overflow:visible;width:fit-content}
+.sub-tab-btn{padding:5px 14px;border:1px solid #e5e7eb;cursor:pointer;font-size:12px;font-weight:500;background:#ffffff;color:#6b7280;transition:all 0.15s;border-radius:3px}
+.sub-tab-btn:hover{background:#eff6ff;color:#1d2129}
+.sub-tab-btn.active{background:#eff6ff;color:#1e3a5f;font-weight:600;border-color:#bfdbfe}
+.sub-tab-btn.done{background:#ffffff;color:#9ca3af;font-weight:600}
+.sub-tab-btn.done:not(.active){background:#ffffff;color:#9ca3af}
+.sub-tab-content{display:none}
+.sub-tab-content.active{display:block}
+
+/* Cards */
+.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:16px 18px;margin-bottom:12px;box-shadow:none;width:100%}
+.card-title{font-size:14px;font-weight:700;color:#1f2937;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.card-sub{font-size:12px;color:#6b7280;margin-bottom:6px}
+.badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;font-weight:500;line-height:1.6}
+.badge-red{background:#fee2e2;color:#dc2626}
+.badge-green{background:#dcfce7;color:#15803d}
+.badge-yellow{background:#fef3c7;color:#d97706}
+.badge-blue{background:#ffffff;color:#374151}
+.badge-gray{background:#ffffff;color:#6b7280}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+th,td{padding:6px 10px;text-align:center;border:1px solid #e5e7eb}
+th{background:#ffffff;font-weight:600;color:#374151;font-size:12px;white-space:nowrap;border-bottom:2px solid #e5e7eb}
+td{color:#4b5563}
+tr:nth-child(even){background:#ffffff}
+tr:hover{background:#ffffff}
+.num-cell{text-align:right;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.text-cell{text-align:left}
+
+/* KPI main table header */
+.kpi-header th{background:#fef9c3;color:#1f2937;font-weight:700;font-size:12px}
+
+/* Status dots */
+.stat-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.dot-green{background:#10b981}
+.dot-red{background:#ef4444}
+.dot-yellow{background:#f59e0b}
+.dot-gray{background:#e0dbd6}
+
+/* Fold */
+.fold-btn{background:none;border:none;color:#6b7280;cursor:pointer;font-size:12px;padding:3px 0;display:inline-flex;align-items:center;gap:4px}
+.fold-btn:hover{color:#374151}
+.fold-btn::before{content:"▶";font-size:10px;transition:transform 0.2s}
+.fold-btn.open::before{content:"▼"}
+.fold-content{display:none;padding:6px 0;font-size:12px;color:#6b7280;line-height:1.7}
+.fold-content.show{display:block}
+
+/* Grid for 6 modules */
+.mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0}
+.mod-card{position:relative;padding:12px 14px;border-radius:6px;border-left:4px solid;overflow:hidden}
+.mod-card .label{font-size:11px;color:#6b7280;margin-bottom:2px;font-weight:500}
+.mod-card .num{font-size:20px;font-weight:700;line-height:1.2;margin-bottom:2px}
+.mod-card .sub{font-size:11px;color:#9ca3af;line-height:1.4}
+.mod-card.mc-orange{border-left-color:#f59e0b;background:#fffef5}
+.mod-card.mc-green{border-left-color:#10b981;background:#f0fdf4}
+.mod-card.mc-red{border-left-color:#ef4444;background:#fef2f2}
+.mod-card.mc-blue{border-left-color:#6b7280;background:#ffffff}
+.mod-card.mc-purple{border-left-color:#8b5cf6;background:#f5f3ff}
+.mod-card.mc-amber{border-left-color:#f59e0b;background:#fffef5}
+.mod-card .num.green{color:#16a34a}
+.mod-card .num.red{color:#dc2626}
+.mod-card .num.orange{color:#ea580c}
+.mod-card .num.blue{color:#6b7280}
+
+/* Stat boxes */
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}
+.stat-box{flex:1;min-width:160px;padding:10px 12px;border-radius:6px;text-align:center;border:1px solid #e5e7eb}
+.stat-box .num{font-size:20px;font-weight:700}
+.stat-box .label{font-size:11px;color:#6b7280;margin-bottom:2px}
+.stat-box.sb-green{background:#f0fdf4;border-color:#bbf7d0}
+.stat-box.sb-red{background:#fef2f2;border-color:#fecaca}
+.stat-box.sb-yellow{background:#fffef5;border-color:#fde68a}
+.stat-box.sb-blue{background:#ffffff;border-color:#e5e7eb}
+.stat-box.sb-gray{background:#ffffff;border-color:#e5e7eb}
+
+/* Week score */
+.week-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.week-score{font-size:26px;font-weight:700;color:#1f2937;line-height:1}
+.week-score .unit{font-size:14px;font-weight:400;color:#9ca3af}
+
+/* Focus items */
+.focus-list{font-size:12px;color:#6b7280;line-height:1.8;padding-left:16px}
+.focus-list li{margin:2px 0}
+
+/* Appendix section */
+.appendix-wrap{background:#fef9c3;border:1px solid #fde088;border-radius:6px;padding:14px 16px;margin-top:4px}
+.appendix-wrap .card-title{color:#92400e}
+.appendix-wrap table th{background:#fef3c7;color:#92400e}
+
+/* Footer */
+.footer{text-align:center;padding:16px 0;color:#9ca3af;font-size:11px;border-top:1px solid #e5e7eb;margin-top:20px}
+
+/* Tags */
+.tag-green{color:#16a34a;font-weight:600}
+.tag-red{color:#dc2626;font-weight:600}
+.tag-yellow{color:#d97706;font-weight:600}
+.tag-gray{color:#9ca3af}
+
+/* Weather badges */
+.weather-badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px}
+.weather-normal{background:#dcfce7;color:#15803d}
+.weather-bad{background:#fef3c7;color:#d97706}
+.weather-severe{background:#fee2e2;color:#dc2626}
+
+/* Week Fold (每日履约按周折叠) */
+.week-fold{border:1px solid #e5e7eb;border-radius:6px;margin-bottom:8px;overflow:hidden}
+.week-fold-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#ffffff;cursor:pointer;user-select:none;transition:background 0.15s;border-bottom:1px solid #e5e7eb}
+.week-fold-header:hover{background:#ffffff}
+.week-fold-header.open{background:#ffffff;border-bottom-color:transparent}
+.week-fold-header .wf-left{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#1f2937}
+.week-fold-header .wf-left .badge{margin-left:4px}
+.week-fold-header .wf-right{font-size:11px;color:#9ca3af}
+.week-fold-header .wf-arrow{display:inline-block;font-size:10px;color:#9ca3af;transition:transform 0.2s;margin-right:4px}
+.week-fold-header.open .wf-arrow{transform:rotate(90deg)}
+.week-fold-body{display:none;border-top:1px solid #e5e7eb}
+.week-fold-body.show{display:block}
+.week-fold-body table{margin:0;border-top:none}
+
+/* Fold Row (三折叠卡片横向并排) */
+.fold-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.fold-row .card{margin-bottom:0}
+.fold-row .fold-content{overflow-x:auto}
+
+/* Fold Panels (工装+压力天双折叠面板) */
+.fold-tabs{display:flex;gap:0;margin-bottom:12px;border:none;border-radius:0;overflow:visible}
+.fold-tab-btn{padding:8px 16px;border:1px solid #e5e7eb;cursor:pointer;font-size:13px;font-weight:600;background:#ffffff;color:#6b7280;transition:all 0.15s;display:flex;align-items:center;gap:6px;border-radius:4px}
+.fold-tab-btn:hover{background:#eff6ff;color:#1d2129;border-color:#bfdbfe}
+.fold-tab-btn.active{background:#eff6ff;color:#1e3a5f;font-weight:700;border-color:#bfdbfe}
+.fold-tab-btn .warn-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0}
+.fold-panel{display:none}
+.fold-panel.active{display:block}
+
+/* GZP Row (工装+压力天横向并排折叠卡片) */
+.gzp-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+.gzp-card{margin-bottom:0}
+.gzp-body{display:none;overflow:hidden}
+.gzp-card.open .gzp-body{display:block}
+.gzp-arrow{display:inline-block;transition:transform 0.2s;font-size:12px}
+.gzp-card.open .gzp-arrow{transform:rotate(90deg)}
+@media(max-width:640px){.gzp-row{grid-template-columns:1fr)}
+
+/* Responsive */
+@media(max-width:900px){.mod-grid{grid-template-columns:repeat(2,1fr)}.fold-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.mod-grid{grid-template-columns:1fr}.stat-row{flex-direction:column}.container{padding:8px 10px}.fold-row{grid-template-columns:1fr}}
+
+/* Data cell color indicators */
+.cell-green{color:#16a34a !important;background:transparent !important}
+.cell-yellow{color:#d97706 !important;background:transparent !important}
+.cell-red{color:#dc2626 !important;background:transparent !important;font-weight:600}
+.cell-green::before,.cell-yellow::before,.cell-red::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.cell-green::before{background:#16a34a}
+.cell-yellow::before{background:#d97706}
+.cell-red::before{background:#dc2626}
+.cell-pending{color:#9ca3af !important;font-style:italic}
+.q1{display:none !important}
+.q2{font-size:12px;color:#4e5969;margin-bottom:8px}
+.q3{color:#9ca3af}
+.q4{background:#fef9c3}
+.q5{background:#ffffff;color:#374151}
+.q6{background:#ffffff}
+.q7{background:#dcfce7}
+.q8{background:#f0fdf4}
+.q9{background:#f0fdf4;color:#166534}
+.q10{font-size:10px;color:#16a34a}
+.q11{background:#fee2e2}
+.q12{text-align:right}
+.q13{font-size:12px;color:#374151;margin-bottom:4px}
+.q14{font-size:11px;color:#6b7280;margin-top:4px}
+.q15{background:#ffffff;border-color:#e5e7eb}
+.q16{float:right}
+.q17{background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600}
+.q18{flex:1;background:#ffffff;color:#6b7280;padding:8px 12px;border-radius:5px;text-align:center;font-size:13px;font-weight:600}
+.q19{display:inline-block;margin-left:24px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== M01: 页头状态栏 ===== -->
+<div class="banner">
+  <div class="header-row">
+    <div class="header-left">
+      <h1>宁德7月KPI看板</h1>
+      <div class="sub">
+        <span>V5 算分口径 · 画像 A（全考核）· 组织节点 1520 · E1 城市</span>
+      </div>
+
+      <div class="tags">
+        <i>🎯 处罚新档：95-100 罚 0 元</i>
+        <i>⚠️ 工装 98% 硬门槛（乘性扣 5%）</i>
+        <i>📊 新数据集 7/1-7/11 · 体验+推完+履约 已入库</i>
+        <i>⏳ 运力/工装数据待同步</i>
+        <i style="background:rgba(255,255,255,0.22);color:#fef08a;border:1px solid rgba(254,240,138,0.4);font-weight:700">📝 待办：全周期KPI原始数据云文档清洗归档 · 7月已完成（体验/推完/品类闭环率/骑手明细）· 5-6月待补充上传</i>
+      </div>
+    </div>
+    <div class="date-pill">🕐 最新数据更新：2026年7月12日 星期日</div>
+    </div><!-- end header-row -->
+  </div><!-- end banner -->
+  <div class="tabs">
+  <button class="tab-btn tw-overview active" onclick="switchTab('overview',this)">📊 全月总览</button>
+  <button class="tab-btn tw-period1" onclick="switchTab('period1',this)">📅 第1期总览（7/1-7/12）</button>
+  <button class="tab-btn tw-period2" onclick="switchTab('period2',this)">📅 第2期总览（7/13-7/31）</button>
+  <button class="tab-btn tw-ylt" onclick="switchTab('ylt',this)">压力天 · 5.25</button>
+  <button class="tab-btn tw-calib" onclick="switchTab('calib',this)">复合超时 · 校准</button>
+  <button class="tab-btn tw-gz" onclick="switchTab('gz',this)"><span class="warn-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:4px;vertical-align:middle"></span>🔴 工装</button>
+  </div><!-- end tabs -->
+
+<!-- ============================================================ -->
+<!-- TAB 1: 全月总览 -->
+<!-- ============================================================ -->
+<div id="tab-overview" class="tab-content active">
+
+<div style="display:none"><!-- M04: 压力天 [已隐藏] -->
+<div class="card">
+  <div class="card-title">👀 压力天 · 5.25 <span class="badge badge-yellow">加盟 KPI 子项 · 权重 5.25 分</span></div>
+  <div class="card-sub">⚠️ 压力天出勤（7 月整月汇总）</div>
+  <div class="q2">
+    <b>压力天定义：</b>恶劣天气「一般恶劣」以上 ∪ 高峰日<br>
+    · 恶劣天气：非常恶劣 / 比较恶劣 / 高温预警橙色 / 台风等<br>
+    · 高峰日：7/4、7/5、7/11、7/12、7/18、7/19、7/25、7/26、8/1、8/2（10 天）
+  </div>
+  <div class="q2">
+    <b>📐 算分口径（V5 方案原文）：</b><br>
+    · 仅加盟站点：加盟跑单率 × 100%<br>
+    · 有加盟 + 悦跑站点：加盟跑单率 × 50% + 悦跑跑单率 × 50%<br>
+    · 满分 5.25 分（加盟运力 20 分内子项 · 约占 26%）
+  </div>
+  <div class="stat-row">
+    <div class="stat-box sb-yellow"><div class="label">7 月压力天数</div><div class="num orange">—</div><div class="label">高峰日 10 天 +恶劣天气实时判定</div></div>
+    <div class="stat-box sb-blue"><div class="label">加盟跑单率</div><div class="num blue">—%</div><div class="label">压力天当日加盟出勤跑单人/排班人</div></div>
+    <div class="stat-box sb-green"><div class="label">悦跑跑单率</div><div class="num green">—%</div><div class="label">当日排班有单出勤人数 / 当日排班人数</div></div>
+  </div>
+  <div style="font-size:12px;background:#ffffff;padding:8px 10px;border-radius:4px;margin-top:6px">
+    🏆 月度得分（暂估）：<b>— / 5.25</b> <span class="q3">· 数据到位后自动结算</span>
+  </div>
+  <div style="font-size:11px;color:#9ca3af;margin-top:6px">
+    🎯 待军哥拍板/数据管家补：①站点属性 ②悦跑X%门槛值 ③恶劣天气日回填 ④日粒度数据
+  </div>
+</div>
+
+<!-- ~~ M05: 复合超时·校准 [已隐藏] ~~ -->
+
+<!-- M06: 工装硬门槛 -->
+<div class="card">
+  <div class="card-title"><span class="stat-dot dot-red"></span>🔴 工装 97.99%·差 0.01pp <span class="badge badge-red">硬门槛 · 总分 × 0.95</span></div>
+  <div style="background:#fef2f2;border:1px solid #fdd0d0;border-radius:4px;padding:8px 10px;font-size:12px;color:#991b1b;margin-bottom:8px">
+    🔴 工装累积合格率 · 硬门槛考核（V4 · 方案原文口径）<br>
+    🔴 未达 98% · 总分 × 0.95（乘性扣 5%）· 不支持申诉
+  </div>
+  <div style="font-size:12px;color:#6b7280;margin-bottom:8px">
+    ⏳ 工装数据待数据管家同步入库（P0 请求单已发）· 数据到位后刷新<br>
+    <span style="font-size:11px;color:#9ca3af">📌 数据源：数据管家 dwd_ningde_gongzhuang_daily · 拉取节奏：每日 08:30 后增量入库</span>
+  </div>
+  <div style="font-size:11px;color:#6b7280;border-top:1px dashed #e5e7eb;padding-top:6px">
+    ▸ 门槛口径：硬门槛 98% 二元制 · 达成 0 扣 · 未达成 总分 × 0.95 · 不支持考核申诉<br>
+    ▸ 合格率公式：Σ穿工装人天 / Σ骑手人天 · 责任人：郑志强 · 分区经理：晁国瑞
+  </div>
+</div>
+</div><!-- end hide M04+M06 -->
+
+<!-- M07: KPI考核总表（统一表格 · 参照考核表样式） -->
+<div class="card" style="padding:16px">
+  <div class="card-title">📊 宁德真一派 · 7 月 V5 KPI 考核总表 <span class="badge badge-blue">月度常规 + 运力模块</span></div>
+  <div class="card-sub">体验/推完/履约贯穿自然月 · 各期共享月度累计值 · 运力按期次结算 · 数据窗口 7/1-7/11</div>
+  <table style="font-size:12px;border-collapse:collapse;width:100%">
+<tr>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">模块</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">项目</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">项目拆分</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">考核目标</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">考核达成</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标完成率</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标得分率</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标得分</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">月度得分</th>
+</tr>
+<tr>
+  <td rowspan="7" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:700;color:#991b1b;background:#fff">月度<br>常规</td>
+  <td rowspan="4" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff;color:#166534">体验<br>（15分）</td>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">复合超时<br>（6分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">3km内</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≤2.917%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">1.69% ☑</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#166534">封顶110%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#166534;font-weight:700">—</td>
+  <td rowspan="7" style="background:#dcfce7;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#166534;font-weight:800;font-size:18px">39.89</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">3km外</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≤3.681%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">2.33% ☑</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#166534">63.3%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#166534;font-weight:700">—</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">虚假点<br>（4.5分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">虚假点送达</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≤0.027%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">0.0245% √</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#1e40af">110.2%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;color:#166534;font-weight:700">4.50/4.5</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">配取<br>（4.5分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">配送取消</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≤0.077%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">0.0738% ☑</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fce7f3">104.3%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fce7f3;color:#166534;font-weight:700">4.50/4.5</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">推完<br>（20分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">推完<br>（20分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">推单完成率</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≥98.55%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fffef5">98.4506% △</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fffef5">99.90%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fffef5;color:#92400e;font-weight:700">19.98/20</td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff;color:#166534">完结<br>（5分）</td>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;background:#fff">商家订单<br>完结率</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">餐饮F1</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≥89%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2">88.07% △</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2">98.96%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2;color:#991b1b;font-weight:700">2.84 △</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px">非餐F1</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">≥66%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2">64.24% ●</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2;color:#1e40af">97.33%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef2f2;color:#991b1b;font-weight:700">2.00 ●</td>
+</tr>
+<tr><td colspan="9" style="border:1px solid #d1d5db;border-left:none;border-right:none;padding:2px 8px;background:#fef9c3;font-size:10px;text-align:center;color:#92400e;font-weight:600">运 力 模 块</td></tr>
+
+<tr>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">周期</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">运力模块</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">考核目标</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">考核达成</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标完成率</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标得分率</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">指标得分</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">周期得分</th>
+  <th style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;font-weight:700;color:#92400e;vertical-align:middle;background:#fef9c3">整期得分</th>
+</tr>
+<tr>
+  <td rowspan="5" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:700;color:#166534;background:#fff">第一期</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px;color:#6b7280">整期</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px">专送（15分）【90%，100%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">433</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">435</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">100.3%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">100.0%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;font-weight:700">20.00</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff"></td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:700;color:#166534;background:#f0fdf4">W1</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#f0fdf4;font-size:11px">普众（10分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">374</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">418</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">111.8%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">110.00%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;font-weight:700">11.00</td>
+  <td rowspan="2" style="background:#dcfce7;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:600;color:#166534;font-size:11px">W1得分<br>101.0775</td>
+  <td rowspan="5" style="background:#dcfce7;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#166534;font-weight:800;font-size:14px">—<br><span style="font-size:10px;color:#9ca3af">待结算</span></td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px">悦跑（30分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">160</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">161</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">100.6%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4">100.63%</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#f0fdf4;font-weight:700">30.19</td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:700;color:#92400e;background:#fef3c7">W2</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fef3c7;font-size:11px">普众（10分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef3c7">374</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef3c7;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef3c7;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef3c7;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fef3c7;color:#9ca3af">⏳</td>
+  <td rowspan="2" style="background:#fef3c7;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;font-size:10px">⏳ W2得分</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px">悦跑（30分）</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff">160</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;color:#9ca3af">⏳</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;color:#9ca3af">⏳</td>
+</tr>
+<tr>
+  <td rowspan="7" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;font-weight:700;color:#9ca3af;background:#fff">第二期</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">整期</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">专送（15分）【90%，100%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td rowspan="7" style="background:#f3f4f6;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;font-weight:800;font-size:14px">—<br><span style="font-size:10px">未开始</span></td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;background:#f9fafb">W3</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">普众（10分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td rowspan="2" style="background:#f9fafb;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;font-size:10px">W3得分</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">悦跑（30分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;background:#f9fafb">W4</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">普众（10分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td rowspan="2" style="background:#f9fafb;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;font-size:10px">W4得分</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">悦跑（30分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+</tr>
+<tr>
+  <td rowspan="2" style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;background:#f9fafb">W5</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">普众（10分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td rowspan="2" style="background:#f9fafb;border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af;font-size:10px">W5得分</td>
+</tr>
+<tr>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:left;vertical-align:middle;background:#fff;font-size:11px;color:#9ca3af">悦跑（30分）【90%，110%】</td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+  <td style="border:1px solid #d1d5db;padding:6px 8px;font-size:12px;text-align:center;vertical-align:middle;color:#9ca3af"></td>
+</tr>
+</table>
+  <div style="font-size:11px;color:#9ca3af;margin-top:8px">
+    ▸ 口径说明：复合超时 = (一般 + 严重×5) / 完成单 · 虚假 = 全运力虚假 / 全运力推单 · 配取 = 全运力取消 / 全运力推单<br>
+    ▸ 率类越低越好完成率 = 目标/实际（上限110%）· 推完/履约越高越好完成率 = 实际/目标 · 履约5分 = (餐饮完成率 + 非餐完成率) / 2 × 5<br>
+    ▸ 体验/推完/履约贯穿自然月，各期共享同一组累计值 · ⏳ 运力数据待同步后补齐加盟/悦跑/普众得分
+  </div>
+</div>
+<div style="display:none"><!-- M08+M09+M10: 三折叠卡片横向并排 [已隐藏，移至独立Tab] -->
+<div class="fold-row">
+<div class="card">
+  <div class="card-title">🗓 自然月「体验+推完+履约」累计 <span class="badge badge-green">39.67 / 40</span></div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'monthly-detail')">点击展开</button>
+  <div id="monthly-detail" class="fold-content">
+    <table>
+      <tr><th>模块</th><th>月度目标</th><th>月内已跑段基线（7/1-7/5）</th><th>缺口 / 关注</th><th>当前基线得分</th></tr>
+      <tr>
+        <td class="text-cell"><b>④体验</b> 15分</td>
+        <td class="text-cell">复合超时 ≤2.917%<br>虚假点 ≤0.027%<br>配取率 ≤0.077%</td>
+        <td class="text-cell">复合 <span class="cell-green">1.9690%</span> <span class="tag-green">✅</span><br>虚假 <span class="cell-green">0.0121%</span> <span class="tag-green">✅</span><br>配取 <span class="cell-yellow">0.0826%</span> <span class="tag-yellow">⚠</span></td>
+        <td class="text-cell">配取已达标 ✅ 0.0738% ≤ 0.077%</td>
+        <td class="num-cell">15.52 / 15</td>
+      </tr>
+      <tr>
+        <td class="text-cell"><b>⑤推完</b> 20分</td>
+        <td class="text-cell">整体推完率 ≥98.55%<br>门槛 97% · 挑战 99.2%</td>
+        <td class="text-cell">整体 <span class="cell-yellow">98.4506%</span> <span class="tag-yellow">⚠</span></td>
+        <td class="text-cell">加盟 ≥99% <span class="tag-green">✅</span> 众包 97.11-97.82% <span class="tag-red">🔴</span><br>差 0.10pp · W2-W4 需 +0.5pp · W2-W4 需 +0.5pp</td>
+        <td class="num-cell">19.29 / 20</td>
+      </tr>
+      <tr>
+        <td class="text-cell"><b>⑥履约</b> 5分</td>
+        <td class="text-cell">餐饮 F1 ≥89%<br>非餐 F1 ≥66%</td>
+        <td class="text-cell">餐饮 <span class="cell-red">87.92%</span> <span class="tag-yellow">⚠</span><br>非餐 <span class="cell-red">62.56%</span> <span class="tag-red">🔴</span></td>
+        <td class="text-cell">餐饮差 0.93pp<br>非餐差 1.76pp（最大短板）</td>
+        <td class="num-cell">4.86 / 5</td>
+      </tr>
+      <tr style="font-weight:700"><td colspan="4" class="q12">🗓 自然月「体验+推完+履约」· 当前基线合计</td><td class="num-cell"><span class="cell-yellow">39.89</span> / 40</td></tr>
+    </table>
+    <div style="font-size:11px;color:#9ca3af;margin-top:4px">
+      说明：①基线值仅覆盖 7/1-7/5 已跑区段 · 非最终月度得分 ②体验按 3 项加权（复合超时 40% + 虚假点 30% + 配取 30%）③率类指标按日推单量加权：Σ(日率 × 日推单量) / Σ推单量
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">📌 军哥 7/4 口径校准 <span class="badge badge-gray">默认折叠</span></div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'jun-calib')">点击展开/收起</button>
+  <div id="jun-calib" class="fold-content">
+    <div style="font-size:12px;color:#4e5969;line-height:1.8">
+      <b>① 推完 = 推单完成率</b><br>
+      ★ 口径 B · 履约推完+天气法（最终校准基准 · KPI v6 · 本看板算分采用）<br>
+      数据源：履约推完+天气（本 xlsx）<br>
+      · 美配（整体）= 美配分子 / 美配分母<br>
+      · 加盟（=城代）= 加盟分子 / 加盟分母<br>
+      · 众包 = (美配分子 − 加盟分子) / (美配分母 − 加盟分母) ← 差值法<br><br>
+      <b>② 履约 = 商家完结率</b><br>
+      数据源：品类闭环率日报（原"未命名图表 xlsx"）<br>
+      · 字段：一级品类分类（餐饮/非餐）· 闭环率分子/分母<br>
+      · 目标：餐饮 89% / 非餐 66%
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">📋 目标锁定单摘要 <span class="badge badge-gray">对照第 1 期 · 14 项参数</span></div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'target-lock')">点击展开</button>
+  <div id="target-lock" class="fold-content">
+    <table>
+      <tr><th>参数</th><th>7 月新值</th><th>6 月旧值</th><th>变化</th><th>说明</th></tr>
+      <tr><td class="text-cell">加盟权重</td><td class="num-cell">20%</td><td class="num-cell">15%</td><td class="num-cell tag-red">+5pp</td><td class="text-cell">加盟压力↑</td></tr>
+      <tr><td class="text-cell">体验权重</td><td class="num-cell"><span class="cell-yellow">15%</span></td><td class="num-cell">20%</td><td class="num-cell tag-green">-5pp</td><td class="text-cell">体验压力↓</td></tr>
+      <tr><td class="text-cell">加盟日均达标</td><td class="num-cell">433</td><td class="num-cell">430</td><td class="num-cell">+3</td><td class="text-cell">6 月实际 435，1 人缓冲</td></tr>
+      <tr><td class="text-cell">悦跑 W1 有效</td><td class="num-cell">160</td><td class="num-cell">—</td><td class="num-cell">+1</td><td class="text-cell">✅ 达标 100.63%</td></tr>
+      <tr><td class="text-cell">普众 W1 活跃</td><td class="num-cell">374</td><td class="num-cell">—</td><td class="num-cell">+68</td><td class="text-cell">✅✅ 达成率 118%（触顶按 110% 计）</td></tr>
+      <tr><td class="text-cell">复合超时率</td><td class="num-cell"><span class="cell-green">2.917%</span></td><td class="num-cell">2.220%</td><td class="num-cell tag-green">+0.7pp</td><td class="text-cell">放松 31%</td></tr>
+      <tr><td class="text-cell">虚假点占比</td><td class="num-cell">目标 0.027% / 门槛 0.047%</td><td class="num-cell">0.024%</td><td class="num-cell">+0.003</td><td class="text-cell">新增门槛概念</td></tr>
+      <tr><td class="text-cell">配送取消占比</td><td class="num-cell">目标 0.077% / 门槛 0.157%</td><td class="num-cell">0.061%</td><td class="num-cell">+0.016</td><td class="text-cell">门槛缓冲 100%</td></tr>
+      <tr><td class="text-cell">推单目标</td><td class="num-cell"><span class="cell-yellow">98.55%</span></td><td class="num-cell">98.65%</td><td class="num-cell tag-green">-0.1pp</td><td class="text-cell">放松</td></tr>
+      <tr><td class="text-cell">餐饮履约</td><td class="num-cell"><span class="cell-yellow">89%</span></td><td class="num-cell">94%</td><td class="num-cell tag-green">-5pp</td><td class="text-cell">大幅放松</td></tr>
+      <tr><td class="text-cell">非餐履约</td><td class="num-cell"><span class="cell-red">66%</span></td><td class="num-cell">63%</td><td class="num-cell tag-red">+3pp</td><td class="text-cell">收紧</td></tr>
+      <tr><td class="text-cell">工装抽检合格率</td><td class="num-cell"><span class="cell-red">≥98%</span> 门槛</td><td class="num-cell">无</td><td class="num-cell tag-red">🆕</td><td class="text-cell">不达标乘性 -5%</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+</div><!-- end hide fold-row -->
+
+<td class="num-cell"><span class="cell-yellow">0.0888%</span></td>
+<td><span class="weather-badge weather-bad">比较恶劣</span></td>
+<td class="num-cell">30421</td></tr>
+  <tr class="q4"><td class="text-cell">7/12 🔥高峰·W2</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+</table>
+</div>
+
+<!-- W3 面板 -->
+<div id="wt-w3" class="sub-tab-content">
+<table>
+  <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th></tr>
+  <tr><td class="text-cell">7/13 W3</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/14 W3</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/15 W3</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/16 W3</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/17 W3</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr class="q4"><td class="text-cell">7/18 🔥高峰·W3</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+  <tr class="q4"><td class="text-cell">7/19 🔥高峰·W3</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+</table>
+</div>
+
+<!-- W4 面板 -->
+<div id="wt-w4" class="sub-tab-content">
+<table>
+  <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th></tr>
+  <tr><td class="text-cell">7/20 W4</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/21 W4</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/22 W4</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/23 W4</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/24 W4</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr class="q4"><td class="text-cell">7/25 🔥高峰·W4</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+  <tr class="q4"><td class="text-cell">7/26 🔥高峰·W4</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+</table>
+</div>
+
+<!-- W5 面板 (新增) -->
+<div id="wt-w5" class="sub-tab-content">
+<table>
+  <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th></tr>
+  <tr><td class="text-cell">7/27 W5</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/28 W5</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/29 W5</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/30 W5</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr><td class="text-cell">7/31 W5</td><td colspan="8" class="q3">⏳ 未开始</td></tr>
+  <tr class="q4"><td class="text-cell">8/1 🔥高峰·W5</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+  <tr class="q4"><td class="text-cell">8/2 🔥高峰·W5</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+</table>
+</div>
+
+</div>
+
+<!-- M12: 6月回溯 -->
+<div class="card">
+  <div class="card-title">🔍 6 月全月 V5 口径回溯（找差距）</div>
+  <div class="card-sub">含义：把 6 月整月的实际数据用 7 月 V5 规则打分，看你现在处于什么水平 · 相当于「压力测试基线」</div>
+  <table>
+    <tr><th>指标</th><th>6 月累计</th><th>7 月目标</th><th>差距</th><th>V5 得分率估算</th><th>判断</th></tr>
+    <tr><td class="text-cell">复合超时率（全渠道）</td><td class="num-cell">3.668%</td><td class="num-cell">2.917%</td><td class="num-cell tag-red">+0.751pp</td><td class="num-cell">~74%</td><td class="text-cell"><span class="tag-red">⚠️ 主战场</span>，7 月每日要压到 &lt;2.9%</td></tr>
+    <tr><td class="text-cell">复合超时率（3km 内）</td><td class="num-cell">3.642%</td><td class="num-cell">2.917%</td><td class="num-cell tag-red">+0.725pp</td><td class="num-cell">~75%</td><td class="text-cell">短单占大头，主要拖分项</td></tr>
+    <tr><td class="text-cell">复合超时率（3km 外）</td><td class="num-cell">3.976%</td><td class="num-cell">3.681%</td><td class="num-cell tag-yellow">+0.295pp</td><td class="num-cell">~92%</td><td class="text-cell">长单接近达标，微调即可</td></tr>
+    <tr><td class="text-cell">虚假点送达占比</td><td class="num-cell">0.019%</td><td class="num-cell">0.027%</td><td class="num-cell tag-green">-0.008pp</td><td class="num-cell">100%</td><td class="text-cell"><span class="tag-green">✅</span> 保持即可</td></tr>
+    <tr><td class="text-cell">配送取消占比</td><td class="num-cell">0.063%</td><td class="num-cell">0.077%</td><td class="num-cell tag-green">-0.014pp</td><td class="num-cell">100%</td><td class="text-cell"><span class="tag-green">✅</span> 保持即可</td></tr>
+    <tr><td class="text-cell">推单完成率（美配）</td><td class="num-cell">97.556%</td><td class="num-cell">98.55%</td><td class="num-cell tag-red">-0.994pp</td><td class="num-cell">~93.6%</td><td class="text-cell"><span class="tag-red">🎯</span> 冲 98.55% 是 20% 权重的最大杠杆</td></tr>
+  </table>
+  <div style="background:#fef2f2;border:1px solid #fdd0d0;border-radius:4px;padding:8px 10px;font-size:12px;color:#991b1b;margin-top:8px">
+    <b>📌 7 月主战场判断：</b><br>
+    ① 压复合超时（15% × 40% = 6% 权重）——6 月 3.67% → 目标 2.92%，减 20%<br>
+    ② 提推单率（20% 权重）——6 月 97.56% → 目标 98.55%，冲挑战 99.2% 可加成 10%<br>
+    ③ 保虚假点/配取（15% × 60% = 9% 权重）——6 月表现良好，保持即可<br>
+    ④ 6/29 6/30 数据显示：复合超时已降到 1.8%（比 6 月月均 3.67% 好一半！），说明改善通道已打开
+  </div>
+</div>
+
+<!-- M13: 6月得分历史锚 -->
+<div class="card">
+  <div class="card-title">📈 6 月得分历史锚（参考）</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+    <div style="background:linear-gradient(135deg,#f0faf0 0%,#f0faf0 100%);border:1px solid #b5f0bc;border-radius:8px;padding:14px 12px;text-align:center">
+      <div class="q13">6 月全月</div>
+      <div style="font-size:24px;font-weight:800;color:#16a34a;line-height:1.2">100.55</div>
+      <div class="q14">V4 · 剔非异日版</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#f5f2ef 0%,#f0ede9 100%);border:1px solid #e5e7eb;border-radius:8px;padding:14px 12px;text-align:center">
+      <div class="q13">E1（6/1-15）</div>
+      <div style="font-size:24px;font-weight:800;color:#16a34a;line-height:1.2">100.79</div>
+      <div class="q14">15 天 · 上半月</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#fefbe5 0%,#fef5c3 100%);border:1px solid #fde088;border-radius:8px;padding:14px 12px;text-align:center">
+      <div class="q13">E2（6/16-30）</div>
+      <div style="font-size:24px;font-weight:800;color:#ea580c;line-height:1.2">101.10</div>
+      <div class="q14">下半月 · 普众超时拖分</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#fef5f5 0%,#fee8e8 100%);border:1px solid #fdd0d0;border-radius:8px;padding:14px 12px;text-align:center">
+      <div class="q13">7 月压力变化</div>
+      <div style="font-size:24px;font-weight:800;color:#dc2626;line-height:1.2">↓ 更松</div>
+      <div class="q14">超时/悦跑/普众 全放松</div>
+    </div>
+  </div>
+  <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;font-size:12px;color:#374151;margin-top:8px;line-height:1.8">
+    <b>关键判断：</b>7 月目标整体比 6 月松（超时 +0.7pp、悦跑 -6、普众 -23、餐饮 -5pp），95-100 区间还免罚。<br>
+    唯一变严的：加盟权重 15→20（+5pp）、非餐履约 63→66（+3pp）、工装 98% 硬门槛。<br>
+    作战重点：加盟达 433 + 工装抽检合格。
+  </div>
+</div>
+
+</div><!-- end tab-overview -->
+
+<!-- ============================================================ -->
+<!-- TAB 2: 第1期总览（含 W1/W2 Tab 切换） -->
+<!-- ============================================================ -->
+<div id="tab-period1" class="tab-content">
+
+<div class="card q15">
+  <div class="card-title">📅 第 1 期总览 · 7/1 - 7/12 <span class="badge badge-blue">半月 · 加盟第 1 期结算窗口</span></div>
+  <div style="font-size:12px;color:#4e5969">
+    涵盖 <b>W1（6/29-7/5）</b><span class="tag-green">✅ 已收官</span> + <b>W2（7/6-7/12）</b><span class="tag-yellow">🚀 进行中</span><br>
+    高峰日 7/4、7/5、7/11、7/12（4 天）<br>
+    加盟：第 1 期整期合成（20 分）· 悦跑/普众：W1+W2 分周计入
+  </div>
+</div>
+
+<!-- W1/W2 横向Tab切换 -->
+<div class="sub-tabs">
+  <button class="sub-tab-btn done active" onclick="switchSubTab('w1',this)">🏆 W1（6/29-7/5）已收官</button>
+  <button class="sub-tab-btn" onclick="switchSubTab('w2',this)">🚀 W2（7/6-7/12）进行中</button>
+</div>
+
+<!-- ===== W1 面板 ===== -->
+<div id="subtab-w1" class="sub-tab-content active">
+
+<!-- W1 当期总分卡片 -->
+<div style="background:linear-gradient(135deg,#f0faf0 0%,#dcf5e0 100%);border:1px solid #b5f0bc;border-radius:6px;padding:14px 18px;margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#166534">🏆 W1（6/29 - 7/5）· 当期总分</div>
+      <div style="font-size:12px;color:#15803d;margin-top:2px">运力 61.19 / 60 · 履约体验 39.67 / 40 · 超盘 +1.19</div>
+    </div>
+    <div class="q12">
+      <div style="font-size:32px;font-weight:800;color:#166534">100.86</div>
+      <div style="font-size:13px;color:#15803d">/ 100</div>
+    </div>
+  </div>
+</div>
+
+<!-- W1 得分口径 -->
+<div class="card">
+  <div class="card-title">📐 W1 得分口径</div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'w1-koujing')">点击展开/收起</button>
+  <div id="w1-koujing" class="fold-content">
+    <div style="font-size:12px;color:#4e5969;line-height:1.8">
+      <b>① 加盟运力（20 分）：</b>W1 实际 435.4 / 目标 433 · 达成率 100.55% → ✅达标 · 满额 20 分（区间90-100不可110）<br>
+      <b>② 悦跑运力（30 分）：</b>W1 实际 161 / 目标 160 · 达成率 100.63% → ✅达标 · 满额 30 分 + 超额 0.19（区间90-110可加成）<br>
+      <b>③ 普众运力（10 分）：</b>W1 实际 442 / 目标 374 · 达成率 118.18% → 🟢封顶110% · 满额 10 分 + 超额 1.00<br>
+      <b>④ 体验模块（15 分）：</b>自然月累计 · 复合超时40%+虚假点30%+配取30% · W1已跑段 <span class="cell-green">1.9690%</span>✅ <span class="cell-green">0.0121%</span>✅ <span class="cell-yellow">0.0826%</span>⚠<br>
+      <b>⑤ 推完模块（20 分）：</b>自然月累计 · 目标98.55% · W1已跑段 <span class="cell-yellow">98.4125%</span>⚠ · 众包短板<br>
+      <b>⑥ 履约模块（5 分）：</b>自然月累计 · 餐饮89%/非餐66% · W1已跑段 <span class="cell-red">87.92%</span>⚠ / <span class="cell-red">62.56%</span>🔴<br>
+      <b>累计率算法：</b>Σ(日率 × 日推单量) / Σ推单量
+    </div>
+  </div>
+</div>
+
+<!-- W1 六模块详情 -->
+<div class="card">
+  <div class="card-title">🎯 W1 六模块累计详情</div>
+  <div class="card-sub">六模块权重：加盟 20 + 悦跑 30 + 普众 10（运力 60 分）· 体验 15 + 推完 20 + 履约 5（履约体验 40 分）· 合计 100 分</div>
+  <div class="mod-grid">
+    <div class="mod-card mc-orange">
+      <div class="label">① 加盟运力 <span class="badge badge-gray q16">权重 20%</span></div>
+      <div class="num green">20.00 🟢</div>
+      <div class="sub">435.4 / 433 · 100.55% ✅达标<br>区间【90-100】不可 110 · 满额</div>
+    </div>
+    <div class="mod-card mc-green">
+      <div class="label">② 悦跑运力 <span class="badge badge-gray q16">权重 30%</span></div>
+      <div class="num green">30.00 🟢</div>
+      <div class="sub">161 / 160 · 100.63% ✅达标<br>区间【90-110】可加成 · +0.19超额</div>
+    </div>
+    <div class="mod-card mc-red">
+      <div class="label">③ 普众运力 <span class="badge badge-gray q16">权重 10%</span></div>
+      <div class="num green">11.00 🟢</div>
+      <div class="sub">442 / 374 · 118.18% → 封顶110%<br>触顶 110%（V4 规则）· +1.00超额</div>
+    </div>
+    <div class="mod-card mc-blue">
+      <div class="label">④ 体验完成率 <span class="badge badge-gray q16">权重 15% ↓</span></div>
+      <div class="num green">15.52 ✅</div>
+      <div class="sub">复合 <span class="cell-green">1.9690%</span>✅ 虚假 <span class="cell-green">0.0121%</span>✅ 配取 <span class="cell-yellow">0.0826%</span>⚠<br>超时40%·虚假30%·配取30% · 自然月累计 · 待对应周期期末结算</div>
+    </div>
+    <div class="mod-card mc-purple">
+      <div class="label">⑤ 推单完成率 <span class="badge badge-gray q16">权重 20%</span></div>
+      <div class="num" style="color:#7c3aed">19.29 ⚠</div>
+      <div class="sub"><span class="cell-yellow">98.4125%</span>⚠ 差目标0.14pp<br>门槛97%·挑战99.2% · 自然月累计 · 待对应周期期末结算</div>
+    </div>
+    <div class="mod-card mc-amber">
+      <div class="label">⑥ 履约完结率 <span class="badge badge-gray q16">权重 5%</span></div>
+      <div class="num orange">4.86 ⚠</div>
+      <div class="sub">餐饮 <span class="cell-red">87.92%</span>⚠ 非餐 <span class="cell-red">62.56%</span>🔴<br>区间【80-110】双向宽 · 自然月累计 · 待对应周期期末结算</div>
+    </div>
+  </div>
+</div>
+
+<!-- W1 日快照 (修正数据) -->
+<div class="card">
+  <div class="card-title">W1 · 7/1-7/5 已收官（5 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+    <span style="background:#fef2f2;color:#dc2626;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">🔴 7/1（一般恶劣）</span>
+    <span style="background:#fffef5;color:#d97706;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">⚠ 7/2（一般恶劣）</span>
+    <span class="q17">🟢 7/3（一般恶劣）</span>
+    <span class="q17">🟢 7/4（W1 最低复合 1.71%）</span>
+    <span style="background:#fffef5;color:#ea580c;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">🟠 7/5（W1 双短板）</span>
+  </div>
+  <table>
+    <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
+    <tr><td class="text-cell">7/1</td><td class="num-cell"><span class="cell-yellow">98.4253%</span></td><td class="num-cell"><span class="cell-green">2.0066%</span></td><td class="num-cell"><span class="cell-green">2.00%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-green">0.0135%</span></td><td class="num-cell"><span class="cell-yellow">0.1104%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,281</td><td class="num-cell">37,127</td></tr>
+    <tr><td class="text-cell">7/2</td><td class="num-cell"><span class="cell-yellow">98.2588%</span></td><td class="num-cell"><span class="cell-green">1.9746%</span></td><td class="num-cell"><span class="cell-green">1.96%</span></td><td class="num-cell"><span class="cell-green">2.19%</span></td><td class="num-cell"><span class="cell-green">0.0160%</span></td><td class="num-cell"><span class="cell-yellow">0.0933%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,812</td><td class="num-cell">37,526</td></tr>
+    <tr><td class="text-cell">7/3</td><td class="num-cell"><span class="cell-green">98.5808%</span></td><td class="num-cell"><span class="cell-green">2.0446%</span></td><td class="num-cell"><span class="cell-green">2.03%</span></td><td class="num-cell"><span class="cell-green">2.20%</span></td><td class="num-cell"><span class="cell-yellow">0.0281%</span></td><td class="num-cell"><span class="cell-green">0.0587%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">41,472</td><td class="num-cell">39,176</td></tr>
+    <tr><td class="text-cell">7/4</td><td class="num-cell"><span class="cell-green">98.6823%</span></td><td class="num-cell"><span class="cell-green">1.7121%</span></td><td class="num-cell"><span class="cell-green">1.67%</span></td><td class="num-cell"><span class="cell-green">2.18%</span></td><td class="num-cell"><span class="cell-green">0.0143%</span></td><td class="num-cell"><span class="cell-green">0.0668%</span></td><td><span class="weather-badge weather-severe">比较恶劣</span></td><td class="num-cell">44,174</td><td class="num-cell">41,938</td></tr>
+    <tr><td class="text-cell">7/5</td><td class="num-cell"><span class="cell-yellow">98.2096%</span></td><td class="num-cell"><span class="cell-green">2.3822%</span></td><td class="num-cell"><span class="cell-green">2.34%</span></td><td class="num-cell"><span class="cell-green">2.89%</span></td><td class="num-cell"><span class="cell-green">0.0208%</span></td><td class="num-cell"><span class="cell-yellow">0.0970%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">45,859</td><td class="num-cell">43,279</td></tr>
+  </table>
+</div>
+
+</div><!-- end subtab-w1 -->
+
+<!-- ===== W2 面板 ===== -->
+<div id="subtab-w2" class="sub-tab-content">
+
+<!-- W2 进行中提示 -->
+<div style="background:linear-gradient(135deg,#fefbe5 0%,#fef5c3 100%);border:1px solid #fde088;border-radius:6px;padding:14px 18px;margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-size:14px;font-weight:700;color:#92400e">🚀 W2（7/6 - 7/12）· 进行中</div>
+      <div style="font-size:12px;color:#d97706;margin-top:2px">D1-D6（7/6-7/11）已入库 · D7（7/12）🔥高峰日待入库</div>
+    </div>
+    <div class="q12">
+      <div style="font-size:32px;font-weight:800;color:#92400e">—</div>
+      <div style="font-size:13px;color:#d97706">/ 100 · 待结算</div>
+    </div>
+  </div>
+</div>
+
+<!-- W2 三大焦点 -->
+<div class="card">
+  <div class="card-title">🎯 W2 三大焦点动作</div>
+  <div class="q2">承接 W1 累计短板，W2 需重点突破：</div>
+  <ol class="focus-list">
+    <li>众包推完 +0.5pp（约 +295 完成单/天）→ 拉起累计整体到 98.55%</li>
+    <li>配取压 ≤0.077%（W1 累计 0.0826% 超 0.006pp）→ 拿满 15/15</li>
+    <li>非餐 F1 专项拉（W1 缺口 3.44pp 最大 · 目标 66%）</li>
+  </ol>
+</div>
+
+<!-- W2 六模块详情 -->
+<div class="card">
+  <div class="card-title">🎯 W2 六模块累计详情</div>
+  <div class="mod-grid">
+    <div class="mod-card mc-orange">
+      <div class="label">① 加盟运力 <span class="badge badge-gray q16">权重 20%</span></div>
+      <div class="num orange">—</div>
+      <div class="sub">第1期合成 · ⏳待运力数据</div>
+    </div>
+    <div class="mod-card mc-green">
+      <div class="label">② 悦跑运力 <span class="badge badge-gray q16">权重 30%</span></div>
+      <div class="num green">—</div>
+      <div class="sub">目标 160 · ⏳待运力数据</div>
+    </div>
+    <div class="mod-card mc-red">
+      <div class="label">③ 普众运力 <span class="badge badge-gray q16">权重 10%</span></div>
+      <div class="num red">—</div>
+      <div class="sub">目标 374 · ⏳待运力数据</div>
+    </div>
+    <div class="mod-card mc-blue">
+      <div class="label">④ 体验完成率 <span class="badge badge-gray q16">权重 15%</span></div>
+      <div class="num green">15.00 ✅</div>
+      <div class="sub">复合 <span class="cell-green">2.0831%</span>✅ 虚假 <span class="cell-green">0.0245%</span>✅ 配取 <span class="cell-green">0.0738%</span>✅<br>超时40%·虚假30%·配取30% · 自然月累计(7/1-7/11) · 全部达标</div>
+    </div>
+    <div class="mod-card mc-purple">
+      <div class="label">⑤ 推单完成率 <span class="badge badge-gray q16">权重 20%</span></div>
+      <div class="num" style="color:#7c3aed">19.98 ⚠</div>
+      <div class="sub"><span class="cell-yellow">98.4506%</span>⚠ 差目标0.10pp<br>门槛97%·挑战99.2% · 自然月累计(7/1-7/11)</div>
+    </div>
+    <div class="mod-card mc-amber">
+      <div class="label">⑥ 履约完结率 <span class="badge badge-gray q16">权重 5%</span></div>
+      <div class="num orange">4.91 ⚠</div>
+      <div class="sub">餐饮 <span class="cell-red">88.07%</span>⚠ 非餐 <span class="cell-red">64.24%</span>🔴<br>区间【80-110】双向宽 · 自然月累计(7/1-7/11)</div>
+    </div>
+  </div>
+</div>
+
+<!-- W2 日快照 (修正数据) -->
+<div class="card">
+  <div class="card-title">W2 · 7/6-7/12 进行中（7 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+    <span class="q17">✅ 7/6</span>
+    <span class="q17">✅ 7/7</span>
+    <span class="q17">✅ 7/8</span>
+    <span class="q17">✅ 7/9</span>
+    <span class="q17">✅ 7/10</span>
+    <span style="background:#fef9c3;color:#d97706;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">⏳ 7/11 🔥</span>
+    <span style="background:#fef9c3;color:#d97706;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">⏳ 7/12 🔥</span>
+  </div>
+  <table>
+    <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
+    <tr><td class="text-cell">7/6 W2 D1</td><td class="num-cell"><span class="cell-yellow">98.4962%</span></td><td class="num-cell"><span class="cell-green">1.5162%</span></td><td class="num-cell"><span class="cell-green">1.54%</span></td><td class="num-cell"><span class="cell-green">1.19%</span></td><td class="num-cell"><span class="cell-green">0.0211%</span></td><td class="num-cell"><span class="cell-green">0.0553%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,051</td><td class="num-cell">37,989</td></tr>
+    <tr><td class="text-cell">7/7 W2 D2</td><td class="num-cell"><span class="cell-green">98.6559%</span></td><td class="num-cell"><span class="cell-green">2.0306%</span></td><td class="num-cell"><span class="cell-green">2.04%</span></td><td class="num-cell"><span class="cell-green">1.90%</span></td><td class="num-cell"><span class="cell-green">0.0235%</span></td><td class="num-cell"><span class="cell-green">0.0600%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,443</td><td class="num-cell">38,314</td></tr>
+    <tr><td class="text-cell">7/8 W2 D3</td><td class="num-cell"><span class="cell-green">98.6166%</span></td><td class="num-cell"><span class="cell-green">2.1895%</span></td><td class="num-cell"><span class="cell-green">2.08%</span></td><td class="num-cell"><span class="cell-green">3.59%</span></td><td class="num-cell"><span class="cell-yellow">0.0382%</span></td><td class="num-cell"><span class="cell-green">0.0509%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">41,407</td><td class="num-cell">39,279</td></tr>
+    <tr><td class="text-cell">7/9 W2 D4</td><td class="num-cell"><span class="cell-yellow">98.2094%</span></td><td class="num-cell"><span class="cell-green">2.8762%</span></td><td class="num-cell"><span class="cell-green">2.60%</span></td><td class="num-cell"><span class="cell-red">6.19%</span></td><td class="num-cell"><span class="cell-green">0.0259%</span></td><td class="num-cell"><span class="cell-green">0.0752%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,970</td><td class="num-cell">38,558</td></tr>
+    <tr><td class="text-cell">7/10 W2 D5</td><td class="num-cell"><span class="cell-yellow">98.5326%</span></td><td class="num-cell"><span class="cell-green">2.3009%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-yellow">4.01%</span></td><td class="num-cell"><span class="cell-yellow">0.0437%</span></td><td class="num-cell"><span class="cell-yellow">0.0874%</span></td><td><span class="weather-badge weather-normal">正常</span></td><td class="num-cell">38,663</td><td class="num-cell">36,595</td></tr>
+    <tr class="q4"><td class="text-cell">7/11 🔥高峰</td>
+<td class="num-cell"><span class="cell-yellow">98.1806%</span></td>
+<td class="num-cell"><span class="cell-green">1.7492%</span></td>
+<td class="num-cell"><span class="cell-green">1.69%</span></td>
+<td class="num-cell"><span class="cell-green">2.33%</span></td>
+<td class="num-cell"><span class="cell-green">0.0263%</span></td>
+<td class="num-cell"><span class="cell-yellow">0.0888%</span></td>
+<td><span class="weather-badge weather-bad">比较恶劣</span></td>
+<td class="num-cell">29,406</td><td class="num-cell">28,871</td></tr>
+    <tr class="q4"><td class="text-cell">7/12 🔥高峰</td><td colspan="8" class="q3">⏳ 待入库</td></tr>
+  </table>
+</div>
+
+</div><!-- end subtab-w2 -->
+
+</div><!-- end tab-period1 -->
+
+<!-- ============================================================ -->
+<!-- TAB 3: 第2期总览 -->
+<!-- ============================================================ -->
+<div id="tab-period2" class="tab-content">
+
+<div class="card q15">
+  <div class="card-title">📅 第 2 期总览 · 7/13 - 7/31 <span class="badge badge-blue">半月 · 加盟第 2 期结算窗口</span></div>
+  <div style="font-size:12px;color:#4e5969">
+    涵盖 <b>W3（7/13-7/19）</b> + <b>W4（7/20-7/26）</b> + <b>W5（7/27-8/2）</b><br>
+    高峰日 7/18、7/19、7/25、7/26、8/1、8/2（6 天 · 全月 60%）<br>
+    加盟：第 2 期整期合成（20 分）· 悦跑/普众：W3+W4+W5 分周计入
+  </div>
+</div>
+
+<div style="display:flex;gap:8px;margin-bottom:12px">
+  <div class="q18">W3（7/13 - 7/19）⏳ 待启动</div>
+  <div class="q18">W4（7/20 - 7/26）⏳ 待启动</div>
+  <div class="q18">W5（7/27 - 8/2）⏳ 待启动</div>
+</div>
+
+<div class="card q15">
+  <div class="card-title">W3 · 7/13 - 7/19 <span class="badge badge-gray">⏳ 待启动 · 第 2 期首周</span></div>
+  <ul class="focus-list" style="list-style:none;padding-left:0">
+    <li>· 启动时间：7/13（下周一）· 与第 1 期收官日重合</li>
+    <li>· 关键动作：第 1 期总分出 → 第 2 期目标锚定 → W3 三线目标下发</li>
+    <li>· 高峰日：7/18（周五）、7/19（周六）—— 悦跑普众关键冲刺窗口</li>
+    <li>· 骨架说明：W3 详情将在 7/12 W2 收官后按 v14.11 W1/W2 模板同步建立</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-title">W4 · 7/20 - 7/26 <span class="badge badge-gray">⏳ 待启动 · 第 2 期中周</span></div>
+  <div style="font-size:12px;color:#6b7280">启动时间：7/20（周日 · W3 收官次日）· 高峰日：7/25（周五）、7/26（周六）</div>
+</div>
+
+<div class="card">
+  <div class="card-title">W5 · 7/27 - 8/2 <span class="badge badge-gray">⏳ 待启动 · 第 2 期收官周 · 跨月</span></div>
+  <div style="font-size:12px;color:#6b7280">启动时间：7/27（周日 · W4 收官次日）· 高峰日：8/1（周五）、8/2（周六）· W5 跨月至 8 月</div>
+</div>
+
+</div><!-- end tab-period2 -->
+
+<!-- ============================================================ -->
+<!-- TAB 4: 工装累计合格率 -->
+<!-- ============================================================ -->
+<div id="tab-gz" class="tab-content">
+<div class="card">
+  <div class="card-title"><span class="stat-dot dot-red"></span>🔴 工装 97.99%·差 0.01pp <span class="badge badge-red">硬门槛 · 总分 × 0.95</span></div>
+  <div style="background:#fef2f2;border:1px solid #fdd0d0;border-radius:4px;padding:8px 10px;font-size:12px;color:#991b1b;margin-bottom:8px">
+    🔴 工装累积合格率 · 硬门槛考核（V4 · 方案原文口径）<br>
+    🔴 未达 98% · 总分 × 0.95（乘性扣 5%）· 不支持申诉
+  </div>
+  <div style="font-size:12px;color:#6b7280;margin-bottom:8px">
+    ⏳ 工装数据待数据管家同步入库（P0 请求单已发）· 数据到位后刷新<br>
+    <span style="font-size:11px;color:#9ca3af">📌 数据源：数据管家 dwd_ningde_gongzhuang_daily · 拉取节奏：每日 08:30 后增量入库</span>
+  </div>
+  <div style="font-size:11px;color:#6b7280;border-top:1px dashed #e5e7eb;padding-top:6px">
+    ▸ 门槛口径：硬门槛 98% 二元制 · 达成 0 扣 · 未达成 总分 × 0.95 · 不支持考核申诉<br>
+    ▸ 合格率公式：Σ穿工装人天 / Σ骑手人天 · 责任人：郑志强 · 分区经理：晁国瑞
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 5: 压力天出勤 -->
+<!-- ============================================================ -->
+<div id="tab-ylt" class="tab-content">
+<div class="card">
+  <div class="card-title">👀 压力天 · 5.25 <span class="badge badge-yellow">加盟 KPI 子项 · 权重 5.25 分</span></div>
+  <div class="card-sub">⚠️ 压力天出勤（7 月整月汇总）</div>
+  <div class="q2">
+    <b>压力天定义：</b>恶劣天气「一般恶劣」以上 ∪ 高峰日<br>
+    · 恶劣天气：非常恶劣 / 比较恶劣 / 高温预警橙色 / 台风等<br>
+    · 高峰日：7/4、7/5、7/11、7/12、7/18、7/19、7/25、7/26、8/1、8/2（10 天）
+  </div>
+  <div class="q2">
+    <b>📐 算分口径（V5 方案原文）：</b><br>
+    · 仅加盟站点：加盟跑单率 × 100%<br>
+    · 有加盟 + 悦跑站点：加盟跑单率 × 50% + 悦跑跑单率 × 50%<br>
+    · 满分 5.25 分（加盟运力 20 分内子项 · 约占 26%）
+  </div>
+  <div class="stat-row">
+    <div class="stat-box sb-yellow"><div class="label">7 月压力天数</div><div class="num orange">—</div><div class="label">高峰日 10 天 +恶劣天气实时判定</div></div>
+    <div class="stat-box sb-blue"><div class="label">加盟跑单率</div><div class="num blue">—%</div><div class="label">压力天当日加盟出勤跑单人/排班人</div></div>
+    <div class="stat-box sb-green"><div class="label">悦跑跑单率</div><div class="num green">—%</div><div class="label">当日排班有单出勤人数 / 当日排班人数</div></div>
+  </div>
+  <div style="font-size:12px;background:#ffffff;padding:8px 10px;border-radius:4px;margin-top:6px">
+    🏆 月度得分（暂估）：<b>— / 5.25</b> <span class="q3">· 数据到位后自动结算</span>
+  </div>
+  <div style="font-size:11px;color:#9ca3af;margin-top:6px">
+    🎯 待军哥拍板/数据管家补：①站点属性 ②悦跑X%门槛值 ③恶劣天气日回填 ④日粒度数据
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 6: 军哥 7/4 口径校准 -->
+<!-- ============================================================ -->
+<div id="tab-calib" class="tab-content">
+<div class="card">
+  <div class="card-title">📌 军哥 7/4 口径校准 <span class="badge badge-gray">KPI v6 · 最终校准基准</span></div>
+  <div style="font-size:14px;color:#4e5969;line-height:2">
+    <b>① 推完 = 推单完成率</b><br>
+    ★ 口径 B · 履约推完+天气法（最终校准基准 · KPI v6 · 本看板算分采用）<br>
+    数据源：履约推完+天气（本 xlsx）<br>
+    <span class="q19">· 美配（整体）= 美配分子 / 美配分母</span><br>
+    <span class="q19">· 加盟（=城代）= 加盟分子 / 加盟分母</span><br>
+    <span class="q19">· 众包 = (美配分子 − 加盟分子) / (美配分母 − 加盟分母) ← 差值法</span><br><br>
+    <b>② 履约 = 商家完结率</b><br>
+    数据源：品类闭环率日报（原"未命名图表 xlsx"）<br>
+    <span class="q19">· 字段：一级品类分类（餐饮/非餐）· 闭环率分子/分母</span><br>
+    <span class="q19">· 目标：餐饮 89% / 非餐 66%</span>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 7: 目标锁定单摘要 -->
+<!-- ============================================================ -->
+<div style="display:none"><!-- tab-target [已整合至全月总览折叠] -->
+<div class="card">
+  <div class="card-title">📋 目标锁定单摘要 <span class="badge badge-gray">对照第 1 期 · 14 项参数</span></div>
+  <table style="font-size:14px">
+    <tr><th>参数</th><th>7 月新值</th><th>6 月旧值</th><th>变化</th><th>说明</th></tr>
+    <tr><td class="text-cell">加盟权重</td><td class="num-cell">20%</td><td class="num-cell">15%</td><td class="num-cell tag-red">+5pp</td><td class="text-cell">加盟压力↑</td></tr>
+    <tr><td class="text-cell">体验权重</td><td class="num-cell"><span class="cell-yellow">15%</span></td><td class="num-cell">20%</td><td class="num-cell tag-green">-5pp</td><td class="text-cell">体验压力↓</td></tr>
+    <tr><td class="text-cell">加盟日均达标</td><td class="num-cell">433</td><td class="num-cell">430</td><td class="num-cell">+3</td><td class="text-cell">6 月实际 435，1 人缓冲</td></tr>
+    <tr><td class="text-cell">悦跑 W1 有效</td><td class="num-cell">160</td><td class="num-cell">—</td><td class="num-cell">+1</td><td class="text-cell">✅ 达标 100.63%</td></tr>
+    <tr><td class="text-cell">普众 W1 活跃</td><td class="num-cell">374</td><td class="num-cell">—</td><td class="num-cell">+68</td><td class="text-cell">✅✅ 达成率 118%（触顶按 110% 计）</td></tr>
+    <tr><td class="text-cell">复合超时率</td><td class="num-cell"><span class="cell-green">2.917%</span></td><td class="num-cell">2.220%</td><td class="num-cell tag-green">+0.7pp</td><td class="text-cell">放松 31%</td></tr>
+    <tr><td class="text-cell">虚假点占比</td><td class="num-cell">目标 0.027% / 门槛 0.047%</td><td class="num-cell">0.024%</td><td class="num-cell">+0.003</td><td class="text-cell">新增门槛概念</td></tr>
+    <tr><td class="text-cell">配送取消占比</td><td class="num-cell">目标 0.077% / 门槛 0.157%</td><td class="num-cell">0.061%</td><td class="num-cell">+0.016</td><td class="text-cell">门槛缓冲 100%</td></tr>
+    <tr><td class="text-cell">推单目标</td><td class="num-cell"><span class="cell-yellow">98.55%</span></td><td class="num-cell">98.65%</td><td class="num-cell tag-green">-0.1pp</td><td class="text-cell">放松</td></tr>
+    <tr><td class="text-cell">餐饮履约</td><td class="num-cell"><span class="cell-yellow">89%</span></td><td class="num-cell">94%</td><td class="num-cell tag-green">-5pp</td><td class="text-cell">大幅放松</td></tr>
+    <tr><td class="text-cell">非餐履约</td><td class="num-cell"><span class="cell-red">66%</span></td><td class="num-cell">63%</td><td class="num-cell tag-red">+3pp</td><td class="text-cell">收紧</td></tr>
+    <tr><td class="text-cell">工装抽检合格率</td><td class="num-cell"><span class="cell-red">≥98%</span> 门槛</td><td class="num-cell">无</td><td class="num-cell tag-red">🆕</td><td class="text-cell">不达标乘性 -5%</td></tr>
+  </table>
+</div>
+</div>
+
+<!-- ===== 附录：关键业务口径速查表 [已隐藏] ===== -->
+<div style="display:none"><!-- appendix-wrap -->
+  <div class="card-title">📋 附录：关键业务口径速查表（21 项）</div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'appendix')">点击展开</button>
+  <div id="appendix" class="fold-content">
+    <table>
+      <tr><th style="width:35%">口径项</th><th>公式/规则</th></tr>
+      <tr><td class="text-cell">复合超时率（履约-体验口径）</td><td class="text-cell">(绝对一般超时单 + 绝对严重超时单 × 5) / 完成单量 · 分 3km内/3km外</td></tr>
+      <tr><td class="text-cell">复合超时率（订单详情口径）</td><td class="text-cell">(D端超时>8min单 + D端超时>30min单 × 5) / 完成单 · D端超时=送达时间-最晚考核时间</td></tr>
+      <tr><td class="text-cell">3km内目标</td><td class="text-cell"><span class="cell-green">≤2.917%</span></td></tr>
+      <tr><td class="text-cell">3km外目标</td><td class="text-cell"><span class="cell-green">≤3.681%</span></td></tr>
+      <tr><td class="text-cell">推完口径B</td><td class="text-cell">美配(整体)=美配分子/美配分母 · 加盟=加盟分子/加盟分母 · 众包=差值法</td></tr>
+      <tr><td class="text-cell">推完目标</td><td class="text-cell"><span class="cell-yellow">98.55%</span>（门槛97%·挑战99.2%）</td></tr>
+      <tr><td class="text-cell">体验三项加权</td><td class="text-cell">复合超时40% + 虚假点30% + 配取30%</td></tr>
+      <tr><td class="text-cell">虚假点目标/门槛</td><td class="text-cell">目标<span class="cell-green">0.027%</span> / 门槛0.047%</td></tr>
+      <tr><td class="text-cell">配取目标/门槛</td><td class="text-cell">目标<span class="cell-green">0.077%</span> / 门槛0.157%</td></tr>
+      <tr><td class="text-cell">履约目标</td><td class="text-cell">餐饮F1≥<span class="cell-yellow">89%</span> / 非餐F1≥<span class="cell-red">66%</span></td></tr>
+      <tr><td class="text-cell">工装硬门槛</td><td class="text-cell">≥<span class="cell-red">98%</span> 达成0扣 · &lt;98% 总分×0.95（乘性扣5%）· 不支持申诉</td></tr>
+      <tr><td class="text-cell">加盟运力</td><td class="text-cell">日均<span class="cell-green">433</span>人/天 · 第1期=7/1-7/12合成 · 权重20%</td></tr>
+      <tr><td class="text-cell">悦跑运力</td><td class="text-cell">W1=160人 W2=160人 · 自然周周期 · 权重30%</td></tr>
+      <tr><td class="text-cell">普众运力</td><td class="text-cell">W1=374人 W2=374人 · 自然周周期 · 权重10% · 触顶按110%计</td></tr>
+      <tr><td class="text-cell">悦跑兜底规则</td><td class="text-cell">承托比≥29%(W1)/30%(W2) 且 调度后推完≥98.8%</td></tr>
+      <tr><td class="text-cell">累计率算法</td><td class="text-cell">Σ(日率 × 日推单量) / Σ推单量</td></tr>
+      <tr><td class="text-cell">压力天定义</td><td class="text-cell">恶劣天气「一般恶劣」以上 ∪ 高峰日</td></tr>
+      <tr><td class="text-cell">高峰日（10天）</td><td class="text-cell">7/4、7/5、7/11、7/12、7/18、7/19、7/25、7/26、8/1、8/2</td></tr>
+      <tr><td class="text-cell">处罚规则</td><td class="text-cell">95-100分区间罚0元（仅警告）</td></tr>
+      <tr><td class="text-cell">六模块权重</td><td class="text-cell">加盟20+悦跑30+普众10+体验15+推完20+履约5=100分</td></tr>
+      <tr><td class="text-cell">周期口径</td><td class="text-cell">加盟按半月两期 · 悦跑/普众计入对应Wn · 体验/推完/履约贯穿自然月</td></tr>
+    </table>
+  </div>
+</div><!-- end hidden appendix -->
+
+<div class="footer">
+  宁德KPI看板 · V5 算分口径 · 新清洗数据集 7/1-7/10 · 运力数据待同步 · 工装数据待入库<br>
+  看板 v16.0 · 生成于 2026-07-11 · 配套文档：《V5算分口径与算法_固化版》《宁德_7月1期目标锁定单》
+</div>
+
+</div><!-- end container -->
+
+<script>
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+function toggleGzpCard(titleEl){
+ var card=titleEl.closest('.gzp-card');
+ card.classList.toggle('open');
+}
+function switchSubTab(name, btn){
+  document.querySelectorAll('.sub-tab-content').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.sub-tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('subtab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+function toggleFold(id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('show');
+}
+function toggleFoldMe(btn, id){
+  var el = document.getElementById(id);
+  if(el) el.classList.toggle('show');
+  btn.classList.toggle('open');
+}
+function switchWeekTab(name, btn){
+  var parent = btn.parentElement;
+  parent.querySelectorAll('.sub-tab-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  // 只在M11卡片内部切换
+  var card = parent.closest('.card');
+  if(!card) return;
+  card.querySelectorAll('.sub-tab-content').forEach(function(t){t.classList.remove('active')});
+  document.getElementById(name).classList.add('active');
+}
+function switchFoldTab(name, btn){
+ document.querySelectorAll('.fold-panel').forEach(function(p){p.classList.remove('active')});
+ document.querySelectorAll('.fold-tab-btn').forEach(function(b){b.classList.remove('active')});
+ document.getElementById(name).classList.add('active');
+ if(btn) btn.classList.add('active');
+}
+</script>
+</body>
+</html>
