@@ -726,59 +726,6 @@ tr:hover{background:#ffffff}
 
 </div>
 
-<!-- M12: 6月回溯 -->
-<div class="card">
-  <div class="card-title">🔍 6 月全月 V5 口径回溯（找差距）</div>
-  <div class="card-sub">含义：把 6 月整月的实际数据用 7 月 V5 规则打分，看你现在处于什么水平 · 相当于「压力测试基线」</div>
-  <table>
-    <tr><th>指标</th><th>6 月累计</th><th>7 月目标</th><th>差距</th><th>V5 得分率估算</th><th>判断</th></tr>
-    <tr><td class="text-cell">复合超时率（全渠道）</td><td class="num-cell">3.668%</td><td class="num-cell">2.917%</td><td class="num-cell tag-red">+0.751pp</td><td class="num-cell">~74%</td><td class="text-cell"><span class="tag-red">⚠️ 主战场</span>，7 月每日要压到 &lt;2.9%</td></tr>
-    <tr><td class="text-cell">复合超时率（3km 内）</td><td class="num-cell">3.642%</td><td class="num-cell">2.917%</td><td class="num-cell tag-red">+0.725pp</td><td class="num-cell">~75%</td><td class="text-cell">短单占大头，主要拖分项</td></tr>
-    <tr><td class="text-cell">复合超时率（3km 外）</td><td class="num-cell">3.976%</td><td class="num-cell">3.681%</td><td class="num-cell tag-yellow">+0.295pp</td><td class="num-cell">~92%</td><td class="text-cell">长单接近达标，微调即可</td></tr>
-    <tr><td class="text-cell">虚假点送达占比</td><td class="num-cell">0.019%</td><td class="num-cell">0.027%</td><td class="num-cell tag-green">-0.008pp</td><td class="num-cell">100%</td><td class="text-cell"><span class="tag-green">✅</span> 保持即可</td></tr>
-    <tr><td class="text-cell">配送取消占比</td><td class="num-cell">0.063%</td><td class="num-cell">0.077%</td><td class="num-cell tag-green">-0.014pp</td><td class="num-cell">100%</td><td class="text-cell"><span class="tag-green">✅</span> 保持即可</td></tr>
-    <tr><td class="text-cell">推单完成率（美配）</td><td class="num-cell">97.556%</td><td class="num-cell">98.55%</td><td class="num-cell tag-red">-0.994pp</td><td class="num-cell">~93.6%</td><td class="text-cell"><span class="tag-red">🎯</span> 冲 98.55% 是 20% 权重的最大杠杆</td></tr>
-  </table>
-  <div style="background:#fef2f2;border:1px solid #fdd0d0;border-radius:4px;padding:8px 10px;font-size:12px;color:#991b1b;margin-top:8px">
-    <b>📌 7 月主战场判断：</b><br>
-    ① 压复合超时（15% × 40% = 6% 权重）——6 月 3.67% → 目标 2.92%，减 20%<br>
-    ② 提推单率（20% 权重）——6 月 97.56% → 目标 98.55%，冲挑战 99.2% 可加成 10%<br>
-    ③ 保虚假点/配取（15% × 60% = 9% 权重）——6 月表现良好，保持即可<br>
-    ④ 6/29 6/30 数据显示：复合超时已降到 1.8%（比 6 月月均 3.67% 好一半！），说明改善通道已打开
-  </div>
-</div>
-
-<!-- M13: 6月得分历史锚 -->
-<div class="card">
-  <div class="card-title">📈 6 月得分历史锚（参考）</div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
-    <div style="background:linear-gradient(135deg,#f0faf0 0%,#f0faf0 100%);border:1px solid #b5f0bc;border-radius:8px;padding:14px 12px;text-align:center">
-      <div class="q13">6 月全月</div>
-      <div style="font-size:24px;font-weight:800;color:#16a34a;line-height:1.2">100.55</div>
-      <div class="q14">V4 · 剔非异日版</div>
-    </div>
-    <div style="background:linear-gradient(135deg,#f5f2ef 0%,#f0ede9 100%);border:1px solid #e5e7eb;border-radius:8px;padding:14px 12px;text-align:center">
-      <div class="q13">E1（6/1-15）</div>
-      <div style="font-size:24px;font-weight:800;color:#16a34a;line-height:1.2">100.79</div>
-      <div class="q14">15 天 · 上半月</div>
-    </div>
-    <div style="background:linear-gradient(135deg,#fefbe5 0%,#fef5c3 100%);border:1px solid #fde088;border-radius:8px;padding:14px 12px;text-align:center">
-      <div class="q13">E2（6/16-30）</div>
-      <div style="font-size:24px;font-weight:800;color:#ea580c;line-height:1.2">101.10</div>
-      <div class="q14">下半月 · 普众超时拖分</div>
-    </div>
-    <div style="background:linear-gradient(135deg,#fef5f5 0%,#fee8e8 100%);border:1px solid #fdd0d0;border-radius:8px;padding:14px 12px;text-align:center">
-      <div class="q13">7 月压力变化</div>
-      <div style="font-size:24px;font-weight:800;color:#dc2626;line-height:1.2">↓ 更松</div>
-      <div class="q14">超时/悦跑/普众 全放松</div>
-    </div>
-  </div>
-  <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:6px;padding:10px 12px;font-size:12px;color:#374151;margin-top:8px;line-height:1.8">
-    <b>关键判断：</b>7 月目标整体比 6 月松（超时 +0.7pp、悦跑 -6、普众 -23、餐饮 -5pp），95-100 区间还免罚。<br>
-    唯一变严的：加盟权重 15→20（+5pp）、非餐履约 63→66（+3pp）、工装 98% 硬门槛。<br>
-    作战重点：加盟达 433 + 工装抽检合格。
-  </div>
-</div>
 
 </div><!-- end tab-overview -->
 
