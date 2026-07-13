@@ -870,8 +870,8 @@ end subtab-w1 -->
 <div style="background:linear-gradient(135deg,#f0faf0 0%,#dcf5e0 100%);border:1px solid #b5f0bc;border-radius:6px;padding:14px 18px;margin-bottom:12px">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div style="font-size:14px;font-weight:700;color:#166534">🏆 W2（7/6 - 7/12）· 已收官</div>
-      <div style="font-size:12px;color:#15803d;margin-top:2px">W2 全周期7天已收官 · 数据已入库锁定</div>
+      <div style="font-size:14px;font-weight:700;color:#166534">🏆 W2（7/6 - 7/12）· 当期总分</div>
+      <div style="font-size:12px;color:#15803d;margin-top:2px">运力 59.88 / 60 · 履约体验 40.33 / 40 · 超盘 +0.21</div>
     </div>
     <div class="q12">
       <div style="font-size:32px;font-weight:800;color:#166534">100.21</div>
@@ -889,6 +889,23 @@ end subtab-w1 -->
     <li>推完率月累计 98.47% 未达目标 98.55% · 差 0.08pp · 众包为拖累项</li>
     <li>履约非餐 64.59% 未达目标 66% · 差 1.41pp · 第 2 期重点攻坚</li>
   </ol>
+</div>
+
+<!-- W2 得分口径 -->
+<div class="card">
+  <div class="card-title">📐 W2 得分口径</div>
+  <button class="fold-btn" onclick="toggleFoldMe(this,'w2-koujing')">点击展开/收起</button>
+  <div id="w2-koujing" class="fold-content">
+    <div style="font-size:12px;color:#4e5969;line-height:1.8">
+      <b>① 加盟运力（20 分）：</b>W2 实际 436.3 / 目标 433 · 达成率 100.76% → ✅达标 · 满额 20 分（区间90-100不可110）<br>
+      <b>② 悦跑运力（30 分）：</b>W2 实际 154 / 目标 160 · 达成率 96.25% → 🔴未达标 · 得分 28.88 分（区间90-110可加成）<br>
+      <b>③ 普众运力（10 分）：</b>W2 实际 429 / 目标 374 · 达成率 114.71% → 🟢封顶110% · 满额 10 分 + 超额 1.00<br>
+      <b>④ 体验模块（15 分）：</b>自然月累计 · 复合超时40%+虚假点30%+配取30% · 月度 <span class="cell-green">1.968%</span>✅ <span class="cell-green">0.024%</span>✅ <span class="cell-green">0.074%</span>✅<br>
+      <b>⑤ 推完模块（20 分）：</b>自然月累计 · 目标98.55% · 月度 <span class="cell-yellow">98.4653%</span>⚠ · 众包短板<br>
+      <b>⑥ 履约模块（5 分）：</b>自然月累计 · 餐饮89%/非餐66% · 月度 <span class="cell-red">88.05%</span>⚠ / <span class="cell-red">64.59%</span>🔴<br>
+      <b>累计率算法：</b>Σ(日率 × 日推单量) / Σ推单量
+    </div>
+  </div>
 </div>
 
 <!-- W2 六模块详情 -->
