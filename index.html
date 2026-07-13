@@ -686,60 +686,99 @@ function renderCrowd(){
   // 获取当前日期
   const d=KPI.trend[KPI.currentIdx];
   const dateKey=d.date;
-  const cd=DAILY_CROWD[dateKey];
-  if(!cd){
-    const tbody=document.getElementById('crowdBody');
-    tbody.innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该日暂无众包盘点出勤数据</td></tr>';
+  const cd=DAILY_CROWD[dateKey]||null;
+  const dm=DAILY_MATRIX[dateKey]||null;
+  const zb=dm?dm['众包(悦跑+普众合并)']:null;
+  // 从EXP_KPI取当天众包全天数据
+  const expDay=EXP_KPI.daily.find(e=>String(e.date)===dateKey)||null;
+  const zbRaw=expDay?expDay.raw.zb:null;
+  const ypRaw=expDay?expDay.raw.yp:null;
+  // 众包合并=zb+yp
+  const zkRaw=zbRaw&&ypRaw?{
+    push:zbRaw.push+ypRaw.push,
+    complete:zbRaw.complete+ypRaw.complete,
+    rel_gen:zbRaw.rel_gen+ypRaw.rel_gen,
+    rel_sev:zbRaw.rel_sev+ypRaw.rel_sev,
+    abs_total:zbRaw.abs_total+ypRaw.abs_total
+  }:null;
+  if(!zb && !cd){
+    document.getElementById('crowdBody').innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该日暂无众包数据</td></tr>';
     return;
   }
-  const periods=cd.periods;
-  // 计算环比日期(前一天)和同比日期(上周同一天)
+  // --- 计算环比/同比日期 ---
   const today=new Date(dateKey.slice(0,4)+'-'+dateKey.slice(4,6)+'-'+dateKey.slice(6,8));
   const prevDay=new Date(today); prevDay.setDate(prevDay.getDate()-1);
   const prevKey=prevDay.getFullYear()+String(prevDay.getMonth()+1).padStart(2,'0')+String(prevDay.getDate()).padStart(2,'0');
-  const lastWeekDay=new Date(today); lastWeekDay.setDate(lastWeekDay.getDate()-7);
+  const lastWeekDay=new Date(todayObj); lastWeekDay.setDate(lastWeekDay.getDate()-7);
   const lastWeekKey=lastWeekDay.getFullYear()+String(lastWeekDay.getMonth()+1).padStart(2,'0')+String(lastWeekDay.getDate()).padStart(2,'0');
   const prevCd=DAILY_CROWD[prevKey]||null;
   const lastWeekCd=DAILY_CROWD[lastWeekKey]||null;
-  // 构建环比/同比出勤数组
+  // --- 推完率(分时段) from DAILY_MATRIX ---
+  const prVals=[], pdVals=[];
+  for(let i=0;i<11;i++){
+    if(zb){const c=zb.comp[i]||0,p=zb.push[i]||0;prVals.push(p>0?(c/p*100).toFixed(2):'0.00');pdVals.push(c+'/'+p);}
+    else{prVals.push('—');pdVals.push('—');}
+  }
+  // 全天
+  if(zb){const tc=zb.comp.reduce((a,b)=>a+b,0),tp=zb.push.reduce((a,b)=>a+b,0);prVals.push(tp>0?(tc/tp*100).toFixed(2):'0.00');pdVals.push(tc+'/'+tp);}
+  else{prVals.push('—');pdVals.push('—');}
+  // --- 超时率(全天from EXP_KPI,分时段无数据则"—") ---
+  const otR=[], otD=[];
+  for(let i=0;i<11;i++){
+    if(cd && cd.ot_rate[i]!==undefined){otR.push(cd.ot_rate[i]);otD.push(cd.ot_detail[i]);}
+    else{otR.push('—');otD.push('—');}
+  }
+  // 全天超时
+  if(zkRaw){
+    const zkComp=zkRaw.complete||0;
+    const zkOt=zkRaw.abs_total||0;
+    otR.push(zkComp>0?(zkOt/zkComp*100).toFixed(2):'0.00');
+    otD.push(zkOt+'/'+zkComp);
+  }else if(cd){otR.push(cd.ot_rate[11]||'—');otD.push(cd.ot_detail[11]||'—');}
+  else{otR.push('—');otD.push('—');}
+  // --- 出勤相关 (仅cd有数据时显示) ---
+  const attVals=cd?cd.attend:new Array(12).fill('—');
+  // --- 环比/同比出勤 ---
   const hbVals=[], tbVals=[];
-  for(let i=0;i<cd.attend.length;i++){
-    const cur=cd.attend[i];
-    // 环比
-    if(prevCd && i<prevCd.attend.length && cur>0 && prevCd.attend[i]>0){
+  for(let i=0;i<12;i++){
+    const cur=cd?cd.attend[i]:0;
+    if(prevCd && cd && i<prevCd.attend.length && cur>0 && prevCd.attend[i]>0){
       const diff=cur-prevCd.attend[i];
       hbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
-    }else{
-      hbVals.push('-');
-    }
-    // 同比
-    if(lastWeekCd && i<lastWeekCd.attend.length && cur>0 && lastWeekCd.attend[i]>0){
+    }else{hbVals.push('-');}
+    if(lastWeekCd && cd && i<lastWeekCd.attend.length && cur>0 && lastWeekCd.attend[i]>0){
       const diff=cur-lastWeekCd.attend[i];
       tbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
-    }else{
-      tbVals.push('-');
-    }
+    }else{tbVals.push('-');}
   }
-  // 更新脚注
+  // --- 出勤率/排班相关 (仅cd有数据时显示) ---
+  const arVals=cd?cd.attend_rate:new Array(12).fill('—');
+  const schVals=cd?cd.schedule:new Array(12).fill('—');
+  const srVals=cd?cd.schedule_rate:new Array(12).fill('—');
+  const saVals=cd?cd.schedule_attend:new Array(12).fill('—');
+  const sarVals=cd?cd.schedule_attend_rate:new Array(12).fill('—');
+  const saAbsVals=cd?cd.schedule_attend_abs:new Array(12).fill('—');
+  // --- 更新脚注 ---
   const fn=document.getElementById('crowdFootnote');
   if(fn){
-    fn.textContent='众包推完 '+cd.push_rate[11]+'% · 总推单 '+cd.push_detail[11].split('/')[1]+' · 完成 '+cd.push_detail[11].split('/')[0]+' · 悦跑排班'+cd.schedule[11]+'/出勤'+cd.attend[11]+' · 数据源：订单详情+骑手出勤表 '+dateKey.slice(4,6)+'-'+dateKey.slice(6,8);
+    const crowdTotal=zkRaw?zkRaw:'(无全天数据)';
+    fn.textContent='众包推完 '+prVals[11]+'% · 全天数据来源: 订单详情'+(cd?' + 骑手出勤表':'')+' '+dateKey.slice(4,6)+'-'+dateKey.slice(6,8);
   }
-  // 构建行数据
+  // --- 构建行数据 ---
   const rows=[
-    {label:'推完率(%)',vals:cd.push_rate,fmt:v=>v+'%'},
-    {label:'推完(完成/推单)',vals:cd.push_detail,fmt:v=>v},
-    {label:'超时率(%)',vals:cd.ot_rate,fmt:v=>v+'%'},
-    {label:'超时(单/完成)',vals:cd.ot_detail,fmt:v=>v},
-    {label:'悦跑出勤(人)',vals:cd.attend,fmt:v=>v},
+    {label:'推完率(%)',vals:prVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
+    {label:'推完(完成/推单)',vals:pdVals,fmt:v=>v},
+    {label:'超时率(%)',vals:otR,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
+    {label:'超时(单/完成)',vals:otD,fmt:v=>v},
+    {label:'悦跑出勤(人)',vals:attVals,fmt:v=>typeof v==='number'?v:v},
     {label:'环比出勤',vals:hbVals,fmt:v=>v,isHtml:true},
     {label:'同比出勤',vals:tbVals,fmt:v=>v,isHtml:true},
-    {label:'出勤率(%)',vals:cd.attend_rate,fmt:v=>v.toFixed(2)+'%'},
-    {label:'悦跑排班(人)',vals:cd.schedule,fmt:v=>v},
-    {label:'悦跑排班率(%)',vals:cd.schedule_rate,fmt:v=>v+'%'},
-    {label:'排班出勤(人)',vals:cd.schedule_attend,fmt:v=>v},
-    {label:'排班出勤率(%)',vals:cd.schedule_attend_rate,fmt:v=>v.toFixed(2)+'%'},
-    {label:'排班出勤率*绝(%)',vals:cd.schedule_attend_abs,fmt:v=>v+'%'}
+    {label:'出勤率(%)',vals:arVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v},
+    {label:'悦跑排班(人)',vals:schVals,fmt:v=>typeof v==='number'?v:v},
+    {label:'悦跑排班率(%)',vals:srVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v},
+    {label:'排班出勤(人)',vals:saVals,fmt:v=>typeof v==='number'?v:v},
+    {label:'排班出勤率(%)',vals:sarVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v},
+    {label:'排班出勤率*绝(%)',vals:saAbsVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v}
   ];
   let thtml='';
   rows.forEach(row=>{
@@ -759,7 +798,6 @@ function renderStationTabs(){
   const dateKey=KPI.trend[KPI.currentIdx].date;
   const dm=DAILY_MATRIX[dateKey];
   const dailyStation=DAILY_STATION[dateKey];
-  const hasDetail=!!dailyStation;
   // 渲染站点按钮
   const btns=document.getElementById('stationBtns');
   btns.innerHTML=STATION_NAMES.map((s,i)=>'<button class="'+(i===0?'active':'')+'" onclick="showStation('+i+')">'+s+'</button>').join('');
@@ -775,10 +813,6 @@ function renderStationTabs(){
     summaryParts.push(s+' '+rate);
   });
   document.getElementById('stationSummary').innerHTML=summaryParts.join(' · ');
-  if(!hasDetail){
-    document.getElementById('stationDataTable').innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该日暂无站点明细数据（取消/超时/骑手出勤等）</td></tr>';
-    return;
-  }
   showStation(0);
 }
 
@@ -788,56 +822,75 @@ function showStation(idx){
   document.querySelectorAll('#stationBtns button').forEach((b,i)=>b.className=i===idx?'active':'');
   const name=STATION_NAMES[idx];
   const dateKey=KPI.trend[KPI.currentIdx].date;
+  const dm=DAILY_MATRIX[dateKey]||{};
   const daySt=DAILY_STATION[dateKey]||{};
-  const sd=daySt[name]||daySt['新能源站'];
-  if(!sd){
-    document.getElementById('stationDataTable').innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该站点暂无明细数据</td></tr>';
+  const sd=daySt[name]||null;
+  const dmSt=dm[name]||null;
+  if(!sd && !dmSt){
+    document.getElementById('stationDataTable').innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该站点暂无数据</td></tr>';
     return;
   }
   const periods=MATRIX.periods;
+  // 从DAILY_MATRIX取分时段推完率（每天都有）
+  const prRow=[], pdRow=[];
+  for(let i=0;i<11;i++){
+    if(dmSt){const c=dmSt.comp[i]||0,p=dmSt.push[i]||0;prRow.push(p>0?(c/p*100).toFixed(2)+'%':'—');pdRow.push(c+'/'+p);}
+    else{prRow.push('—');pdRow.push('—');}
+  }
+  if(dmSt){const tc=dmSt.comp.reduce((a,b)=>a+b,0),tp=dmSt.push.reduce((a,b)=>a+b,0);prRow.push(tp>0?(tc/tp*100).toFixed(2)+'%':'—');pdRow.push(tc+'/'+tp);}
+  else{prRow.push('—');pdRow.push('—');}
+  // 明细行（取消/超时/骑手），仅sd有数据时显示数值，否则"—"
+  const cancelRow=sd?sd.cancel:new Array(11).fill('—');
+  const otRow=sd?sd.ot_d:new Array(11).fill('—');
+  const ridersRow=sd?sd.riders:new Array(11).fill('—');
+  const riders5Row=sd?sd.riders5:new Array(11).fill('—');
+  const attendRow=sd?sd.attend:new Array(11).fill('—');
+  const ot_cRow=sd?sd.ot_c:new Array(11).fill('—');
+  // 构建行
   const rows=[
-    {label:'取消单(单)',vals:sd.cancel,fmt:v=>v},
-    {label:'推完率',vals:sd.complete.map((c,i)=>sd.push[i]>0?(c/sd.push[i]*100).toFixed(2)+'%':'—'),fmt:v=>v},
-    {label:'超时单量D端(单)',vals:sd.ot_d,fmt:v=>v},
-    {label:'超时率D端',vals:sd.ot_d.map((o,i)=>sd.push[i]>0?(o/sd.push[i]*100).toFixed(2)+'%':'0.00%'),fmt:v=>v},
-    {label:'有单人数(人)',vals:sd.riders,fmt:v=>v},
-    {label:'5单+人数(人)',vals:sd.riders5,fmt:v=>v===null?'—':v},
-    {label:'出勤率(%)',vals:sd.attend,fmt:v=>v.toFixed(2)+'%'},
-    {label:'C端超时率',vals:sd.ot_c,fmt:v=>v.toFixed(2)+'%'}
+    {label:'推完率',vals:prRow,fmt:v=>v},
+    {label:'取消单(单)',vals:cancelRow,fmt:v=>typeof v==='number'?v:v},
+    {label:'超时单量D端(单)',vals:otRow,fmt:v=>typeof v==='number'?v:v},
+    {label:'超时率D端',vals:sd?sd.ot_d.map((o,i)=>sd.push[i]>0?(o/sd.push[i]*100).toFixed(2)+'%':'0.00%'):new Array(11).fill('—'),fmt:v=>v},
+    {label:'有单人数(人)',vals:ridersRow,fmt:v=>typeof v==='number'?v:v},
+    {label:'5单+人数(人)',vals:riders5Row,fmt:v=>v===null?'—':v},
+    {label:'出勤率(%)',vals:sd?sd.attend.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v},
+    {label:'C端超时率',vals:sd?sd.ot_c.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v}
   ];
-  let html='<table class="station-data-table"><thead><tr><th>指标</th>';
-  periods.forEach(p=>{html+='<th>'+p+'</th>'});
-  html+='<th>全天</th></tr></thead><tbody>';
+  let shtml='<table class="station-data-table"><thead><tr><th>指标</th>';
+  periods.forEach(p=>{shtml+='<th>'+p+'</th>'});
+  shtml+='<th>全天</th></tr></thead><tbody>';
   rows.forEach(row=>{
-    html+='<tr><td class="ind-name">'+row.label+'</td>';
+    shtml+='<tr><td class="ind-name">'+row.label+'</td>';
     row.vals.forEach((v,j)=>{
-      html+='<td>'+row.fmt(v)+'</td>';
+      shtml+='<td>'+row.fmt(v)+'</td>';
     });
     // 全天汇总
-    let sum=0;
-    if(row.label==='取消单(单)'||row.label==='超时单量D端(单)'){
-      sum=row.vals.reduce((a,b)=>a+b,0);
-    }else if(row.label==='有单人数(人)'){
+    let sum='—';
+    if(row.label==='推完率'){
+      if(dmSt){const sc=dmSt.comp.reduce((a,b)=>a+b,0),sp=dmSt.push.reduce((a,b)=>a+b,0);sum=sp>0?(sc/sp*100).toFixed(2)+'%':'—';}
+    }else if(row.label==='取消单(单)' && sd){
+      sum=sd.cancel.reduce((a,b)=>a+b,0);
+    }else if(row.label==='超时单量D端(单)' && sd){
+      sum=sd.ot_d.reduce((a,b)=>a+b,0);
+    }else if(row.label==='超时率D端' && sd){
+      const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
+      sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
+    }else if(row.label==='有单人数(人)' && sd){
       sum=sd.total_riders;
     }else if(row.label==='5单+人数(人)'){
       sum='—';
-    }else if(row.label==='推完率'){
-      const sc=sd.complete.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
-      sum=sp>0?(sc/sp*100).toFixed(2)+'%':'—';
-    }else if(row.label==='超时率D端'){
-      const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
-      sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
     }else if(row.label==='出勤率(%)'){
       sum='—';
-    }else if(row.label==='C端超时率'){
+    }else if(row.label==='C端超时率' && sd){
       const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
       sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
     }
-    html+='<td style="font-weight:600;background:#f8f9fb">'+sum+'</td>';
-    html+='</tr>';
+    shtml+='<td style="font-weight:600;background:#f8f9fb">'+sum+'</td>';
+    shtml+='</tr>';
   });
-  html+='</tbody></table>';
-  document.getElementById('stationDataTable').innerHTML=html;
+  shtml+='</tbody></table>';
+  document.getElementById('stationDataTable').innerHTML=shtml;
 }
 
 // 站点推完率总览（跟随日期切换）
