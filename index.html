@@ -567,7 +567,7 @@ function switchDate(idx){
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
   renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
-  renderExpKpi();}
+  setTimeout(renderExpKpi,50);}
 
 
 // 天气聚合统计
