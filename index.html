@@ -121,6 +121,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   <div class="tabs" id="tabs">
     <button class="tab-btn active" onclick="switchTab('experience')">⭐ 体验KPI</button>
     <button class="tab-btn" onclick="switchTab('matrix')">📊 推完矩阵</button>
+    <button class="tab-btn" onclick="switchTab('crowd')">🏃 众包盘点</button>
+    <button class="tab-btn" onclick="switchTab('station')">🏬 站点数据</button>
   </div>
 
   <!-- Tab: 体验KPI详细 -->
@@ -190,14 +192,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     </div>
   </div>
 
-</div>
-
-
-
-
-<!-- ===== 众包盘点（平铺） ===== -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">🏃 众包盘点</div>
+  <!-- Tab: 众包盘点 -->
+  <div class="tab-content" id="tab-crowd">
     <div class="matrix-wrap" style="margin-top:12px">
       <table class="station-data-table" id="crowdTable">
         <thead>
@@ -211,13 +207,10 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <tbody id="crowdBody"></tbody>
       </table>
     </div>
-    <div style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
-</div>
-
-
-<!-- ===== 站点数据（平铺） ===== -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">🏬 站点数据</div>
+    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
+  </div>
+  <!-- Tab: 站点数据 -->
+  <div class="tab-content" id="tab-station">
     <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
     <div class="station-select" id="stationBtns"></div>
     <div style="font-size:11px;color:#888;margin-bottom:8px">
@@ -225,7 +218,14 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       <span id="stationSummary"></span>
     </div>
     <div class="matrix-wrap" id="stationDataTable"></div>
+  </div>
 </div>
+</div>
+
+
+
+
+
 <!-- JSON输出 -->
 <div class="card" style="margin-bottom:12px">
   <div class="card-title" style="margin-bottom:8px">JSON 输出 · 直接复制给AI</div>
