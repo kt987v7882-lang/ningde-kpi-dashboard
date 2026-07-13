@@ -207,15 +207,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       </div>
     </div>
 
-  <!-- JSON输出 -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">JSON 输出 · 直接复制给AI</div>
-  <div id="dailyJson" style="display:none"></div>
-  <div id="weekJson" style="display:none"></div>
-  <div id="monthJson" style="display:none"></div>
-  <div class="json-label" style="margin-top:12px">🌤 天气维度聚合（10天）</div>
-  <div id="weatherStats"></div>
-</div>
 
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
@@ -544,7 +535,7 @@ function switchDate(idx){
   KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
-  renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
+  renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();
 }
 
 
