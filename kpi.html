@@ -309,15 +309,6 @@ tr:hover{background:#ffffff}
 </div>
 </div><!-- end hide M04+M06 -->
 
-<!-- 全月总览 子Tab切换（考核明细 / 趋势图） -->
-<div class="sub-tabs" style="margin-bottom:12px">
-  <button class="sub-tab-btn active" onclick="switchSubTab('overview-detail',this)">📊 KPI考核明细</button>
-  <button class="sub-tab-btn" onclick="switchSubTab('overview-trend',this)">📈 每日KPI趋势</button>
-</div>
-
-<!-- 子Tab1: KPI考核明细表 -->
-<div id="subtab-overview-detail" class="sub-tab-content active">
-
 <!-- M07: KPI考核明细表（v12c · image81配色 + Excel2精确数据） -->
 <div class="card" style="padding:16px">
   <div class="card-title" style="font-size:15px;font-weight:800;color:#1f2937">宁德真一派 · 7 月 V5 KPI 考核明细表 <span class="badge" style="background:#fef9c3;color:#92400e;border:1px solid #fde68a;display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600">军哥模板-v14.17</span> <span style="float:right;font-size:11px;color:#6b7280;font-weight:400">得分率[90%,110%] · 7/1-7/12 校准 · 月度 <b style="color:#92400e">40.33</b>/40</span></div>
@@ -733,22 +724,8 @@ tr:hover{background:#ffffff}
 </table>
 </div>
 
-</div></div><!-- end subtab-overview-detail -->
-
-<!-- 子Tab2: 每日KPI趋势图 -->
-<div id="subtab-overview-trend" class="sub-tab-content">
-<div class="card" style="padding:16px">
-  <div class="card-title">📈 每日KPI趋势 <span class="badge badge-gray">7/1 - 7/12 · 自动填充</span></div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap">
-    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-twc"></canvas></div>
-    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-comp"></canvas></div>
-  </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-fake"></canvas></div>
-    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-volume"></canvas></div>
-  </div>
 </div>
-</div><!-- end subtab-overview-trend -->
+
 
 </div><!-- end tab-overview -->
 
@@ -760,7 +737,7 @@ tr:hover{background:#ffffff}
 <div class="card q15">
   <div class="card-title">📅 第 1 期总览 · 7/1 - 7/12 <span class="badge badge-blue">半月 · 加盟第 1 期结算窗口</span></div>
   <div style="font-size:12px;color:#4e5969">
-    涵盖 <b>W1（6/29-7/5）</b><span class="tag-green">✅ 已收官</span> + <b>W2（7/6-7/12）</b><span class="tag-green">✅ 已收官</span><br>
+    涵盖 <b>W1（6/29-7/5）</b><span class="tag-green">✅ 已收官</span> + <b>W2（7/6-7/12）</b><span class="tag-yellow">🚀 进行中</span><br>
     高峰日 7/4、7/5、7/11、7/12（4 天）<br>
     加盟：第 1 期整期合成（20 分）· 悦跑/普众：W1+W2 分周计入
   </div>
@@ -769,7 +746,7 @@ tr:hover{background:#ffffff}
 <!-- W1/W2 横向Tab切换 -->
 <div class="sub-tabs">
   <button class="sub-tab-btn done active" onclick="switchSubTab('w1',this)">🏆 W1（6/29-7/5）已收官</button>
-  <button class="sub-tab-btn done" onclick="switchSubTab('w2',this)">🏆 W2（7/6-7/12）已收官</button>
+  <button class="sub-tab-btn" onclick="switchSubTab('w2',this)">🚀 W2（7/6-7/12）进行中</button>
 </div>
 
 <!-- ===== W1 面板 ===== -->
@@ -856,56 +833,42 @@ tr:hover{background:#ffffff}
   </div>
   <table>
     <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
-    <tr><td class="text-cell">7/1</td><td class="num-cell"><span class="cell-yellow">98.4253%</span></td><td class="num-cell"><span class="cell-green">2.0066%</span></td><td class="num-cell"><span class="cell-green">2.00%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-green">0.0135%</span></td><td class="num-cell"><span class="cell-yellow">0.1104%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">37,721</td><td class="num-cell">37,127</td></tr>
-<tr><td class="text-cell">7/2</td><td class="num-cell"><span class="cell-yellow">98.2588%</span></td><td class="num-cell"><span class="cell-green">1.9746%</span></td><td class="num-cell"><span class="cell-green">1.96%</span></td><td class="num-cell"><span class="cell-green">2.19%</span></td><td class="num-cell"><span class="cell-green">0.0160%</span></td><td class="num-cell"><span class="cell-yellow">0.0933%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">38,191</td><td class="num-cell">37,526</td></tr>
-<tr><td class="text-cell">7/3</td><td class="num-cell"><span class="cell-green">98.5808%</span></td><td class="num-cell"><span class="cell-green">2.0446%</span></td><td class="num-cell"><span class="cell-green">2.03%</span></td><td class="num-cell"><span class="cell-green">2.20%</span></td><td class="num-cell"><span class="cell-yellow">0.0281%</span></td><td class="num-cell"><span class="cell-green">0.0587%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,740</td><td class="num-cell">39,176</td></tr>
-<tr><td class="text-cell">7/4</td><td class="num-cell"><span class="cell-green">98.6823%</span></td><td class="num-cell"><span class="cell-green">1.7121%</span></td><td class="num-cell"><span class="cell-green">1.67%</span></td><td class="num-cell"><span class="cell-green">2.18%</span></td><td class="num-cell"><span class="cell-green">0.0143%</span></td><td class="num-cell"><span class="cell-green">0.0668%</span></td><td><span class="weather-badge weather-bad">比较恶劣</span></td><td class="num-cell">42,498</td><td class="num-cell">41,938</td></tr>
-<tr><td class="text-cell">7/5</td><td class="num-cell"><span class="cell-yellow">98.2096%</span></td><td class="num-cell"><span class="cell-green">2.3822%</span></td><td class="num-cell"><span class="cell-green">2.34%</span></td><td class="num-cell"><span class="cell-green">2.89%</span></td><td class="num-cell"><span class="cell-green">0.0208%</span></td><td class="num-cell"><span class="cell-yellow">0.0970%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">44,068</td><td class="num-cell">43,279</td></tr>
-end subtab-w1 -->
+    <tr><td class="text-cell">7/1</td><td class="num-cell"><span class="cell-yellow">98.4253%</span></td><td class="num-cell"><span class="cell-green">2.0066%</span></td><td class="num-cell"><span class="cell-green">2.00%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-green">0.0135%</span></td><td class="num-cell"><span class="cell-yellow">0.1104%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,281</td><td class="num-cell">37,127</td></tr>
+    <tr><td class="text-cell">7/2</td><td class="num-cell"><span class="cell-yellow">98.2588%</span></td><td class="num-cell"><span class="cell-green">1.9746%</span></td><td class="num-cell"><span class="cell-green">1.96%</span></td><td class="num-cell"><span class="cell-green">2.19%</span></td><td class="num-cell"><span class="cell-green">0.0160%</span></td><td class="num-cell"><span class="cell-yellow">0.0933%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,812</td><td class="num-cell">37,526</td></tr>
+    <tr><td class="text-cell">7/3</td><td class="num-cell"><span class="cell-green">98.5808%</span></td><td class="num-cell"><span class="cell-green">2.0446%</span></td><td class="num-cell"><span class="cell-green">2.03%</span></td><td class="num-cell"><span class="cell-green">2.20%</span></td><td class="num-cell"><span class="cell-yellow">0.0281%</span></td><td class="num-cell"><span class="cell-green">0.0587%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">41,472</td><td class="num-cell">39,176</td></tr>
+    <tr><td class="text-cell">7/4</td><td class="num-cell"><span class="cell-green">98.6823%</span></td><td class="num-cell"><span class="cell-green">1.7121%</span></td><td class="num-cell"><span class="cell-green">1.67%</span></td><td class="num-cell"><span class="cell-green">2.18%</span></td><td class="num-cell"><span class="cell-green">0.0143%</span></td><td class="num-cell"><span class="cell-green">0.0668%</span></td><td><span class="weather-badge weather-severe">比较恶劣</span></td><td class="num-cell">44,174</td><td class="num-cell">41,938</td></tr>
+    <tr><td class="text-cell">7/5</td><td class="num-cell"><span class="cell-yellow">98.2096%</span></td><td class="num-cell"><span class="cell-green">2.3822%</span></td><td class="num-cell"><span class="cell-green">2.34%</span></td><td class="num-cell"><span class="cell-green">2.89%</span></td><td class="num-cell"><span class="cell-green">0.0208%</span></td><td class="num-cell"><span class="cell-yellow">0.0970%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">45,859</td><td class="num-cell">43,279</td></tr>
+  </table>
+</div>
+
+</div><!-- end subtab-w1 -->
 
 <!-- ===== W2 面板 ===== -->
 <div id="subtab-w2" class="sub-tab-content">
 
 <!-- W2 进行中提示 -->
-<div style="background:linear-gradient(135deg,#f0faf0 0%,#dcf5e0 100%);border:1px solid #b5f0bc;border-radius:6px;padding:14px 18px;margin-bottom:12px">
+<div style="background:linear-gradient(135deg,#fefbe5 0%,#fef5c3 100%);border:1px solid #fde088;border-radius:6px;padding:14px 18px;margin-bottom:12px">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div style="font-size:14px;font-weight:700;color:#166534">🏆 W2（7/6 - 7/12）· 当期总分</div>
-      <div style="font-size:12px;color:#15803d;margin-top:2px">运力 59.88 / 60 · 履约体验 40.33 / 40 · 超盘 +0.21</div>
+      <div style="font-size:14px;font-weight:700;color:#92400e">🚀 W2（7/6 - 7/12）· 已收官</div>
+      <div style="font-size:12px;color:#d97706;margin-top:2px">D1-D7（7/6-7/12）已收官 · 全部7天已入库</div>
     </div>
     <div class="q12">
-      <div style="font-size:32px;font-weight:800;color:#166534">100.21</div>
-      <div style="font-size:13px;color:#15803d">/ 100</div>
+      <div style="font-size:32px;font-weight:800;color:#92400e">100.21</div>
+      <div style="font-size:13px;color:#d97706">/ 100</div>
     </div>
   </div>
 </div>
 
 <!-- W2 三大焦点 -->
 <div class="card">
-  <div class="card-title">🎯 W2 收官总结</div>
-  <div class="q2">W2 得分 100.21 · 整期 100.86 · 第 1 期已结算</div>
+  <div class="card-title">🎯 W2 三大焦点动作</div>
+  <div class="q2">承接 W1 累计短板，W2 需重点突破：</div>
   <ol class="focus-list">
-    <li>悦跑运力 W2 未达标：154/160 · 96.25% · 扣 1.12 分（W1 超额 0.19 对冲后净亏）</li>
-    <li>推完率月累计 98.47% 未达目标 98.55% · 差 0.08pp · 众包为拖累项</li>
-    <li>履约非餐 64.59% 未达目标 66% · 差 1.41pp · 第 2 期重点攻坚</li>
+    <li>众包推完 +0.5pp（约 +295 完成单/天）→ 拉起累计整体到 98.55%</li>
+    <li>配取压 ≤0.077%（W1 累计 0.0826% 超 0.006pp）→ 拿满 15/15</li>
+    <li>非餐 F1 专项拉（W1 缺口 3.44pp 最大 · 目标 66%）</li>
   </ol>
-</div>
-
-<!-- W2 得分口径 -->
-<div class="card">
-  <div class="card-title">📐 W2 得分口径</div>
-  <button class="fold-btn" onclick="toggleFoldMe(this,'w2-koujing')">点击展开/收起</button>
-  <div id="w2-koujing" class="fold-content">
-    <div style="font-size:12px;color:#4e5969;line-height:1.8">
-      <b>① 加盟运力（20 分）：</b>W2 实际 436.3 / 目标 433 · 达成率 100.76% → ✅达标 · 满额 20 分（区间90-100不可110）<br>
-      <b>② 悦跑运力（30 分）：</b>W2 实际 154 / 目标 160 · 达成率 96.25% → 🔴未达标 · 得分 28.88 分（区间90-110可加成）<br>
-      <b>③ 普众运力（10 分）：</b>W2 实际 429 / 目标 374 · 达成率 114.71% → 🟢封顶110% · 满额 10 分 + 超额 1.00<br>
-      <b>④ 体验模块（15 分）：</b>自然月累计 · 复合超时40%+虚假点30%+配取30% · 月度 <span class="cell-green">1.968%</span>✅ <span class="cell-green">0.024%</span>✅ <span class="cell-green">0.074%</span>✅<br>
-      <b>⑤ 推完模块（20 分）：</b>自然月累计 · 目标98.55% · 月度 <span class="cell-yellow">98.4653%</span>⚠ · 众包短板<br>
-      <b>⑥ 履约模块（5 分）：</b>自然月累计 · 餐饮89%/非餐66% · 月度 <span class="cell-red">88.05%</span>⚠ / <span class="cell-red">64.59%</span>🔴<br>
-      <b>累计率算法：</b>Σ(日率 × 日推单量) / Σ推单量
-    </div>
-  </div>
 </div>
 
 <!-- W2 六模块详情 -->
@@ -947,7 +910,7 @@ end subtab-w1 -->
 
 <!-- W2 日快照 (修正数据) -->
 <div class="card">
-  <div class="card-title">W2 · 7/6-7/12 已收官（7 天）</div>
+  <div class="card-title">W2 · 7/6-7/12 进行中（7 天）</div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
     <span class="q17">✅ 7/6</span>
     <span class="q17">✅ 7/7</span>
@@ -959,14 +922,25 @@ end subtab-w1 -->
   </div>
   <table>
     <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
-    <tr><td class="text-cell">7/6 W2 D1</td><td class="num-cell"><span class="cell-yellow">98.4962%</span></td><td class="num-cell"><span class="cell-green">1.5162%</span></td><td class="num-cell"><span class="cell-green">1.54%</span></td><td class="num-cell"><span class="cell-green">1.19%</span></td><td class="num-cell"><span class="cell-green">0.0211%</span></td><td class="num-cell"><span class="cell-green">0.0553%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">38,569</td><td class="num-cell">37,989</td></tr>
-<tr><td class="text-cell">7/7 W2 D2</td><td class="num-cell"><span class="cell-green">98.6559%</span></td><td class="num-cell"><span class="cell-green">2.0306%</span></td><td class="num-cell"><span class="cell-green">2.04%</span></td><td class="num-cell"><span class="cell-green">1.90%</span></td><td class="num-cell"><span class="cell-green">0.0235%</span></td><td class="num-cell"><span class="cell-green">0.0600%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">38,836</td><td class="num-cell">38,314</td></tr>
-<tr><td class="text-cell">7/8 W2 D3</td><td class="num-cell"><span class="cell-green">98.6166%</span></td><td class="num-cell"><span class="cell-green">2.1895%</span></td><td class="num-cell"><span class="cell-green">2.08%</span></td><td class="num-cell"><span class="cell-green">3.59%</span></td><td class="num-cell"><span class="cell-yellow">0.0382%</span></td><td class="num-cell"><span class="cell-green">0.0509%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,830</td><td class="num-cell">39,279</td></tr>
-<tr><td class="text-cell">7/9 W2 D4</td><td class="num-cell"><span class="cell-yellow">98.2094%</span></td><td class="num-cell"><span class="cell-green">2.8762%</span></td><td class="num-cell"><span class="cell-green">2.60%</span></td><td class="num-cell"><span class="cell-red">6.19%</span></td><td class="num-cell"><span class="cell-yellow">0.0285%</span></td><td class="num-cell"><span class="cell-green">0.0726%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,261</td><td class="num-cell">38,558</td></tr>
-<tr><td class="text-cell">7/10 W2 D5</td><td class="num-cell"><span class="cell-green">98.5835%</span></td><td class="num-cell"><span class="cell-green">2.3411%</span></td><td class="num-cell"><span class="cell-green">2.19%</span></td><td class="num-cell"><span class="cell-yellow">4.04%</span></td><td class="num-cell"><span class="cell-yellow">0.0437%</span></td><td class="num-cell"><span class="cell-green">0.0683%</span></td><td><span class="weather-badge weather-normal">正常</span></td><td class="num-cell">37,133</td><td class="num-cell">36,607</td></tr>
-<tr class="q4"><td class="text-cell">7/11 🔥高峰</td><td class="num-cell"><span class="cell-yellow">98.1806%</span></td><td class="num-cell"><span class="cell-green">1.7492%</span></td><td class="num-cell"><span class="cell-green">1.69%</span></td><td class="num-cell"><span class="cell-green">2.33%</span></td><td class="num-cell"><span class="cell-green">0.0208%</span></td><td class="num-cell"><span class="cell-yellow">0.0866%</span></td><td><span class="weather-badge weather-bad">比较恶劣</span></td><td class="num-cell">29,406</td><td class="num-cell">28,871</td></tr>
-<tr class="q4"><td class="text-cell">7/12 🔥高峰</td><td class="num-cell"><span class="cell-green">98.6526%</span></td><td class="num-cell"><span class="cell-green">1.4534%</span></td><td class="num-cell"><span class="cell-green">1.43%</span></td><td class="num-cell"><span class="cell-green">1.74%</span></td><td class="num-cell"><span class="cell-yellow">0.0272%</span></td><td class="num-cell"><span class="cell-green">0.0695%</span></td><td><span class="weather-badge weather-severe">非常恶劣</span></td><td class="num-cell">33,547</td><td class="num-cell">33,095</td></tr>
-end subtab-w2 -->
+    <tr><td class="text-cell">7/6 W2 D1</td><td class="num-cell"><span class="cell-yellow">98.4962%</span></td><td class="num-cell"><span class="cell-green">1.5162%</span></td><td class="num-cell"><span class="cell-green">1.54%</span></td><td class="num-cell"><span class="cell-green">1.19%</span></td><td class="num-cell"><span class="cell-green">0.0211%</span></td><td class="num-cell"><span class="cell-green">0.0553%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,051</td><td class="num-cell">37,989</td></tr>
+    <tr><td class="text-cell">7/7 W2 D2</td><td class="num-cell"><span class="cell-green">98.6559%</span></td><td class="num-cell"><span class="cell-green">2.0306%</span></td><td class="num-cell"><span class="cell-green">2.04%</span></td><td class="num-cell"><span class="cell-green">1.90%</span></td><td class="num-cell"><span class="cell-green">0.0235%</span></td><td class="num-cell"><span class="cell-green">0.0600%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,443</td><td class="num-cell">38,314</td></tr>
+    <tr><td class="text-cell">7/8 W2 D3</td><td class="num-cell"><span class="cell-green">98.6166%</span></td><td class="num-cell"><span class="cell-green">2.1895%</span></td><td class="num-cell"><span class="cell-green">2.08%</span></td><td class="num-cell"><span class="cell-green">3.59%</span></td><td class="num-cell"><span class="cell-yellow">0.0382%</span></td><td class="num-cell"><span class="cell-green">0.0509%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">41,407</td><td class="num-cell">39,279</td></tr>
+    <tr><td class="text-cell">7/9 W2 D4</td><td class="num-cell"><span class="cell-yellow">98.2094%</span></td><td class="num-cell"><span class="cell-green">2.8762%</span></td><td class="num-cell"><span class="cell-green">2.60%</span></td><td class="num-cell"><span class="cell-red">6.19%</span></td><td class="num-cell"><span class="cell-green">0.0259%</span></td><td class="num-cell"><span class="cell-green">0.0752%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,970</td><td class="num-cell">38,558</td></tr>
+    <tr><td class="text-cell">7/10 W2 D5</td><td class="num-cell"><span class="cell-yellow">98.5326%</span></td><td class="num-cell"><span class="cell-green">2.3009%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-yellow">4.01%</span></td><td class="num-cell"><span class="cell-yellow">0.0437%</span></td><td class="num-cell"><span class="cell-yellow">0.0874%</span></td><td><span class="weather-badge weather-normal">正常</span></td><td class="num-cell">38,663</td><td class="num-cell">36,595</td></tr>
+    <tr class="q4"><td class="text-cell">7/11 🔥高峰</td>
+<td class="num-cell"><span class="cell-yellow">98.1806%</span></td>
+<td class="num-cell"><span class="cell-green">1.7492%</span></td>
+<td class="num-cell"><span class="cell-green">1.69%</span></td>
+<td class="num-cell"><span class="cell-green">2.33%</span></td>
+<td class="num-cell"><span class="cell-green">0.0263%</span></td>
+<td class="num-cell"><span class="cell-yellow">0.0888%</span></td>
+<td><span class="weather-badge weather-bad">比较恶劣</span></td>
+<td class="num-cell">29,406</td><td class="num-cell">28,871</td></tr>
+    <tr class="q4"><td class="text-cell">7/12 🔥高峰</td><td class="num-cell"><span class="cell-green">98.6526%</span></td><td class="num-cell"><span class="cell-green">1.4460%</span></td><td class="num-cell"><span class="cell-green">1.42%</span></td><td class="num-cell"><span class="cell-green">1.74%</span></td><td class="num-cell"><span class="cell-green">0.0271%</span></td><td class="num-cell"><span class="cell-green">0.0691%</span></td><td><span class="weather-badge weather-severe">非常恶劣</span></td><td class="num-cell">33,547</td><td class="num-cell">33,095</td></tr>
+  </table>
+</div>
+
+</div><!-- end subtab-w2 -->
 
 </div><!-- end tab-period1 -->
 
@@ -1191,225 +1165,6 @@ function switchFoldTab(name, btn){
  document.getElementById(name).classList.add('active');
  if(btn) btn.classList.add('active');
 }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<script>
-(function(){
-  // === 自定义数值标签插件 ===
-  var datalabelPlugin = {
-    id:'customDatalabels',
-    afterDatasetsDraw:function(chart){
-      var ctx=chart.ctx;
-      chart.data.datasets.forEach(function(ds,i){
-        var meta=chart.getDatasetMeta(i);
-        if(!meta.visible) return;
-        // 跳过无数据点的参考线(pointRadius===0或未定义)
-        if(ds.pointRadius===0 && !ds.barPercentage) return;
-        // 跳过bar图中非bar类型的隐藏数据集
-        meta.data.forEach(function(el,idx){
-          var v=ds.data[idx];
-          if(v==null||v===undefined) return;
-          var txt='';
-          if(chart.config.type==='bar'){
-            txt=v>=10000?(v/10000).toFixed(1)+'万':v.toLocaleString();
-          }else{
-            txt=Math.abs(v)<1?v.toFixed(4)+'%':v.toFixed(2)+'%';
-          }
-          ctx.save();
-          ctx.font='bold 9px PingFang SC,Microsoft YaHei,sans-serif';
-          ctx.fillStyle=ds.borderColor||'#333';
-          ctx.textAlign='center';
-          ctx.textBaseline='bottom';
-          ctx.fillText(txt,el.x,el.y-5);
-          ctx.restore();
-        });
-      });
-    }
-  };
-  Chart.register(datalabelPlugin);
-  // === 每日KPI趋势数据 ===
-    var LABELS = ["7/1", "7/2", "7/3", "7/4", "7/5", "7/6", "7/7", "7/8", "7/9", "7/10", "7/11", "7/12"];
-  var DATA = {
-    twc:   [98.4253, 98.2588, 98.5808, 98.6823, 98.2096, 98.4962, 98.6559, 98.6166, 98.2094, 98.5835, 98.1806, 98.6526],
-    comp:  [2.0066, 1.9746, 2.0446, 1.7121, 2.3822, 1.5162, 2.0306, 2.1895, 2.8762, 2.3411, 1.7492, 1.4534],
-    in3:   [2.0, 1.96, 2.03, 1.67, 2.34, 1.54, 2.04, 2.08, 2.6, 2.19, 1.69, 1.43],
-    out3:  [2.15, 2.19, 2.2, 2.18, 2.89, 1.19, 1.9, 3.59, 6.19, 4.04, 2.33, 1.74],
-    fake:  [0.0135, 0.016, 0.0281, 0.0143, 0.0208, 0.0211, 0.0235, 0.0382, 0.0285, 0.0437, 0.0208, 0.0272],
-    cancel:[0.1104, 0.0933, 0.0587, 0.0668, 0.097, 0.0553, 0.06, 0.0509, 0.0726, 0.0683, 0.0866, 0.0695],
-    twd:   [37721, 38191, 39740, 42498, 44068, 38569, 38836, 39830, 39261, 37133, 29406, 33547],
-    wcd:   [37127, 37526, 39176, 41938, 43279, 37989, 38314, 39279, 38558, 36607, 28871, 33095],
-    weather:["一般恶劣", "一般恶劣", "一般恶劣", "比较恶劣", "一般恶劣", "一般恶劣", "一般恶劣", "一般恶劣", "一般恶劣", "正常", "比较恶劣", "非常恶劣"]
-  };
-
-  // 通用样式
-  var FONT = {family:"'PingFang SC','Microsoft YaHei',sans-serif",size:11};
-  var GRID = {color:'rgba(0,0,0,0.06)',drawBorder:false};
-  var TICK = {font:FONT,padding:4};
-  var TIPS = {
-    backgroundColor:'rgba(255,255,255,0.96)',
-    titleFont:{...FONT,weight:'bold'},
-    bodyFont:FONT,
-    borderColor:'#e5e7eb',borderWidth:1,
-    padding:10,cornerRadius:6,
-    boxPadding:4
-  };
-  var PLG = {
-    legend:{position:'top',labels:{font:FONT,boxWidth:12,padding:12,usePointStyle:true}},
-    tooltip:TIPS
-  };
-
-  function fmt(v,p){return v.toFixed(p||2)}
-
-  // === 图1: 推单率趋势 ===
-  new Chart(document.getElementById('chart-twc'),{
-    type:'line',
-    data:{
-      labels:LABELS,
-      datasets:[{
-        label:'推单完成率',
-        data:DATA.twc,
-        borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.08)',
-        borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2.5,
-        fill:true,tension:0.3
-      },{
-        label:'目标 98.55%',
-        data:Array(12).fill(98.55),
-        borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],
-        pointRadius:0,fill:false
-      },{
-        label:'门槛 97%',
-        data:Array(12).fill(97),
-        borderColor:'#f59e0b',borderWidth:1,borderDash:[3,3],
-        pointRadius:0,fill:false
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        ...PLG,
-        tooltip:{...TIPS,callbacks:{
-          label:function(c){
-            if(c.datasetIndex===0) return ['推单率: '+fmt(c.parsed.y,4)+'%','推单量: '+DATA.twd[c.dataIndex].toLocaleString()+' 完成量: '+DATA.wcd[c.dataIndex].toLocaleString(),'天气: '+DATA.weather[c.dataIndex]];
-            return c.dataset.label;
-          }
-        }}
-      },
-      scales:{
-        y:{min:96.5,max:99.2,ticks:{...TICK,callback:function(v){return v+'%'}},grid:GRID,title:{display:true,text:'推单率 %',font:FONT}},
-        x:{ticks:TICK,grid:{display:false}}
-      }
-    }
-  });
-
-  // === 图2: 复合超时率趋势 ===
-  new Chart(document.getElementById('chart-comp'),{
-    type:'line',
-    data:{
-      labels:LABELS,
-      datasets:[{
-        label:'整体复合超时',
-        data:DATA.comp,
-        borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,0.08)',
-        borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2.5,
-        fill:true,tension:0.3
-      },{
-        label:'3km内',
-        data:DATA.in3,
-        borderColor:'#22c55e',borderWidth:1.5,pointRadius:3,
-        pointBackgroundColor:'#fff',pointBorderWidth:1.5,
-        fill:false,tension:0.3,borderDash:[4,2]
-      },{
-        label:'3km外',
-        data:DATA.out3,
-        borderColor:'#f97316',borderWidth:1.5,pointRadius:3,
-        pointBackgroundColor:'#fff',pointBorderWidth:1.5,
-        fill:false,tension:0.3,borderDash:[4,2]
-      },{
-        label:'目标 ≤2.917%',
-        data:Array(12).fill(2.917),
-        borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],
-        pointRadius:0,fill:false
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{...PLG},
-      scales:{
-        y:{min:0,max:7,ticks:{...TICK,callback:function(v){return v+'%'}},grid:GRID,title:{display:true,text:'超时率 %',font:FONT}},
-        x:{ticks:TICK,grid:{display:false}}
-      }
-    }
-  });
-
-  // === 图3: 虚假点率 + 配取取消率 ===
-  new Chart(document.getElementById('chart-fake'),{
-    type:'line',
-    data:{
-      labels:LABELS,
-      datasets:[{
-        label:'虚假点率',
-        data:DATA.fake,
-        borderColor:'#ec4899',backgroundColor:'rgba(236,72,153,0.08)',
-        borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#fff',pointBorderWidth:2.5,
-        fill:true,tension:0.3,yAxisID:'y'
-      },{
-        label:'配取取消率',
-        data:DATA.cancel,
-        borderColor:'#14b8a6',backgroundColor:'rgba(20,184,166,0.08)',
-        borderWidth:2,pointRadius:3,pointBackgroundColor:'#fff',pointBorderWidth:2,
-        fill:true,tension:0.3,yAxisID:'y1'
-      },{
-        label:'虚假点目标 0.027%',
-        data:Array(12).fill(0.027),
-        borderColor:'#ef4444',borderWidth:1.5,borderDash:[6,4],
-        pointRadius:0,fill:false,yAxisID:'y'
-      },{
-        label:'配取目标 0.077%',
-        data:Array(12).fill(0.077),
-        borderColor:'#f59e0b',borderWidth:1,borderDash:[3,3],
-        pointRadius:0,fill:false,yAxisID:'y1'
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{...PLG},
-      scales:{
-        y:{position:'left',min:0,max:0.06,ticks:{...TICK,callback:function(v){return v.toFixed(3)+'%'}},grid:GRID,title:{display:true,text:'虚假点率 %',font:FONT,color:'#ec4899'}},
-        y1:{position:'right',min:0,max:0.15,ticks:{...TICK,callback:function(v){return v.toFixed(3)+'%'}},grid:{drawOnChartArea:false},title:{display:true,text:'配取取消率 %',font:FONT,color:'#14b8a6'}},
-        x:{ticks:TICK,grid:{display:false}}
-      }
-    }
-  });
-
-  // === 图4: 推单量/完成量柱状图 ===
-  new Chart(document.getElementById('chart-volume'),{
-    type:'bar',
-    data:{
-      labels:LABELS,
-      datasets:[{
-        label:'推单量',
-        data:DATA.twd,
-        backgroundColor:'rgba(59,130,246,0.7)',borderRadius:4,
-        barPercentage:0.7,categoryPercentage:0.7
-      },{
-        label:'完成量',
-        data:DATA.wcd,
-        backgroundColor:'rgba(34,197,94,0.7)',borderRadius:4,
-        barPercentage:0.7,categoryPercentage:0.7
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{...PLG,tooltip:{...TIPS,callbacks:{
-        label:function(c){return c.dataset.label+': '+c.parsed.y.toLocaleString()}
-      }}},
-      scales:{
-        y:{min:25000,ticks:{...TICK,callback:function(v){return (v/10000).toFixed(1)+'万'}},grid:GRID,title:{display:true,text:'单量',font:FONT}},
-        x:{ticks:TICK,grid:{display:false}}
-      }
-    }
-  });
-})();
 </script>
 </body>
 </html>
