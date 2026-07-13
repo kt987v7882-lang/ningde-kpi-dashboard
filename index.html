@@ -776,6 +776,7 @@ function renderStations(){
 
 // 图表
 function initCharts(){
+  if(typeof Chart==='undefined') return;
   const pc=document.getElementById('pushChart');
   const oc=document.getElementById('overtimeChart');
   if(!pc||!oc) return;
@@ -886,8 +887,8 @@ function renderExpKpi(){
     '<div class="score-row"><span>超时+虚假点+配取</span><span class="score-val">'+s.ot_score.toFixed(2)+' + '+s.fake_score.toFixed(2)+' + '+s.cancel_score.toFixed(2)+'</span></div>'+
     '<div class="score-total" style="font-size:26px">'+s.total_exp_score.toFixed(2)+'<span style="font-size:13px;color:#7ea8cb"> / 15</span></div></div></div>';
 
-  // 图表
-  renderExpCharts();
+  // 图表（Chart.js可能未加载，用try-catch防御）
+  try{renderExpCharts();}catch(e){console.warn('renderExpCharts延迟:',e.message);}
 
   // 每日汇总表
   renderExpDailyTable();
@@ -899,6 +900,7 @@ function renderExpKpi(){
 }
 
 function renderExpCharts(){
+  if(typeof Chart==='undefined'){console.warn('Chart.js not loaded yet');return;}
   const daily=EXP_KPI.daily;
   const T=EXP_KPI.targets;
   const labels=daily.map(d=>d.date_label);
@@ -983,7 +985,7 @@ function renderExpCatTable(cat, catLabel){
 
 // switchTab和switchDate的patch将在注入时合并到原始函数中（见下方）
 
-function runInit(){if(!window._initDone){window._initDone=true;init();setTimeout(function(){renderExpKpi();},300);}}
+function runInit(){if(!window._initDone){window._initDone=true;init();setTimeout(function(){if(typeof Chart!=='undefined')renderExpKpi();else window.addEventListener('load',function(){renderExpKpi();});},300);}}
 if(document.readyState==='complete'){runInit();}else{window.addEventListener('load',runInit);}
 </script>
 </body>
