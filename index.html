@@ -771,7 +771,8 @@ function renderJSON(){
   }
 }
 
-if(document.readyState==='complete'){init();}else{window.addEventListener('load',init);document.addEventListener('DOMContentLoaded',init);}
+function runInit(){if(!window._initDone){window._initDone=true;init();}}
+if(document.readyState==='complete'){runInit();}else{window.addEventListener('load',runInit);}
 </script>
 </body>
 </html>
