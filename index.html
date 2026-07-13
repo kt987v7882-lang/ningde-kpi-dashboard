@@ -147,14 +147,22 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     <!-- 体验得分拆解 -->
     <div id="expKpiScoreDetail" style="margin-bottom:12px"></div>
 
-    <!-- 体验图表 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="card"><div class="card-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="expOtChart"></canvas></div></div>
-      <div class="card"><div class="card-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="expFcChart"></canvas></div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="card"><div class="card-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="expCatOtChart"></canvas></div></div>
-      <div class="card"><div class="card-title">体验得分趋势</div><div class="chart-container"><canvas id="expScoreChart"></canvas></div></div>
+    <!-- 体验图表（默认折叠） -->
+    <div class="card" style="margin-bottom:12px;padding:0;overflow:hidden">
+      <div style="padding:10px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center" onclick="toggleExpCharts()">
+        <span style="font-size:13px;font-weight:600;color:#666">📈 体验趋势图表</span>
+        <span id="expChartsArrow" style="font-size:12px;color:#999;transition:transform .2s">▶ 展开</span>
+      </div>
+      <div id="expChartsBody" style="display:none;padding:0 16px 12px 16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="card"><div class="card-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="expOtChart"></canvas></div></div>
+          <div class="card"><div class="card-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="expFcChart"></canvas></div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div class="card"><div class="card-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="expCatOtChart"></canvas></div></div>
+          <div class="card"><div class="card-title">体验得分趋势</div><div class="chart-container"><canvas id="expScoreChart"></canvas></div></div>
+        </div>
+      </div>
     </div>
 
     <!-- 渠道明细四合一 -->
@@ -615,6 +623,12 @@ function renderKPI(){
 }
 
 // 体验KPI汇总卡片（推完卡片下方）
+
+function toggleExpCharts(){
+  const body=document.getElementById('expChartsBody');
+  const arrow=document.getElementById('expChartsArrow');
+  if(body.style.display==='none'){body.style.display='block';arrow.innerHTML='▼ 收起';}else{body.style.display='none';arrow.innerHTML='▶ 展开';}
+}
 
 function switchExpCat(cat){
   document.querySelectorAll('.exp-cat-btn').forEach(b=>b.classList.remove('active'));
