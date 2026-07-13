@@ -558,7 +558,7 @@ function switchDate(idx){
   KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
-  renderKPI();renderExp();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
+  renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
   if(window._expRendered){var ct=document.getElementById('expCatTables');if(ct)ct.innerHTML='';setTimeout(renderExpKpi,50);}}
 
 
@@ -598,7 +598,6 @@ function init(){
   });
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
   switchDate(KPI.currentIdx);
-  initCharts();
 }
 
 // KPI
@@ -633,7 +632,9 @@ function renderExp(){
     {label:'配送取消率',val:(k.cancel_rate*100).toFixed(4)+'%',target:(T.cancel_target*100).toFixed(3)+'%',good:k.cancel_rate<=T.cancel_target,pct:k.cancel_rate*100,tpct:T.cancel_target*100},
     {label:'体验得分',val:s.total_exp_score.toFixed(2),target:'15分',good:s.total_exp_score>=13.5,pct:s.total_exp_score,tpct:15}
   ];
-  document.getElementById('expSummaryCards').innerHTML=cards.map(c=>{
+  const el=document.getElementById('expSummaryCards');
+  if(!el) return;
+  el.innerHTML=cards.map(c=>{
     const barW=Math.min(c.pct/c.tpct*100,130);
     const barColor=c.good?'#38bdf8':'#f87171';
     return '<div style="background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border-radius:8px;padding:10px;border-left:3px solid '+(c.good?'#0ea5e9':'#ef4444')+'"><div style="font-size:11px;color:#475569;margin-bottom:4px">'+c.label+'</div><div style="font-size:18px;font-weight:700;color:#0c4a6e">'+c.val+'</div><div style="font-size:10px;color:#64748b">目标: '+c.target+' · <span style="color:'+(c.good?'#059669':'#dc2626')+'">'+(c.good?'达标':'未达标')+'</span></div><div style="margin-top:4px;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden"><div style="height:100%;width:'+barW+'%;background:'+barColor+';border-radius:2px"></div></div></div>';
@@ -781,15 +782,18 @@ function renderStations(){
 
 // 图表
 function initCharts(){
+  const pc=document.getElementById('pushChart');
+  const oc=document.getElementById('overtimeChart');
+  if(!pc||!oc) return;
   const labels=KPI.trend.map(r=>r.date.slice(-5));
-  new Chart(document.getElementById('pushChart'),{
+  new Chart(pc,{
     type:'line',data:{labels,datasets:[
       {label:'整体推完率',data:KPI.trend.map(r=>r.pr*100),borderColor:'#2F5496',backgroundColor:'rgba(47,84,150,0.1)',tension:0.3,fill:true},
       {label:'加盟推完率',data:KPI.trend.map(r=>r.jm_pr*100),borderColor:'#27ae60',backgroundColor:'rgba(39,174,96,0.1)',tension:0.3,fill:true},
       {label:'众包推完率',data:KPI.trend.map(r=>r.zb_pr*100),borderColor:'#f39c12',backgroundColor:'rgba(243,156,18,0.1)',tension:0.3,fill:true}
     ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:10}}}},scales:{y:{min:96.5,max:100,ticks:{callback:v=>v+'%',font:{size:10}},grid:{color:'#f0f0f0'}}}}
   });
-  new Chart(document.getElementById('overtimeChart'),{
+  new Chart(oc,{
     type:'line',data:{labels,datasets:[
       {label:'3km内超时',data:KPI.trend.map(r=>r.ot3i*100),borderColor:'#e74c3c',backgroundColor:'rgba(231,76,60,0.1)',tension:0.3,fill:true},
       {label:'3km外超时',data:KPI.trend.map(r=>r.ot3o*100),borderColor:'#f39c12',backgroundColor:'rgba(243,156,18,0.1)',tension:0.3,fill:true}
