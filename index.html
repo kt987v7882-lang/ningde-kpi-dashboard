@@ -1759,8 +1759,9 @@ function renderCrowd(){
     otD.push(zkOt+'/'+zkComp);
   }else if(cd){otR.push(cd.ot_rate[11]||'—');otD.push(cd.ot_detail[11]||'—');}
   else{otR.push('—');otD.push('—');}
-  // --- 出勤相关 (仅cd有数据时显示) ---
-  const attVals=cd?cd.attend:new Array(12).fill('—');
+  // --- 出勤相关 (仅cd有真实出勤数据时显示数值，否则"—") ---
+  const hasAttend=cd && cd.attend[11]>0;
+  const attVals=hasAttend?cd.attend:new Array(12).fill('—');
   // --- 环比/同比出勤 ---
   const hbVals=[], tbVals=[];
   for(let i=0;i<12;i++){
@@ -1775,12 +1776,12 @@ function renderCrowd(){
     }else{tbVals.push('-');}
   }
   // --- 出勤率/排班相关 (仅cd有数据时显示) ---
-  const arVals=cd?cd.attend_rate:new Array(12).fill('—');
-  const schVals=cd?cd.schedule:new Array(12).fill('—');
-  const srVals=cd?cd.schedule_rate:new Array(12).fill('—');
-  const saVals=cd?cd.schedule_attend:new Array(12).fill('—');
-  const sarVals=cd?cd.schedule_attend_rate:new Array(12).fill('—');
-  const saAbsVals=cd?cd.schedule_attend_abs:new Array(12).fill('—');
+  const arVals=hasAttend?cd.attend_rate:new Array(12).fill('—');
+  const schVals=hasAttend?cd.schedule:new Array(12).fill('—');
+  const srVals=hasAttend?cd.schedule_rate:new Array(12).fill('—');
+  const saVals=hasAttend?cd.schedule_attend:new Array(12).fill('—');
+  const sarVals=hasAttend?cd.schedule_attend_rate:new Array(12).fill('—');
+  const saAbsVals=hasAttend?cd.schedule_attend_abs:new Array(12).fill('—');
   // --- 更新脚注 ---
   const fn=document.getElementById('crowdFootnote');
   if(fn){
@@ -1862,23 +1863,24 @@ function showStation(idx){
   }
   if(dmSt){const tc=dmSt.comp.reduce((a,b)=>a+b,0),tp=dmSt.push.reduce((a,b)=>a+b,0);prRow.push(tp>0?(tc/tp*100).toFixed(2)+'%':'—');pdRow.push(tc+'/'+tp);}
   else{prRow.push('—');pdRow.push('—');}
-  // 明细行（取消/超时/骑手），仅sd有数据时显示数值，否则"—"
-  const cancelRow=sd?sd.cancel:new Array(11).fill('—');
-  const otRow=sd?sd.ot_d:new Array(11).fill('—');
-  const ridersRow=sd?sd.riders:new Array(11).fill('—');
-  const riders5Row=sd?sd.riders5:new Array(11).fill('—');
-  const attendRow=sd?sd.attend:new Array(11).fill('—');
-  const ot_cRow=sd?sd.ot_c:new Array(11).fill('—');
+  // 明细行（取消/超时/骑手），仅sd有真实明细数据(total_riders>0)时显示数值，否则"—"
+  const hasDetail=sd && sd.total_riders>0;
+  const cancelRow=hasDetail?sd.cancel:new Array(11).fill('—');
+  const otRow=hasDetail?sd.ot_d:new Array(11).fill('—');
+  const ridersRow=hasDetail?sd.riders:new Array(11).fill('—');
+  const riders5Row=hasDetail?sd.riders5:new Array(11).fill('—');
+  const attendRow=hasDetail?sd.attend:new Array(11).fill('—');
+  const ot_cRow=hasDetail?sd.ot_c:new Array(11).fill('—');
   // 构建行
   const rows=[
     {label:'推完率',vals:prRow,fmt:v=>v},
     {label:'取消单(单)',vals:cancelRow,fmt:v=>typeof v==='number'?v:v},
     {label:'超时单量D端(单)',vals:otRow,fmt:v=>typeof v==='number'?v:v},
-    {label:'超时率D端',vals:sd?sd.ot_d.map((o,i)=>sd.push[i]>0?(o/sd.push[i]*100).toFixed(2)+'%':'0.00%'):new Array(11).fill('—'),fmt:v=>v},
+    {label:'超时率D端',vals:hasDetail?sd.ot_d.map((o,i)=>sd.push[i]>0?(o/sd.push[i]*100).toFixed(2)+'%':'0.00%'):new Array(11).fill('—'),fmt:v=>v},
     {label:'有单人数(人)',vals:ridersRow,fmt:v=>typeof v==='number'?v:v},
     {label:'5单+人数(人)',vals:riders5Row,fmt:v=>v===null?'—':v},
-    {label:'出勤率(%)',vals:sd?sd.attend.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v},
-    {label:'C端超时率',vals:sd?sd.ot_c.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v}
+    {label:'出勤率(%)',vals:hasDetail?sd.attend.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v},
+    {label:'C端超时率',vals:hasDetail?sd.ot_c.map(v=>v.toFixed(2)+'%'):new Array(11).fill('—'),fmt:v=>v}
   ];
   let shtml='<table class="station-data-table"><thead><tr><th>指标</th>';
   periods.forEach(p=>{shtml+='<th>'+p+'</th>'});
@@ -1892,20 +1894,20 @@ function showStation(idx){
     let sum='—';
     if(row.label==='推完率'){
       if(dmSt){const sc=dmSt.comp.reduce((a,b)=>a+b,0),sp=dmSt.push.reduce((a,b)=>a+b,0);sum=sp>0?(sc/sp*100).toFixed(2)+'%':'—';}
-    }else if(row.label==='取消单(单)' && sd){
+    }else if(row.label==='取消单(单)' && hasDetail){
       sum=sd.cancel.reduce((a,b)=>a+b,0);
-    }else if(row.label==='超时单量D端(单)' && sd){
+    }else if(row.label==='超时单量D端(单)' && hasDetail){
       sum=sd.ot_d.reduce((a,b)=>a+b,0);
-    }else if(row.label==='超时率D端' && sd){
+    }else if(row.label==='超时率D端' && hasDetail){
       const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
       sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
-    }else if(row.label==='有单人数(人)' && sd){
+    }else if(row.label==='有单人数(人)' && hasDetail){
       sum=sd.total_riders;
     }else if(row.label==='5单+人数(人)'){
       sum='—';
     }else if(row.label==='出勤率(%)'){
       sum='—';
-    }else if(row.label==='C端超时率' && sd){
+    }else if(row.label==='C端超时率' && hasDetail){
       const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
       sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
     }
