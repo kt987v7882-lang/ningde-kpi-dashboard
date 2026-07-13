@@ -688,8 +688,11 @@ function showStation(idx){
     }else if(row.label==='超时率D端'){
       const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
       sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
-    }else if(row.label==='出勤率(%)'||row.label==='C端超时率'){
+    }else if(row.label==='出勤率(%)'){
       sum='—';
+    }else if(row.label==='C端超时率'){
+      const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
+      sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
     }
     html+='<td style="font-weight:600;background:#f8f9fb">'+sum+'</td>';
     html+='</tr>';
