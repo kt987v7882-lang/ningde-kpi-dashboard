@@ -263,7 +263,7 @@ function switchDate(idx){
   KPI.pr=d.pr; KPI.jm_pr=d.jm_pr; KPI.zb_pr=d.zb_pr;
   KPI.ot3i=d.ot3i; KPI.ot3o=d.ot3o; KPI.fk=d.fk; KPI.cl=d.cl;
   KPI.n=d.n; KPI.d=d.d; KPI.weather=d.weather;
-  KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
+  KPI.jm_floor=KPI.jm_floor||0.988;KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
   renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();
@@ -816,7 +816,7 @@ function renderExpCharts(){
 }
 
 function renderExpDailyTable(){
-  const daily=EXP_KPI.daily, T=EXP_KPI.targets;
+  var daily=EXP_KPI.daily;if(daily&&!Array.isArray(daily)&&typeof daily==='object'){daily=Object.keys(daily).sort().map(function(k){return daily[k]})}const T=EXP_KPI.targets;
   let html='<table class="station-data-table exp-table-blue"><thead><tr><th>日期</th><th>总推单</th><th>总完成</th><th>超时3km内</th><th>超时3km外</th><th>虚假点率</th><th>配取率</th><th>推完率</th><th>体验分</th></tr></thead><tbody>';
   daily.forEach(d=>{
     const k=d.kpi, s=d.score;
@@ -825,7 +825,7 @@ function renderExpDailyTable(){
     html+='<td style="color:'+(k.ot_abs_3out<=T.ot_3km_out_target?'#059669':'#dc2626')+'">'+(k.ot_abs_3out*100).toFixed(2)+'%</td>';
     html+='<td style="color:'+(k.fake_rate<=T.fake_target?'#059669':'#dc2626')+'">'+(k.fake_rate*100).toFixed(4)+'%</td>';
     html+='<td style="color:'+(k.cancel_rate<=T.cancel_target?'#059669':'#dc2626')+'">'+(k.cancel_rate*100).toFixed(4)+'%</td>';
-    var _pr=KPI.trend.find(function(t){return t.date===daily[i].date;});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td>';
+    var _pr=KPI.trend.find(function(t){return t.date===d.date;});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td>';
     html+='<td style="font-weight:700;color:'+(s.total_exp_score>=15?'#059669':'#d97706')+'">'+s.total_exp_score.toFixed(2)+'</td></tr>';
   });
   // 月度汇总
