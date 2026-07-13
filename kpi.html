@@ -309,18 +309,14 @@ tr:hover{background:#ffffff}
 </div>
 </div><!-- end hide M04+M06 -->
 
-<!-- M06.5: 每日KPI趋势图 -->
-<div class="card" style="padding:16px">
-  <div class="card-title">📈 每日KPI趋势 <span class="badge badge-gray">7/1 - 7/12 · 自动填充</span></div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap">
-    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-twc"></canvas></div>
-    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-comp"></canvas></div>
-  </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-fake"></canvas></div>
-    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-volume"></canvas></div>
-  </div>
+<!-- 全月总览 子Tab切换（考核明细 / 趋势图） -->
+<div class="sub-tabs" style="margin-bottom:12px">
+  <button class="sub-tab-btn active" onclick="switchSubTab('overview-detail',this)">📊 KPI考核明细</button>
+  <button class="sub-tab-btn" onclick="switchSubTab('overview-trend',this)">📈 每日KPI趋势</button>
 </div>
+
+<!-- 子Tab1: KPI考核明细表 -->
+<div id="subtab-overview-detail" class="sub-tab-content active">
 
 <!-- M07: KPI考核明细表（v12c · image81配色 + Excel2精确数据） -->
 <div class="card" style="padding:16px">
@@ -737,8 +733,22 @@ tr:hover{background:#ffffff}
 </table>
 </div>
 
-</div>
+</div></div><!-- end subtab-overview-detail -->
 
+<!-- 子Tab2: 每日KPI趋势图 -->
+<div id="subtab-overview-trend" class="sub-tab-content">
+<div class="card" style="padding:16px">
+  <div class="card-title">📈 每日KPI趋势 <span class="badge badge-gray">7/1 - 7/12 · 自动填充</span></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-twc"></canvas></div>
+    <div style="flex:2;min-width:400px;height:320px"><canvas id="chart-comp"></canvas></div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-fake"></canvas></div>
+    <div style="flex:2;min-width:400px;height:280px"><canvas id="chart-volume"></canvas></div>
+  </div>
+</div>
+</div><!-- end subtab-overview-trend -->
 
 </div><!-- end tab-overview -->
 
