@@ -242,6 +242,7 @@ const KPI = {"pr":0.9865,"jm_pr":0.9914,"zb_pr":0.9792,"ot3i":0.01285,"ot3o":0.0
 
 
 
+(function(){if(EXP_KPI.daily&&!Array.isArray(EXP_KPI.daily)){EXP_KPI.daily=Object.keys(EXP_KPI.daily).sort().map(function(k){return EXP_KPI.daily[k]})}})();
 function fmtPct(v){return(v*100).toFixed(2)+'%'}
 function fmtPct4(v){return(v*100).toFixed(4)+'%'}
 function cellClass(ratio){
@@ -816,7 +817,7 @@ function renderExpCharts(){
 }
 
 function renderExpDailyTable(){
-  var daily=EXP_KPI.daily;if(daily&&!Array.isArray(daily)&&typeof daily==='object'){daily=Object.keys(daily).sort().map(function(k){return daily[k]})}const T=EXP_KPI.targets;
+  const daily=EXP_KPI.daily, T=EXP_KPI.targets;
   let html='<table class="station-data-table exp-table-blue"><thead><tr><th>日期</th><th>总推单</th><th>总完成</th><th>超时3km内</th><th>超时3km外</th><th>虚假点率</th><th>配取率</th><th>推完率</th><th>体验分</th></tr></thead><tbody>';
   daily.forEach(d=>{
     const k=d.kpi, s=d.score;
