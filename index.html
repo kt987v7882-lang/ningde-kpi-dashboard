@@ -163,6 +163,29 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
   </div>
 </div>
 
+
+<!-- 站点推完率总览 -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title" style="margin-bottom:8px">站点推完率总览</div>
+  <div class="station-grid" id="stationCards"></div>
+</div>
+
+<!-- JSON输出 -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title" style="margin-bottom:8px">JSON 输出 · 直接复制给AI</div>
+  <div class="json-label">日数据JSON</div>
+  <div class="json-box" id="dailyJson"></div>
+  <div class="json-label">周报JSON</div>
+  <div class="json-box" id="weekJson"></div>
+  <div class="json-label">月报JSON</div>
+  <div class="json-box" id="monthJson"></div>
+  <div class="json-label" style="margin-top:12px">🌤 天气维度聚合（10天）</div>
+  <div id="weatherStats"></div>
+</div>
+
+<div class="footer">宁德美团外卖 · 配送数据看板</div>
+
+<script>
 // 每日分时段矩阵数据（来自订单详情·三步固化口径A·按商家推单时间）
 const DAILY_MATRIX = {
   '20260701': {
@@ -310,29 +333,6 @@ const DAILY_MATRIX = {
     '万达站': {comp:[0, 0, 0, 28, 207, 1225, 519, 702, 1373, 621, 421],push:[0, 0, 0, 28, 213, 1239, 531, 719, 1390, 629, 433]},
   },
 };
-
-<!-- 站点推完率总览 -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">站点推完率总览</div>
-  <div class="station-grid" id="stationCards"></div>
-</div>
-
-<!-- JSON输出 -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">JSON 输出 · 直接复制给AI</div>
-  <div class="json-label">日数据JSON</div>
-  <div class="json-box" id="dailyJson"></div>
-  <div class="json-label">周报JSON</div>
-  <div class="json-box" id="weekJson"></div>
-  <div class="json-label">月报JSON</div>
-  <div class="json-box" id="monthJson"></div>
-  <div class="json-label" style="margin-top:12px">🌤 天气维度聚合（10天）</div>
-  <div id="weatherStats"></div>
-</div>
-
-<div class="footer">宁德美团外卖 · 配送数据看板</div>
-
-<script>
 // ====== 精确矩阵数据（来自外部看板）======
 const MATRIX = {
   dims: ['整体(美配口径)','加盟','众包(悦跑+普众合并)','新能源站','金涵站','七都站','亿利城站','天茂站','城北站','万达站'],
