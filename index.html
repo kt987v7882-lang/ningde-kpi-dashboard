@@ -1011,7 +1011,7 @@ function renderExpCatTable(cat, catLabel){
 
 // switchTab和switchDate的patch将在注入时合并到原始函数中（见下方）
 
-function runInit(){if(!window._initDone){window._initDone=true;init();}}
+function runInit(){if(!window._initDone){window._initDone=true;init();setTimeout(renderExpKpi,200);}}
 if(document.readyState==='complete'){runInit();}else{window.addEventListener('load',runInit);}
 </script>
 </body>
