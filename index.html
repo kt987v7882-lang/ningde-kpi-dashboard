@@ -705,6 +705,7 @@ function renderMatrix(){
 function toggleFoldCrowd(e){
   const body=document.getElementById('crowdFoldBody');
   const arrow=document.getElementById('crowdFoldArrow');
+  if(!body||!arrow) return;
   const folded=body.style.display==='none';
   body.style.display=folded?'':'none';
   arrow.style.transform=folded?'rotate(0deg)':'rotate(-90deg)';
@@ -800,7 +801,7 @@ function renderStations(){
     var color=r>=0.9855?'#27ae60':r>=0.97?'#f39c12':'#e74c3c';
     html+='<div class="station-card"><div class="station-name">'+s+'</div><div class="station-ratio" style="color:'+color+'">'+(r*100).toFixed(2)+'%</div><div class="station-detail">'+tc.toLocaleString()+'/'+tp.toLocaleString()+'</div></div>';
   });
-  document.getElementById('stationCards').innerHTML=html;
+  var sc=document.getElementById('stationCards');if(sc)sc.innerHTML=html;
 }
 
 // 图表
