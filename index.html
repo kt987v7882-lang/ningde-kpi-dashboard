@@ -464,23 +464,21 @@ const STATION_SUMMARY = {'新能源站':98.55,'金涵站':96.67,'七都站':98.0
 // 众包盘点数据 07-11（推完/超时/出勤来自订单详情，排班相关待补充）
 // 众包盘点数据 07-12（推完/超时/出勤来自订单详情，排班来自骑手出勤表）
 // 众包盘点数据 07-12（推完/超时/出勤来自订单详情，排班来自骑手出勤表）
-const CROWD_DATA = {
-  periods: ['夜宵3','夜宵4','夜宵5','早餐1','早餐2','午高峰','下午茶1','下午茶2','晚高峰','夜宵1','夜宵2','全天'],
-  rows: [
-    {label:'推完率(%)',vals:['33.33','0.00','40.00','64.95','87.61','88.61','92.28','88.32','86.89','87.00','84.54','87.42'],fmt:v=>v+'%'},
-    {label:'推完(完成/推单)',vals:['1/3','0/2','2/5','139/214','1096/1251','3780/4266','1147/1243','1444/1635','3302/3800','1599/1838','1345/1591','13855/15848'],fmt:v=>v},
-    {label:'超时率(%)',vals:['0.00','0.00','0.00','0.00','0.82','2.72','1.05','2.01','2.57','2.44','2.30','2.22'],fmt:v=>v+'%'},
-    {label:'超时(单/完成)',vals:['0/1','0/0','0/2','0/139','9/1096','103/3780','12/1147','29/1444','85/3302','39/1599','31/1345','308/13855'],fmt:v=>v},
-    {label:'悦跑出勤(人)',vals:[0, 0, 0, 4, 48, 131, 83, 77, 97, 39, 14, 153],fmt:v=>v},
-    {label:'环比出勤',vals:['-','-','-','-','-','-','-','-','-','-','-','-'],fmt:v=>v},
-    {label:'同比出勤',vals:['-','-','-','-','-','-','-','-','-','-','-','-'],fmt:v=>v},
-    {label:'出勤率(%)',vals:[0, 0, 0, 80.0, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],fmt:v=>v+'%'},
-    {label:'悦跑排班(人)',vals:[0, 0, 0, 5, 54, 142, 91, 85, 108, 48, 19, 169],fmt:v=>v},
-    {label:'悦跑排班率(%)',vals:[0, 0, 0, 2.78, 30.00, 78.89, 50.56, 47.22, 60.00, 26.67, 10.56, 93.89],fmt:v=>v+'%'},
-    {label:'排班出勤(人)',vals:[0, 0, 0, 4, 48, 131, 83, 77, 97, 39, 14, 153],fmt:v=>v},
-    {label:'排班出勤率(%)',vals:[0, 0, 0, 80.00, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],fmt:v=>v+'%'},
-    {label:'排班出勤率*绝(%)',vals:[0, 0, 0, 2.22, 26.67, 72.78, 46.11, 42.78, 53.89, 21.67, 7.78, 85.00],fmt:v=>v+'%'}
-  ]
+const DAILY_CROWD = {
+  '20260712': {
+    periods: ['夜宵3','夜宵4','夜宵5','早餐1','早餐2','午高峰','下午茶1','下午茶2','晚高峰','夜宵1','夜宵2','全天'],
+    push_rate: ['33.33','0.00','40.00','64.95','87.61','88.61','92.28','88.32','86.89','87.00','84.54','87.42'],
+    push_detail: ['1/3','0/2','2/5','139/214','1096/1251','3780/4266','1147/1243','1444/1635','3302/3800','1599/1838','1345/1591','13855/15848'],
+    ot_rate: ['0.00','0.00','0.00','0.00','0.82','2.72','1.05','2.01','2.57','2.44','2.30','2.22'],
+    ot_detail: ['0/1','0/0','0/2','0/139','9/1096','103/3780','12/1147','29/1444','85/3302','39/1599','31/1345','308/13855'],
+    attend: [0, 0, 0, 4, 48, 131, 83, 77, 97, 39, 14, 153],
+    attend_rate: [0, 0, 0, 80.0, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],
+    schedule: [0, 0, 0, 5, 54, 142, 91, 85, 108, 48, 19, 169],
+    schedule_rate: [0, 0, 0, 2.78, 30.00, 78.89, 50.56, 47.22, 60.00, 26.67, 10.56, 93.89],
+    schedule_attend: [0, 0, 0, 4, 48, 131, 83, 77, 97, 39, 14, 153],
+    schedule_attend_rate: [0, 0, 0, 80.00, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],
+    schedule_attend_abs: [0, 0, 0, 2.22, 26.67, 72.78, 46.11, 42.78, 53.89, 21.67, 7.78, 85.00]
+  }
 };
 
 
@@ -683,17 +681,75 @@ function toggleFoldCrowd(e){
 
 // 众包盘点表格
 function renderCrowd(){
-  const cd=CROWD_DATA,periods=cd.periods,rows=cd.rows;
-  let html='';
+  // 获取当前日期
+  const d=KPI.trend[KPI.currentIdx];
+  const dateKey=d.date;
+  const cd=DAILY_CROWD[dateKey];
+  if(!cd){
+    const tbody=document.getElementById('crowdBody');
+    tbody.innerHTML='<tr><td colspan="13" style="text-align:center;color:#999;padding:20px">该日暂无众包盘点出勤数据</td></tr>';
+    return;
+  }
+  const periods=cd.periods;
+  // 计算环比日期(前一天)和同比日期(上周同一天)
+  const today=new Date(dateKey.slice(0,4)+'-'+dateKey.slice(4,6)+'-'+dateKey.slice(6,8));
+  const prevDay=new Date(today); prevDay.setDate(prevDay.getDate()-1);
+  const prevKey=prevDay.getFullYear()+String(prevDay.getMonth()+1).padStart(2,'0')+String(prevDay.getDate()).padStart(2,'0');
+  const lastWeekDay=new Date(today); lastWeekDay.setDate(lastWeekDay.getDate()-7);
+  const lastWeekKey=lastWeekDay.getFullYear()+String(lastWeekDay.getMonth()+1).padStart(2,'0')+String(lastWeekDay.getDate()).padStart(2,'0');
+  const prevCd=DAILY_CROWD[prevKey]||null;
+  const lastWeekCd=DAILY_CROWD[lastWeekKey]||null;
+  // 构建环比/同比出勤数组
+  const hbVals=[], tbVals=[];
+  for(let i=0;i<cd.attend.length;i++){
+    const cur=cd.attend[i];
+    // 环比
+    if(prevCd && i<prevCd.attend.length && cur>0 && prevCd.attend[i]>0){
+      const diff=cur-prevCd.attend[i];
+      hbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
+    }else{
+      hbVals.push('-');
+    }
+    // 同比
+    if(lastWeekCd && i<lastWeekCd.attend.length && cur>0 && lastWeekCd.attend[i]>0){
+      const diff=cur-lastWeekCd.attend[i];
+      tbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
+    }else{
+      tbVals.push('-');
+    }
+  }
+  // 更新脚注
+  const fn=document.getElementById('crowdFootnote');
+  if(fn){
+    fn.textContent='众包推完 '+cd.push_rate[11]+'% · 总推单 '+cd.push_detail[11].split('/')[1]+' · 完成 '+cd.push_detail[11].split('/')[0]+' · 悦跑排班'+cd.schedule[11]+'/出勤'+cd.attend[11]+' · 数据源：订单详情+骑手出勤表 '+dateKey.slice(4,6)+'-'+dateKey.slice(6,8);
+  }
+  // 构建行数据
+  const rows=[
+    {label:'推完率(%)',vals:cd.push_rate,fmt:v=>v+'%'},
+    {label:'推完(完成/推单)',vals:cd.push_detail,fmt:v=>v},
+    {label:'超时率(%)',vals:cd.ot_rate,fmt:v=>v+'%'},
+    {label:'超时(单/完成)',vals:cd.ot_detail,fmt:v=>v},
+    {label:'悦跑出勤(人)',vals:cd.attend,fmt:v=>v},
+    {label:'环比出勤',vals:hbVals,fmt:v=>v,isHtml:true},
+    {label:'同比出勤',vals:tbVals,fmt:v=>v,isHtml:true},
+    {label:'出勤率(%)',vals:cd.attend_rate,fmt:v=>v.toFixed(2)+'%'},
+    {label:'悦跑排班(人)',vals:cd.schedule,fmt:v=>v},
+    {label:'悦跑排班率(%)',vals:cd.schedule_rate,fmt:v=>v+'%'},
+    {label:'排班出勤(人)',vals:cd.schedule_attend,fmt:v=>v},
+    {label:'排班出勤率(%)',vals:cd.schedule_attend_rate,fmt:v=>v.toFixed(2)+'%'},
+    {label:'排班出勤率*绝(%)',vals:cd.schedule_attend_abs,fmt:v=>v+'%'}
+  ];
+  let thtml='';
   rows.forEach(row=>{
-    html+='<tr><td class="ind-name">'+row.label+'</td>';
+    thtml+='<tr><td class="ind-name">'+row.label+'</td>';
     row.vals.forEach((v,i)=>{
       const isLast=i===row.vals.length-1;
-      html+='<td'+(isLast?' style="font-weight:600;background:#f8f9fb"':'')+'>'+row.fmt(v)+'</td>';
+      const cellContent=row.isHtml?v:row.fmt(v);
+      thtml+='<td'+(isLast?' style="font-weight:600;background:#f8f9fb"':'')+'>'+cellContent+'</td>';
     });
-    html+='</tr>';
+    thtml+='</tr>';
   });
-  document.getElementById('crowdBody').innerHTML=html;
+  document.getElementById('crowdBody').innerHTML=thtml;
 }
 
 // 站点数据 Tab
