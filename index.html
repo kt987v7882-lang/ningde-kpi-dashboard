@@ -689,7 +689,9 @@ function showStation(idx){
       const so=sd.ot_d.reduce((a,b)=>a+b,0),sp=sd.push.reduce((a,b)=>a+b,0);
       sum=sp>0?(so/sp*100).toFixed(2)+'%':'0.00%';
     }else if(row.label==='出勤率(%)'){
-      sum='—';
+      let totAtt=0,totPush=0;
+      sd.attend.forEach((v,i)=>{if(sd.push[i]>0){totAtt+=v*sd.push[i];totPush+=sd.push[i];}});
+      sum=totPush>0?(totAtt/totPush).toFixed(2)+'%':'0.00%';
     }else if(row.label==='C端超时率'){
       let totOtc=0,totPush=0;
       sd.ot_c.forEach((v,i)=>{totOtc+=v*sd.push[i];totPush+=sd.push[i];});
