@@ -628,7 +628,7 @@ function renderExp(){
   const kpiDate=KPI.trend[KPI.currentIdx].date;
   let ed=null;
   for(let i=0;i<EXP_KPI.daily.length;i++){if(String(EXP_KPI.daily[i].date)===String(kpiDate)){ed=EXP_KPI.daily[i];break;}}
-  if(!ed){document.getElementById('expSummaryCards').innerHTML='';return;}
+  if(!ed){document.getElementById('expKpiSummary').innerHTML='';return;}
   const k=ed.kpi, s=ed.score, T=EXP_KPI.targets;
   const cards=[
     {label:'复合超时3km内',val:(k.ot_abs_3in*100).toFixed(2)+'%',target:(T.ot_3km_in_target*100).toFixed(2)+'%',good:k.ot_abs_3in<=T.ot_3km_in_target,pct:k.ot_abs_3in*100,tpct:T.ot_3km_in_target*100},
@@ -637,7 +637,7 @@ function renderExp(){
     {label:'配送取消率',val:(k.cancel_rate*100).toFixed(4)+'%',target:(T.cancel_target*100).toFixed(3)+'%',good:k.cancel_rate<=T.cancel_target,pct:k.cancel_rate*100,tpct:T.cancel_target*100},
     {label:'体验得分',val:s.total_exp_score.toFixed(2),target:'15分',good:s.total_exp_score>=13.5,pct:s.total_exp_score,tpct:15}
   ];
-  const el=document.getElementById('expSummaryCards');
+  const el=document.getElementById('expKpiSummary');
   if(!el) return;
   el.innerHTML=cards.map(c=>{
     const barW=Math.min(c.pct/c.tpct*100,130);
