@@ -428,7 +428,7 @@ function renderCrowd(){
   // --- 超时率(全天from EXP_KPI,分时段无数据则"—") ---
   const otR=[], otD=[];
   for(let i=0;i<11;i++){
-    if(cd && cd.ot_rate[i]!==undefined){otR.push(cd.ot_rate[i]);otD.push(cd.ot_detail[i]);}
+    if(cd && cd.ot_rate[i]!==undefined){otR.push(cd.ot_rate[i]);otD.push(cd.ot_detail.ot[i]+'/'+cd.ot_detail.total[i]);}
     else{otR.push('—');otD.push('—');}
   }
   // 全天超时
@@ -437,7 +437,7 @@ function renderCrowd(){
     const zkOt=zkRaw.abs_total||0;
     otR.push(zkComp>0?(zkOt/zkComp*100).toFixed(2):'0.00');
     otD.push(zkOt+'/'+zkComp);
-  }else if(cd){otR.push(cd.ot_rate[11]||'—');otD.push(cd.ot_detail[11]||'—');}
+  }else if(cd){otR.push(cd.ot_rate[11]||'—');otD.push(cd.ot_detail.ot[11]+'/'+cd.ot_detail.total[11]);}
   else{otR.push('—');otD.push('—');}
   // --- 出勤相关 (仅cd有真实出勤数据时显示数值，否则"—") ---
   const hasAttend=cd && cd.attend[11]>0;
