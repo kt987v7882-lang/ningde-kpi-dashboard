@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宁德 7月 KPI 看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+/* ===== 全局色彩规范 ===== */
+:root {
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+  --primary-dark: #1e40af;
+  --bg-white: #ffffff;
+  --bg-gray: #f3f4f6;
+  --bg-row-alt: #f9fafb;
+  --border: #e5e7eb;
+  --text: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --header-bg: #1e3a5f;
+  --header-height: 48px;
+  --tab-height: 42px;
+  --table-header-bg: #fffbeb;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  background: var(--bg-white);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* ===== 顶部表头 ===== */
+.top-header {
+  background: var(--header-bg);
+  color: #fff;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-size: 14px;
+}
+.top-header h1 { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.top-header .header-right { display:flex; align-items:center; gap:16px; font-size:12px; color:rgba(255,255,255,.7); }
+.top-header .header-right select {
+  padding: 4px 10px; border:1px solid rgba(255,255,255,.3); border-radius:6px;
+  background: rgba(255,255,255,.15); color:#fff; font-size:12px; cursor:pointer;
+}
+
+/* ===== 口径与状态标签行 ===== */
+.tag-bar {
+  background: var(--bg-gray);
+  padding: 6px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.tag-bar .tag-left { color: var(--text-secondary); flex-shrink:0; }
+.tag-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.tag-pill.blue { background: var(--primary-light); color: var(--primary-dark); }
+.tag-pill.green { background: #d1fae5; color: #065f46; }
+.tag-pill.yellow { background: #fef3c7; color: #92400e; }
+.tag-pill.red { background: #fee2e2; color: #991b1b; }
+.tag-pill.gray { background: #e5e7eb; color: #4b5563; }
+.tag-bar .spacer { flex:1; }
+.tag-bar .todo-hint { color: var(--text-muted); font-style: italic; flex-shrink:0; }
+
+/* ===== 导航 Tab ===== */
+.nav-tabs {
+  background: var(--bg-white);
+  border-bottom: 2px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  position: sticky;
+  top: var(--header-height);
+  z-index: 99;
+}
+.nav-tab {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.nav-tab:hover { background: var(--bg-gray); color: var(--text); }
+.nav-tab.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+.nav-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+/* ===== Tab 内容 ===== */
+.tab-panel { display: none; padding: 16px 24px; animation: fadeIn .25s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== 核心考核总表 ===== */
+.kpi-main-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+.kpi-main-table th {
+  background: var(--table-header-bg);
+  color: var(--text);
+  padding: 8px 10px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.kpi-main-table td {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+.kpi-main-table td.l { text-align: left; }
+.kpi-main-table td.r { text-align: right; font-family: 'Consolas', monospace; }
+.kpi-main-table td.bold { font-weight: 700; }
+.kpi-main-table tr:nth-child(even) td { background: var(--bg-row-alt); }
+.kpi-main-table .section-header td {
+  background: var(--primary-light);
+  font-weight: 700;
+  text-align: left;
+  font-size: 12px;
+  color: var(--primary-dark);
+}
+.kpi-main-table .score-cell { background: #d1fae5 !important; font-weight: 700; font-size: 15px; color: #065f46; }
+.kpi-main-table .danger-text { color: var(--danger); font-weight: 600; }
+.kpi-main-table .warning-text { color: var(--warning); font-weight: 600; }
+.kpi-main-table .success-text { color: var(--success); }
+.kpi-main-table .muted { color: var(--text-muted); }
+
+/* 达标圆点标识 */
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+.dot-green { background: var(--success); }
+.dot-yellow { background: var(--warning); }
+.dot-red { background: var(--danger); }
+.dot-gray { background: var(--text-muted); }
+
+/* ===== 分割线 ===== */
+.divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+/* ===== 折叠面板 ===== */
+.collapse-panel { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.collapse-header {
+  background: var(--bg-gray);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+.collapse-header:hover { background: var(--border); }
+.collapse-header .arrow { transition: transform .2s; font-size: 10px; color: var(--text-muted); }
+.collapse-header .arrow.open { transform: rotate(180deg); }
+.collapse-body { padding: 10px 12px; font-size: 12px; display: none; color: var(--text-secondary); line-height: 1.8; }
+.collapse-body.open { display: block; }
+
+/* ===== 底部三栏布局 ===== */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.bottom-row .collapse-panel { margin-bottom: 0; }
+
+/* ===== 悬浮导航 ===== */
+.float-nav {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.float-nav:hover { opacity: 1; }
+.float-nav.visible { opacity: 0.6; }
+.float-nav.visible:hover { opacity: 1; }
+.float-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.float-btn:hover { background: var(--primary-dark); }
+.float-btn .tooltip {
+  position: absolute;
+  right: 40px;
+  background: var(--text);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.float-btn:hover .tooltip { opacity: 1; }
+
+/* ===== 子Tab (W1-W5周期切换) ===== */
+.sub-tabs { display: flex; gap: 0; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+.sub-tab {
+  padding: 6px 16px;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all .2s;
+}
+.sub-tab:hover { color: var(--text); background: var(--bg-gray); }
+.sub-tab.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
+.sub-tab.prev, .sub-tab.next { margin-left: 4px; padding: 6px 10px; font-size: 11px; border-radius: 4px; background: var(--bg-gray); }
+.sub-tab.prev:hover, .sub-tab.next:hover { background: var(--border); }
+
+/* ===== 数据表格通用 ===== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  background: var(--table-header-bg);
+  color: var(--text);
+  padding: 5px 8px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.data-table td {
+  padding: 4px 8px;
+  text-align: center;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table td.ind-name { font-weight: 600; text-align: left; background: var(--bg-gray); position: sticky; left: 0; z-index: 5; }
+.data-table tr:nth-child(even) td { background: var(--bg-row-alt); }
+.data-table .highlight { background: #fef3c7 !important; font-weight: 600; }
+
+/* ===== 概览卡片 ===== */
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.summary-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  transition: box-shadow .2s;
+}
+.summary-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.summary-card .sc-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+.summary-card .sc-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+.summary-card .sc-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.summary-card.good .sc-value { color: var(--success); }
+.summary-card.bad .sc-value { color: var(--danger); }
+
+/* ===== 图表容器 ===== */
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.chart-box { background: var(--bg-white); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+.chart-box .chart-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+.chart-container { position: relative; height: 220px; }
+
+/* ===== 推完矩阵 ===== */
+.matrix-wrap { overflow-x: auto; }
+.matrix-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.matrix-table th { background: var(--primary-dark); color: #fff; padding: 5px 6px; text-align: center; white-space: nowrap; position: sticky; top:0; z-index:10; }
+.matrix-table td { padding: 4px 6px; text-align: center; border: 1px solid var(--border); white-space: nowrap; }
+.matrix-table .dim-name { font-weight: 600; text-align: left; background: var(--bg-gray); position: sticky; left: 0; z-index: 5; }
+.cell-green { background: #d1fae5; color: #065f46; }
+.cell-yellow { background: #fef3c7; color: #92400e; }
+.cell-red { background: #fee2e2; color: #991b1b; }
+.cell-gray { background: #e5e7eb; color: var(--text-muted); }
+
+/* ===== 站点选择器 ===== */
+.station-btns { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.station-btns button {
+  padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-white); cursor: pointer; font-size: 12px; transition: all .2s;
+}
+.station-btns button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.station-btns button:hover:not(.active) { background: var(--primary-light); }
+
+/* ===== 体验模块卡片 ===== */
+.exp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin: 10px 0; }
+.exp-card {
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform .2s, box-shadow .2s;
+}
+.exp-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,99,235,.12); }
+.exp-card .ec-label { font-size: 11px; color: #475569; margin-bottom: 3px; }
+.exp-card .ec-value { font-size: 20px; font-weight: 700; color: #0c4a6e; }
+.exp-card .ec-target { font-size: 10px; color: #64748b; margin-top: 2px; }
+.exp-card .ec-status { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-top: 3px; }
+.exp-card .ec-status.good { background: #d1fae5; color: #065f46; }
+.exp-card .ec-status.bad { background: #fee2e2; color: #991b1b; }
+.exp-card .ec-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-top: 5px; overflow: hidden; }
+.exp-card .ec-bar .fill { height: 100%; border-radius: 2px; transition: width .6s; }
+
+/* ===== 体验得分卡片 ===== */
+.exp-score-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 10px 0; }
+.exp-score-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+.exp-score-card .es-title { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 8px; }
+.exp-score-card .es-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
+.exp-score-card .es-val { font-weight: 600; }
+.exp-score-card .es-total { font-size: 24px; font-weight: 700; color: var(--primary-dark); text-align: center; margin-top: 8px; }
+
+/* ===== 工具栏 ===== */
+.toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.toolbar button {
+  padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-white); cursor: pointer; font-size: 11px; color: var(--text-secondary);
+  transition: all .2s;
+}
+.toolbar button:hover { background: var(--primary-light); color: var(--primary); }
+
+/* ===== 图例 ===== */
+.legend { display: flex; gap: 14px; margin: 6px 0; font-size: 11px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+/* ===== 页脚 ===== */
+.footer { text-align: center; padding: 16px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 16px; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 1366px) {
+  .summary-cards { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .chart-grid { grid-template-columns: 1fr; }
+  .bottom-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .top-header { padding: 0 12px; font-size: 12px; }
+  .top-header h1 { font-size: 14px; }
+  .tag-bar { padding: 4px 12px; }
+  .nav-tabs { padding: 0 12px; }
+  .tab-panel { padding: 12px; }
+  .nav-tab { padding: 8px 10px; font-size: 12px; }
+}
+
+/* ===== 骨架屏 ===== */
+.skeleton { background: linear-gradient(90deg, var(--bg-gray) 25%, #e5e7eb 50%, var(--bg-gray) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ===== 沙漏占位 ===== */
+.hourglass { display: inline-block; color: var(--text-muted); font-size: 11px; }
+
+/* ===== 信息条 ===== */
+.info-bar {
+  font-size: 12px; color: var(--text-secondary); padding: 8px 12px;
+  background: var(--bg-gray); border-radius: 6px; margin-bottom: 10px;
+  border-left: 3px solid var(--primary);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部标题栏 ===== -->
+<div class="top-header">
+  <h1>宁德 7 月 KPI 看板</h1>
+  <div class="header-right">
+    <select id="dateSelect" onchange="switchDate(parseInt(this.value))"></select>
+    <span id="updateBadge"></span>
+  </div>
+</div>
+
+<!-- ===== 口径与状态标签行 ===== -->
+<div class="tag-bar">
+  <span class="tag-left">V5算分口径</span>
+  <span class="tag-pill blue">南部大区 · 福建区域</span>
+  <span class="tag-pill blue">宁德市 · E1</span>
+  <span class="tag-pill green" id="tagJm">加盟</span>
+  <span class="tag-pill yellow" id="tagYp">悦跑</span>
+  <span class="tag-pill gray" id="tagZb">普众</span>
+  <span class="tag-pill gray" id="tagPenalty">处罚</span>
+  <span class="tag-pill gray" id="tagUniform">工装</span>
+  <span class="tag-pill gray" id="tagDataset">数据集</span>
+  <span class="tag-pill gray" id="tagPower">运力</span>
+  <span class="spacer"></span>
+  <span class="todo-hint" id="todoHint">待办：第二期W3-W5数据待同步</span>
+</div>
+
+<!-- ===== 导航 Tab ===== -->
+<div class="nav-tabs" id="navTabs">
+  <button class="nav-tab active" onclick="switchMainTab('overview')" data-tab="overview">全月总览</button>
+  <button class="nav-tab" onclick="switchMainTab('period1')" data-tab="period1">第 1 期总览</button>
+  <button class="nav-tab" onclick="switchMainTab('period2')" data-tab="period2">第 2 期总览</button>
+  <button class="nav-tab" onclick="switchMainTab('pressure')" data-tab="pressure">压力天</button>
+  <button class="nav-tab" onclick="switchMainTab('overtime')" data-tab="overtime">复合超时校准</button>
+  <button class="nav-tab" onclick="switchMainTab('uniform')" data-tab="uniform">工装</button>
+</div>
+
+<!-- ===== 全悬浮导航 ===== -->
+<div class="float-nav" id="floatNav">
+  <button class="float-btn" onclick="scrollToEl('topHeader')">↑<span class="tooltip">回到顶部</span></button>
+  <button class="float-btn" onclick="scrollToEl('sectionMonthly')">月<span class="tooltip">月度常规板块</span></button>
+  <button class="float-btn" onclick="scrollToEl('sectionPeriod')">期<span class="tooltip">考核周期板块</span></button>
+  <button class="float-btn" onclick="scrollToEl('sectionDaily')">日<span class="tooltip">每日履约表格</span></button>
+</div>
+
+<!-- ===== Tab 1: 全月总览 ===== -->
+<div class="tab-panel active" id="panel-overview">
+  <div class="info-bar">全月累计 KPI 得分概览 · 数据更新至 2026 年 7 月 12 日 · 口径：V5 算分</div>
+
+  <!-- 核心考核总表区 -->
+  <div id="sectionMonthly">
+    <div class="toolbar">
+      <button onclick="exportTable('kpiMainTable','宁德KPI总表')">📥 导出Excel</button>
+      <button onclick="toggleAllPanels('kpiCollapseArea')">展开/收起全部</button>
+    </div>
+    <div id="kpiMainTable"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 考核周期板块 -->
+  <div id="sectionPeriod">
+    <div class="toolbar">
+      <span style="font-size:12px;font-weight:600;color:var(--text-secondary)">运力模块得分</span>
+      <button onclick="exportTable('periodTable','运力模块')">📥 导出Excel</button>
+    </div>
+    <div id="periodTable"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 每日履约数据 -->
+  <div id="sectionDaily">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:12px;font-weight:600;color:var(--text-secondary)">每日履约明细</span>
+      <button onclick="exportTable('dailyDetailTable','每日履约')" style="padding:4px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:11px">📥 导出Excel</button>
+    </div>
+    <div class="sub-tabs" id="dailyWeekTabs"></div>
+    <div id="dailyDetailTable"></div>
+  </div>
+
+  <!-- 底部三栏 -->
+  <div class="bottom-row">
+    <div class="collapse-panel">
+      <div class="collapse-header" onclick="togglePanel(this)">
+        <span>📌 W2 三大焦点动作</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="collapse-body open">
+        <div style="line-height:2">
+          <div><span class="dot dot-red"></span><b>焦点1</b>：推完率稳定在 98.5% 以上 → 当前 98.65% <b style="color:var(--success)">达标</b></div>
+          <div><span class="dot dot-yellow"></span><span class="dot dot-yellow"></span><b>焦点2</b>：众包出勤率达标（门槛90%）→ <b style="color:var(--warning)">90.53%</b> 刚过门槛</div>
+          <div><span class="dot dot-green"></span><b>焦点3</b>：体验模块15分保底 → 当前月均 <b style="color:var(--success)">16.49分</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse-panel">
+      <div class="collapse-header" onclick="togglePanel(this)">
+        <span>📋 月度累计口径说明</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="collapse-body open">
+        <div style="line-height:1.8">
+          <b>推完率</b>：全天已送达 / 全天推单（三步固化口径A）<br>
+          <b>复合超时</b>：绝对超时 = 一般超时+严重超时，3km内外分别计算<br>
+          <b>虚假点</b>：虚假点送达率 = 目标率/实际率（越低越好）<br>
+          <b>配取率</b>：配送取消率 = 取消单量/完成单量<br>
+          <b>完结率</b>：餐饮F1（目标89%）/ 非餐F1（目标66%）
+        </div>
+      </div>
+    </div>
+    <div class="collapse-panel">
+      <div class="collapse-header" onclick="togglePanel(this)">
+        <span>📝 注释</span>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="collapse-body open">
+        <div style="line-height:1.8">
+          数据来源：合作商用履约 xlsx · v2.1<br>
+          体验表：67列拆解 · 加盟+普众+悦跑三渠道<br>
+          矩阵时段：11时段 · 按商家推单时间归入<br>
+          运力模块：第一期W1-W2已结算 · 第二期W3-W5待同步
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Tab 2: 第1期总览 ===== -->
+<div class="tab-panel" id="panel-period1">
+  <div class="info-bar">第 1 期考核（07-01 ~ 07-14）· 运力模块 · W1/W2 周期详情</div>
+  <div class="summary-cards" id="period1Cards"></div>
+  <div class="sub-tabs" id="p1WeekTabs">
+    <button class="sub-tab active" onclick="switchP1Week('w1')">W1 (07-01~07-08)</button>
+    <button class="sub-tab" onclick="switchP1Week('w2')">W2 (07-09~07-14)</button>
+  </div>
+  <div id="p1Content"></div>
+  <div class="chart-grid" style="margin-top:12px">
+    <div class="chart-box"><div class="chart-title">第1期 运力模块得分</div><div class="chart-container"><canvas id="p1Chart"></canvas></div></div>
+    <div class="chart-box"><div class="chart-title">第1期 专送/普众/悦跑周趋势</div><div class="chart-container"><canvas id="p1TrendChart"></canvas></div></div>
+  </div>
+</div>
+
+<!-- ===== Tab 3: 第2期总览 ===== -->
+<div class="tab-panel" id="panel-period2">
+  <div class="info-bar">第 2 期考核（07-15 ~ 07-28）· 运力模块 · W3/W4/W5 周期详情</div>
+  <div class="summary-cards" id="period2Cards"></div>
+  <div class="sub-tabs" id="p2WeekTabs">
+    <button class="sub-tab active" onclick="switchP2Week('w3')">W3 (07-15~07-21)</button>
+    <button class="sub-tab" onclick="switchP2Week('w4')">W4 (07-22~07-28)</button>
+  </div>
+  <div id="p2Content"></div>
+  <div style="padding:40px;text-align:center;color:var(--text-muted)">
+    <div style="font-size:32px;margin-bottom:8px">⏳</div>
+    <div>第二期数据尚未同步，待 07-15 后开始录入</div>
+  </div>
+</div>
+
+<!-- ===== Tab 4: 压力天 ===== -->
+<div class="tab-panel" id="panel-pressure">
+  <div class="info-bar">压力天识别与运营应对 · 高峰日（周末+节假日）运营数据对比</div>
+  <div class="summary-cards" id="pressureCards"></div>
+  <div id="pressureContent"></div>
+</div>
+
+<!-- ===== Tab 5: 复合超时校准 ===== -->
+<div class="tab-panel" id="panel-overtime">
+  <div class="info-bar">复合超时率校准 · 3km内外 · 三渠道对比 · 目标追踪</div>
+  <div class="exp-cards" id="otSummaryCards"></div>
+  <div class="chart-grid">
+    <div class="chart-box"><div class="chart-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="otTrendChart"></canvas></div></div>
+    <div class="chart-box"><div class="chart-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="otCatChart"></canvas></div></div>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-box"><div class="chart-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="fcTrendChart"></canvas></div></div>
+    <div class="chart-box"><div class="chart-title">体验得分趋势</div><div class="chart-container"><canvas id="scoreTrendChart"></canvas></div></div>
+  </div>
+  <div class="toolbar" style="margin-top:12px">
+    <button onclick="exportTable('otDailyTable','复合超时日报')">📥 导出Excel</button>
+  </div>
+  <div id="otDailyTable"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px" id="otCatTables"></div>
+</div>
+
+<!-- ===== Tab 6: 工装 ===== -->
+<div class="tab-panel" id="panel-uniform">
+  <div class="info-bar">工装宽度分配优化 · 骑手装备合规率追踪</div>
+  <div style="padding:40px;text-align:center;color:var(--text-muted)">
+    <div style="font-size:32px;margin-bottom:8px">👷</div>
+    <div>工装模块数据待补充</div>
+    <div style="font-size:11px;margin-top:4px">该模块依赖工装检查数据源，尚未接入</div>
+  </div>
+</div>
+
+<!-- ===== 页脚 ===== -->
+<div class="footer">宁德美团外卖 · 配送 KPI 数据看板 · V5 算分口径</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+
+// ======================================================================
+// 数据层：完整保留原始数据
+// ======================================================================
+
+// 绩效考核周期定义
+const CYCLE = {
+  p1: { label: '第一期', range: '07-01 ~ 07-14', weeks: ['W1','W2'],
+    w1: { range:'07-01~07-08', days:['20260701','20260702','20260703','20260704','20260705','20260706','20260707','20260708'] },
+    w2: { range:'07-09~07-14', days:['20260709','20260710','20260711','20260712'] }
+  },
+  p2: { label: '第二期', range: '07-15 ~ 07-28', weeks: ['W3','W4'],
+    w3: { range:'07-15~07-21', days:[] },
+    w4: { range:'07-22~07-28', days:[] }
+  }
+};
+
+// 月度KPI总表数据（来自xlsx"月度看板总览"sheet）
+const MONTHLY_KPI = {
+  score: 40.33,
+  sections: [
+    { type:'月度常规', label:'履约-体验', score_label:'(15分)', rows:[
+      {item:'复合超时', sub:'(6分)', detail:'3km内', target:0.02917, actual:0.01968, rate:1.4286, score_rate:1.1, score:6.6},
+      {item:'复合超时', sub:'(6分)', detail:'3km外', target:0.03681, actual:0.07801, rate:1.2894, score_rate:1.1, score:6.6},
+      {item:'虚假点', sub:'(4.5分)', detail:'虚假点送达', target:0.00027, actual:0.000245, rate:1.0636, score_rate:1.0, score:4.5},
+      {item:'配取', sub:'(4.5分)', detail:'配送取消', target:0.00077, actual:0.000736, rate:1.0213, score_rate:1.0, score:4.5},
+    ]},
+    { type:'月度常规', label:'履约-推完', score_label:'(20分)', rows:[
+      {item:'推完', sub:'(20分)', detail:'推单完成率', target:0.9855, actual:0.98465, rate:0.9945, score_rate:0.9945, score:19.89},
+    ]},
+    { type:'月度常规', label:'履约-完结', score_label:'(5分)', rows:[
+      {item:'商家订单完结率', sub:'', detail:'餐饮F1', target:0.89, actual:0.8805, rate:0.9879, score_rate:0.9879, score:2.47},
+      {item:'商家订单完结率', sub:'', detail:'非餐F1', target:0.66, actual:0.6459, rate:0.9479, score_rate:0.9479, score:2.37},
+    ]},
+  ],
+  periods: [
+    { type:'第一期', cycle:'整期', item:'专送（20分）', target:433, actual:436.3, rate:1.0076, score_rate:1.0, score:20 },
+    { type:'第一期', cycle:'W1', item:'普众(10分)', target:374, actual:418, rate:1.1176, score_rate:1.1, score:11 },
+    { type:'第一期', cycle:'W1', item:'悦跑（30分）', target:160, actual:161, rate:1.0063, score_rate:1.0063, score:30.19 },
+    { type:'第一期', cycle:'W2', item:'普众(10分)', target:374, actual:429, rate:1.1471, score_rate:1.1, score:11 },
+    { type:'第一期', cycle:'W2', item:'悦跑（30分）', target:160, actual:154, rate:0.9625, score_rate:0.9625, score:28.88 },
+    { type:'第二期', cycle:'整期', item:'专送（20分）', target:450, actual:null, rate:null, score_rate:null, score:null },
+    { type:'第二期', cycle:'W3', item:'普众(10分)', target:403, actual:null, rate:null, score_rate:null, score:null },
+    { type:'第二期', cycle:'W3', item:'悦跑（30分）', target:160, actual:null, rate:null, score_rate:null, score:null },
+  ]
+};
+
+// 每日分时段矩阵数据（来自订单详情·三步固化口径A·按商家推单时间·送达优先去重）
+const DAILY_MATRIX = {
+  '20260701': {
+    '整体(美配口径)': {comp:[1456, 616, 300, 743, 2727, 10040, 2829, 3410, 7939, 4261, 3401],push:[1542, 646, 323, 785, 2827, 10392, 2892, 3495, 8137, 4383, 3558]},
+    '加盟': {comp:[636, 240, 128, 437, 1486, 5317, 1499, 1893, 4432, 2255, 1733],push:[653, 245, 139, 444, 1508, 5404, 1524, 1933, 4515, 2302, 1780]},
+    '众包(悦跑+普众合并)': {comp:[820, 376, 172, 306, 1241, 4723, 1330, 1517, 3507, 2006, 1668],push:[889, 401, 184, 341, 1319, 4988, 1368, 1562, 3622, 2081, 1778]},
+    '新能源站': {comp:[119, 39, 13, 83, 243, 992, 170, 214, 733, 540, 394],push:[119, 42, 18, 84, 247, 1004, 175, 221, 750, 551, 400]},
+    '金涵站': {comp:[0, 0, 1, 8, 29, 141, 45, 55, 122, 47, 96],push:[0, 0, 1, 8, 30, 142, 46, 55, 123, 48, 100]},
+    '七都站': {comp:[1, 0, 1, 1, 36, 139, 32, 35, 123, 101, 62],push:[1, 0, 1, 1, 36, 139, 32, 36, 125, 103, 63]},
+    '亿利城站': {comp:[56, 14, 1, 54, 226, 571, 176, 226, 480, 244, 202],push:[59, 15, 1, 55, 227, 577, 178, 228, 486, 249, 209]},
+    '天茂站': {comp:[100, 25, 16, 76, 286, 835, 260, 352, 738, 315, 232],push:[102, 26, 17, 79, 292, 848, 261, 360, 747, 321, 239]},
+    '城北站': {comp:[137, 55, 43, 141, 354, 1287, 326, 406, 1043, 380, 320],push:[139, 55, 45, 142, 355, 1309, 334, 418, 1066, 389, 327]},
+    '万达站': {comp:[223, 107, 53, 74, 312, 1352, 490, 605, 1193, 628, 427],push:[233, 107, 56, 75, 321, 1385, 498, 615, 1218, 641, 442]},
+  },
+  '20260702': {
+    '整体(美配口径)': {comp:[1428, 673, 321, 726, 2758, 10599, 2698, 3234, 8141, 4163, 3340],push:[1501, 704, 336, 767, 2897, 11006, 2788, 3311, 8336, 4257, 3411]},
+    '加盟': {comp:[623, 273, 122, 409, 1513, 5829, 1545, 1878, 4674, 2278, 1714],push:[659, 285, 126, 417, 1547, 5938, 1574, 1908, 4735, 2320, 1753]},
+    '众包(悦跑+普众合并)': {comp:[805, 400, 199, 317, 1245, 4770, 1153, 1356, 3467, 1885, 1626],push:[842, 419, 210, 350, 1350, 5068, 1214, 1403, 3601, 1937, 1658]},
+    '新能源站': {comp:[113, 48, 21, 83, 210, 1030, 202, 181, 754, 541, 409],push:[118, 50, 23, 85, 217, 1050, 207, 186, 766, 552, 414]},
+    '金涵站': {comp:[0, 0, 0, 9, 37, 176, 45, 50, 110, 61, 44],push:[1, 0, 0, 9, 37, 180, 45, 51, 112, 64, 45]},
+    '七都站': {comp:[1, 0, 1, 2, 52, 152, 50, 34, 152, 84, 54],push:[1, 0, 1, 2, 52, 153, 51, 35, 152, 85, 56]},
+    '亿利城站': {comp:[55, 15, 2, 47, 211, 656, 160, 227, 499, 192, 172],push:[59, 15, 2, 49, 213, 671, 164, 230, 502, 196, 179]},
+    '天茂站': {comp:[73, 19, 7, 63, 303, 1036, 328, 370, 851, 428, 274],push:[78, 20, 7, 64, 311, 1053, 330, 373, 865, 437, 284]},
+    '城北站': {comp:[157, 69, 48, 121, 376, 1366, 312, 450, 1121, 392, 341],push:[163, 73, 49, 124, 383, 1387, 316, 456, 1135, 398, 349]},
+    '万达站': {comp:[224, 122, 43, 84, 324, 1413, 448, 566, 1187, 580, 420],push:[239, 127, 44, 84, 334, 1444, 461, 577, 1203, 588, 426]},
+  },
+  '20260703': {
+    '整体(美配口径)': {comp:[1502, 580, 327, 856, 2869, 10779, 2840, 3496, 8484, 4273, 3613],push:[1542, 605, 347, 907, 2962, 11093, 2923, 3570, 8688, 4379, 3712]},
+    '加盟': {comp:[706, 251, 158, 527, 1643, 5886, 1504, 2015, 4956, 2351, 1842],push:[727, 259, 163, 538, 1677, 5996, 1538, 2043, 5025, 2402, 1888]},
+    '众包(悦跑+普众合并)': {comp:[796, 329, 169, 329, 1226, 4893, 1336, 1481, 3528, 1922, 1771],push:[815, 346, 184, 369, 1285, 5097, 1385, 1527, 3663, 1977, 1824]},
+    '新能源站': {comp:[115, 35, 34, 100, 277, 1038, 186, 256, 852, 552, 333],push:[121, 36, 36, 102, 282, 1055, 190, 261, 869, 564, 344]},
+    '金涵站': {comp:[0, 1, 0, 4, 48, 178, 44, 48, 117, 61, 93],push:[1, 1, 0, 4, 51, 184, 45, 48, 118, 61, 93]},
+    '七都站': {comp:[2, 0, 0, 3, 64, 150, 37, 40, 136, 120, 64],push:[2, 0, 0, 3, 67, 154, 37, 40, 137, 122, 67]},
+    '亿利城站': {comp:[66, 12, 4, 56, 188, 636, 169, 219, 561, 207, 195],push:[67, 12, 4, 58, 190, 648, 174, 219, 568, 210, 199]},
+    '天茂站': {comp:[135, 36, 23, 87, 313, 1091, 301, 402, 858, 383, 329],push:[140, 38, 25, 92, 317, 1109, 304, 408, 880, 396, 337]},
+    '城北站': {comp:[153, 60, 51, 178, 416, 1333, 301, 438, 1114, 411, 380],push:[155, 62, 51, 180, 425, 1353, 308, 446, 1124, 421, 384]},
+    '万达站': {comp:[235, 107, 46, 99, 337, 1460, 466, 612, 1318, 617, 448],push:[241, 110, 47, 99, 345, 1493, 480, 621, 1329, 628, 464]},
+  },
+  '20260704': {
+    '整体(美配口径)': {comp:[1653, 692, 375, 871, 3089, 11442, 3231, 4103, 8830, 4631, 3755],push:[1685, 709, 397, 916, 3205, 11711, 3330, 4215, 9012, 4806, 3989]},
+    '加盟': {comp:[727, 311, 171, 519, 1771, 6364, 1850, 2423, 5077, 2622, 1949],push:[743, 321, 175, 536, 1819, 6474, 1892, 2482, 5147, 2673, 2000]},
+    '众包(悦跑+普众合并)': {comp:[926, 381, 204, 352, 1318, 5078, 1381, 1680, 3753, 2009, 1806],push:[942, 388, 222, 380, 1386, 5237, 1438, 1733, 3865, 2133, 1989]},
+    '新能源站': {comp:[111, 38, 28, 86, 310, 1207, 261, 314, 930, 578, 348],push:[114, 38, 28, 88, 318, 1223, 266, 318, 943, 589, 354]},
+    '金涵站': {comp:[1, 0, 1, 8, 43, 149, 43, 73, 109, 122, 114],push:[1, 0, 1, 8, 46, 151, 44, 77, 110, 123, 116]},
+    '七都站': {comp:[2, 0, 1, 1, 56, 215, 42, 49, 154, 117, 69],push:[2, 0, 2, 3, 58, 216, 43, 52, 154, 119, 73]},
+    '亿利城站': {comp:[68, 20, 2, 65, 221, 668, 197, 273, 527, 241, 186],push:[71, 22, 2, 68, 223, 681, 203, 280, 536, 245, 187]},
+    '天茂站': {comp:[121, 35, 35, 100, 365, 1121, 339, 475, 907, 448, 331],push:[121, 38, 37, 101, 379, 1138, 353, 486, 919, 462, 341]},
+    '城北站': {comp:[163, 73, 45, 155, 402, 1368, 396, 466, 1122, 421, 399],push:[167, 76, 46, 160, 412, 1397, 404, 479, 1139, 426, 414]},
+    '万达站': {comp:[261, 145, 59, 104, 374, 1636, 572, 773, 1328, 695, 502],push:[267, 147, 59, 108, 383, 1668, 579, 790, 1346, 709, 515]},
+  },
+  '20260705': {
+    '整体(美配口径)': {comp:[1668, 767, 345, 839, 3085, 12151, 3483, 4332, 9260, 4583, 3490],push:[1767, 812, 357, 881, 3198, 12530, 3609, 4521, 9553, 4728, 3680]},
+    '加盟': {comp:[810, 351, 168, 499, 1801, 6944, 2103, 2620, 5585, 2641, 1909],push:[834, 360, 172, 512, 1839, 7080, 2148, 2686, 5671, 2695, 1959]},
+    '众包(悦跑+普众合并)': {comp:[858, 416, 177, 340, 1284, 5207, 1380, 1712, 3675, 1942, 1581],push:[933, 452, 185, 369, 1359, 5450, 1461, 1835, 3882, 2033, 1721]},
+    '新能源站': {comp:[127, 54, 22, 95, 325, 1498, 317, 376, 1264, 663, 380],push:[130, 56, 22, 95, 334, 1523, 324, 382, 1283, 682, 392]},
+    '金涵站': {comp:[0, 0, 1, 5, 35, 186, 56, 50, 143, 149, 93],push:[3, 0, 1, 5, 35, 192, 56, 53, 146, 150, 97]},
+    '七都站': {comp:[0, 0, 0, 2, 62, 258, 62, 66, 193, 111, 73],push:[0, 0, 0, 3, 65, 262, 63, 66, 196, 112, 74]},
+    '亿利城站': {comp:[73, 21, 0, 40, 221, 706, 200, 278, 546, 230, 176],push:[75, 24, 0, 40, 227, 721, 208, 288, 554, 233, 183]},
+    '天茂站': {comp:[133, 53, 29, 97, 386, 1197, 401, 480, 890, 439, 331],push:[136, 53, 30, 99, 391, 1219, 406, 488, 906, 447, 337]},
+    '城北站': {comp:[196, 78, 64, 164, 431, 1476, 443, 586, 1172, 430, 382],push:[200, 78, 66, 168, 439, 1502, 450, 600, 1190, 439, 391]},
+    '万达站': {comp:[281, 145, 52, 96, 341, 1623, 624, 784, 1377, 619, 474],push:[290, 149, 53, 102, 348, 1661, 641, 809, 1396, 632, 485]},
+  },
+  '20260706': {
+    '整体(美配口径)': {comp:[1529, 676, 389, 828, 2790, 10491, 2675, 3438, 8219, 4242, 3347],push:[1608, 714, 409, 881, 2892, 10858, 2744, 3523, 8409, 4402, 3439]},
+    '加盟': {comp:[723, 303, 193, 476, 1562, 5797, 1462, 1934, 4740, 2507, 1853],push:[751, 316, 200, 492, 1594, 5895, 1480, 1965, 4814, 2571, 1897]},
+    '众包(悦跑+普众合并)': {comp:[806, 373, 196, 352, 1228, 4694, 1213, 1504, 3479, 1735, 1494],push:[857, 398, 209, 389, 1298, 4963, 1264, 1558, 3595, 1831, 1542]},
+    '新能源站': {comp:[129, 52, 32, 88, 267, 1039, 213, 222, 691, 561, 369],push:[134, 54, 34, 93, 277, 1054, 214, 226, 706, 578, 385]},
+    '金涵站': {comp:[1, 0, 1, 9, 35, 155, 39, 41, 215, 140, 98],push:[2, 1, 1, 9, 35, 159, 39, 42, 218, 141, 101]},
+    '七都站': {comp:[0, 0, 2, 4, 43, 118, 30, 42, 129, 108, 47],push:[1, 0, 2, 4, 44, 121, 30, 42, 129, 109, 47]},
+    '亿利城站': {comp:[78, 13, 0, 49, 162, 634, 144, 187, 507, 256, 206],push:[79, 13, 0, 51, 163, 644, 145, 192, 517, 264, 207]},
+    '天茂站': {comp:[104, 39, 29, 79, 349, 1090, 251, 398, 828, 435, 325],push:[107, 42, 30, 80, 359, 1106, 256, 406, 838, 453, 333]},
+    '城北站': {comp:[145, 67, 67, 154, 376, 1320, 294, 449, 1066, 397, 347],push:[151, 72, 70, 160, 381, 1342, 297, 451, 1077, 405, 355]},
+    '万达站': {comp:[266, 132, 62, 93, 330, 1441, 491, 595, 1304, 610, 461],push:[277, 134, 63, 95, 335, 1469, 499, 606, 1329, 621, 469]},
+  },
+  '20260707': {
+    '整体(美配口径)': {comp:[1509, 685, 394, 833, 2826, 10454, 2694, 3309, 8321, 4466, 3433],push:[1546, 706, 409, 864, 2942, 10720, 2777, 3394, 8515, 4616, 3561]},
+    '加盟': {comp:[679, 285, 167, 492, 1555, 5660, 1552, 1900, 4790, 2622, 1907],push:[697, 299, 174, 502, 1593, 5752, 1578, 1939, 4863, 2674, 1960]},
+    '众包(悦跑+普众合并)': {comp:[830, 400, 227, 341, 1271, 4794, 1142, 1409, 3531, 1844, 1526],push:[849, 407, 235, 362, 1349, 4968, 1199, 1455, 3652, 1942, 1601]},
+    '新能源站': {comp:[119, 40, 18, 87, 247, 946, 146, 153, 616, 536, 407],push:[120, 41, 18, 89, 253, 965, 150, 158, 628, 545, 415]},
+    '金涵站': {comp:[1, 0, 1, 13, 40, 152, 52, 53, 238, 154, 101],push:[1, 0, 2, 14, 40, 155, 53, 54, 240, 159, 106]},
+    '七都站': {comp:[0, 0, 1, 2, 46, 141, 36, 36, 138, 102, 55],push:[0, 0, 1, 2, 47, 142, 37, 37, 139, 102, 57]},
+    '亿利城站': {comp:[40, 11, 2, 52, 203, 629, 180, 205, 478, 283, 219],push:[42, 12, 3, 53, 206, 637, 182, 210, 487, 290, 227]},
+    '天茂站': {comp:[134, 39, 28, 97, 299, 1100, 304, 400, 894, 450, 313],push:[142, 39, 28, 98, 303, 1113, 309, 408, 906, 461, 318]},
+    '城北站': {comp:[139, 54, 63, 163, 383, 1287, 343, 446, 1085, 443, 351],push:[140, 59, 68, 167, 395, 1307, 350, 453, 1096, 450, 366]},
+    '万达站': {comp:[246, 141, 54, 78, 337, 1405, 491, 607, 1341, 654, 461],push:[252, 148, 54, 79, 349, 1433, 497, 619, 1367, 667, 471]},
+  },
+  '20260708': {
+    '整体(美配口径)': {comp:[1550, 683, 357, 815, 2945, 10887, 2806, 3436, 8614, 4376, 3561],push:[1622, 731, 379, 863, 3073, 11235, 2892, 3533, 8818, 4518, 3713]},
+    '加盟': {comp:[718, 289, 158, 505, 1692, 5954, 1598, 1985, 4934, 2433, 1974],push:[740, 304, 166, 521, 1729, 6068, 1620, 2029, 5025, 2483, 2025]},
+    '众包(悦跑+普众合并)': {comp:[832, 394, 199, 310, 1253, 4933, 1208, 1451, 3680, 1943, 1587],push:[882, 427, 213, 342, 1344, 5167, 1272, 1504, 3793, 2035, 1688]},
+    '新能源站': {comp:[128, 33, 34, 92, 286, 1019, 157, 191, 667, 523, 476],push:[131, 34, 35, 94, 302, 1031, 159, 197, 678, 537, 486]},
+    '金涵站': {comp:[2, 0, 0, 6, 33, 172, 46, 72, 235, 122, 113],push:[2, 0, 0, 6, 35, 175, 47, 72, 242, 126, 119]},
+    '七都站': {comp:[1, 1, 0, 4, 44, 136, 36, 35, 138, 102, 54],push:[1, 1, 0, 5, 45, 140, 38, 38, 138, 104, 54]},
+    '亿利城站': {comp:[60, 10, 1, 41, 208, 612, 163, 183, 573, 237, 193],push:[64, 11, 2, 42, 213, 621, 164, 188, 582, 245, 203]},
+    '天茂站': {comp:[122, 40, 29, 107, 369, 1105, 319, 403, 902, 419, 327],push:[126, 41, 33, 110, 371, 1129, 321, 409, 918, 424, 331]},
+    '城北站': {comp:[138, 70, 41, 154, 391, 1400, 342, 461, 1084, 395, 347],push:[142, 74, 42, 161, 398, 1422, 347, 468, 1104, 402, 354]},
+    '万达站': {comp:[267, 135, 53, 101, 361, 1510, 535, 640, 1335, 635, 464],push:[274, 143, 54, 103, 365, 1550, 544, 657, 1363, 645, 478]},
+  },
+  '20260709': {
+    '整体(美配口径)': {comp:[1532, 741, 356, 799, 2766, 10973, 2838, 3363, 8517, 4170, 3531],push:[1601, 778, 383, 858, 2862, 11321, 2953, 3480, 8799, 4359, 3648]},
+    '加盟': {comp:[638, 308, 175, 465, 1551, 6073, 1598, 1984, 5112, 2368, 1917],push:[653, 313, 180, 476, 1585, 6169, 1637, 2025, 5206, 2462, 1972]},
+    '众包(悦跑+普众合并)': {comp:[894, 433, 181, 334, 1215, 4900, 1240, 1379, 3405, 1802, 1614],push:[948, 465, 203, 382, 1277, 5152, 1316, 1455, 3593, 1897, 1676]},
+    '新能源站': {comp:[88, 51, 11, 104, 247, 1101, 176, 185, 830, 555, 439],push:[91, 51, 11, 105, 252, 1128, 179, 189, 839, 576, 451]},
+    '金涵站': {comp:[0, 0, 1, 3, 25, 191, 53, 75, 250, 141, 98],push:[0, 0, 1, 3, 26, 196, 56, 78, 254, 148, 100]},
+    '七都站': {comp:[0, 0, 0, 7, 50, 151, 32, 40, 151, 87, 63],push:[0, 0, 0, 7, 50, 156, 32, 40, 154, 89, 67]},
+    '亿利城站': {comp:[54, 13, 0, 45, 183, 633, 203, 237, 546, 233, 218],push:[54, 14, 0, 46, 189, 643, 208, 246, 554, 242, 226]},
+    '天茂站': {comp:[116, 47, 41, 93, 356, 1172, 307, 420, 888, 408, 300],push:[121, 47, 43, 96, 365, 1189, 312, 425, 907, 430, 316]},
+    '城北站': {comp:[137, 76, 69, 129, 336, 1353, 331, 440, 1063, 335, 361],push:[141, 77, 69, 130, 344, 1367, 339, 449, 1086, 345, 367]},
+    '万达站': {comp:[243, 121, 53, 84, 354, 1472, 496, 587, 1384, 609, 438],push:[246, 124, 56, 89, 359, 1490, 511, 598, 1412, 632, 445]},
+  },
+  '20260710': {
+    '整体(美配口径)': {comp:[1478, 599, 342, 756, 2822, 9830, 2847, 3435, 8174, 4130, 3242],push:[1509, 619, 352, 817, 2940, 10078, 2913, 3529, 8342, 4235, 3419]},
+    '加盟': {comp:[685, 273, 177, 455, 1528, 5342, 1607, 1979, 4775, 2420, 1671],push:[702, 284, 180, 467, 1578, 5446, 1639, 2033, 4860, 2478, 1700]},
+    '众包(悦跑+普众合并)': {comp:[793, 326, 165, 301, 1294, 4488, 1240, 1456, 3399, 1710, 1571],push:[807, 335, 172, 350, 1362, 4632, 1274, 1496, 3482, 1757, 1719]},
+    '新能源站': {comp:[107, 44, 30, 76, 210, 831, 123, 171, 845, 539, 335],push:[110, 44, 31, 78, 213, 859, 126, 178, 856, 551, 341]},
+    '金涵站': {comp:[1, 0, 0, 6, 40, 113, 29, 83, 229, 130, 98],push:[2, 0, 0, 6, 40, 115, 29, 88, 236, 133, 98]},
+    '七都站': {comp:[0, 0, 1, 2, 49, 110, 35, 46, 127, 96, 47],push:[0, 0, 1, 4, 51, 111, 35, 47, 130, 100, 49]},
+    '亿利城站': {comp:[42, 9, 0, 41, 219, 550, 175, 212, 493, 210, 202],push:[42, 9, 0, 42, 223, 557, 176, 215, 499, 214, 205]},
+    '天茂站': {comp:[129, 39, 41, 67, 311, 1068, 360, 401, 861, 456, 300],push:[129, 45, 41, 68, 321, 1085, 371, 413, 877, 466, 305]},
+    '城北站': {comp:[134, 50, 45, 135, 376, 1221, 338, 444, 945, 366, 295],push:[138, 51, 45, 137, 387, 1241, 346, 449, 961, 377, 300]},
+    '万达站': {comp:[272, 131, 60, 128, 323, 1449, 547, 622, 1275, 623, 394],push:[281, 135, 62, 132, 343, 1478, 556, 643, 1301, 637, 402]},
+  },
+  '20260711': {
+    '整体(美配口径)': {comp:[1273, 604, 285, 602, 2514, 8947, 2726, 3640, 7851, 1145, 0],push:[1308, 617, 298, 630, 2629, 9235, 2835, 3745, 8080, 1211, 0]},
+    '加盟': {comp:[587, 308, 155, 368, 1514, 5337, 1666, 2318, 5091, 761, 0],push:[600, 318, 158, 377, 1549, 5453, 1698, 2365, 5186, 777, 0]},
+    '众包(悦跑+普众合并)': {comp:[686, 296, 130, 234, 1000, 3610, 1060, 1322, 2760, 384, 0],push:[708, 299, 140, 253, 1080, 3782, 1137, 1380, 2894, 434, 0]},
+    '新能源站': {comp:[92, 38, 28, 61, 270, 1267, 267, 320, 1313, 244, 0],push:[96, 40, 28, 61, 279, 1294, 270, 327, 1333, 248, 0]},
+    '金涵站': {comp:[0, 0, 0, 7, 25, 98, 41, 78, 149, 24, 0],push:[0, 0, 0, 7, 25, 100, 43, 80, 153, 24, 0]},
+    '七都站': {comp:[0, 0, 0, 2, 61, 185, 50, 73, 203, 39, 0],push:[0, 0, 0, 2, 61, 189, 53, 75, 205, 40, 0]},
+    '亿利城站': {comp:[42, 14, 0, 40, 202, 550, 207, 279, 491, 82, 0],push:[42, 14, 0, 42, 205, 569, 212, 285, 501, 82, 0]},
+    '天茂站': {comp:[104, 49, 32, 63, 322, 1036, 313, 460, 905, 128, 0],push:[105, 51, 33, 66, 329, 1049, 319, 465, 920, 130, 0]},
+    '城北站': {comp:[117, 57, 39, 106, 321, 1026, 360, 538, 960, 112, 0],push:[122, 62, 40, 110, 327, 1044, 367, 557, 981, 117, 0]},
+    '万达站': {comp:[232, 150, 56, 89, 313, 1175, 428, 570, 1070, 132, 0],push:[235, 151, 57, 89, 323, 1208, 434, 576, 1093, 136, 0]},
+  },
+  '20260712': {
+    '整体(美配口径)': {comp:[0, 0, 0, 406, 2506, 9073, 2875, 3599, 8382, 3880, 3078],push:[0, 0, 0, 454, 2590, 9291, 2938, 3686, 8603, 3958, 3199]},
+    '加盟': {comp:[0, 0, 0, 267, 1417, 5306, 1739, 2171, 5102, 2290, 1739],push:[0, 0, 0, 275, 1457, 5383, 1771, 2207, 5171, 2328, 1788]},
+    '众包(悦跑+普众合并)': {comp:[0, 0, 0, 139, 1089, 3767, 1136, 1428, 3280, 1590, 1339],push:[0, 0, 0, 179, 1133, 3908, 1167, 1479, 3432, 1630, 1411]},
+    '新能源站': {comp:[0, 0, 0, 77, 327, 1323, 303, 267, 1198, 631, 439],push:[0, 0, 0, 79, 339, 1343, 303, 268, 1208, 642, 450]},
+    '金涵站': {comp:[0, 0, 0, 4, 23, 132, 44, 49, 111, 55, 47],push:[0, 0, 0, 4, 25, 133, 44, 50, 114, 59, 52]},
+    '七都站': {comp:[0, 0, 0, 4, 63, 227, 37, 64, 158, 86, 47],push:[0, 0, 0, 4, 65, 229, 38, 64, 166, 86, 48]},
+    '亿利城站': {comp:[0, 0, 0, 19, 180, 525, 166, 218, 494, 176, 142],push:[0, 0, 0, 19, 186, 534, 173, 221, 502, 179, 146]},
+    '天茂站': {comp:[0, 0, 0, 41, 323, 885, 327, 396, 796, 366, 313],push:[0, 0, 0, 43, 329, 897, 337, 397, 804, 374, 322]},
+    '城北站': {comp:[0, 0, 0, 94, 294, 989, 343, 475, 972, 355, 330],push:[0, 0, 0, 98, 300, 1009, 345, 488, 988, 359, 337]},
+    '万达站': {comp:[0, 0, 0, 28, 207, 1225, 519, 702, 1373, 621, 421],push:[0, 0, 0, 28, 213, 1238, 531, 719, 1389, 629, 433]},
+  },
+};
+
+const MATRIX = {
+  dims: ['整体(美配口径)','加盟','众包(悦跑+普众合并)','新能源站','金涵站','七都站','亿利城站','天茂站','城北站','万达站'],
+  periods: ['夜宵3','夜宵4','夜宵5','早餐1','早餐2','午高峰','下午茶1','下午茶2','晚高峰','夜宵1','夜宵2'],
+  data: {
+    '整体(美配口径)': {comp:[1,0,2,406,2532,9157,2930,3671,8497,3938,3116],push:[3,2,5,491,2729,9728,3060,3901,9067,4219,3411]},
+    '加盟': {comp:[0,0,0,267,1436,5377,1783,2227,5195,2339,1771],push:[0,0,0,277,1478,5462,1817,2266,5267,2381,1820]},
+    '众包(悦跑+普众合并)': {comp:[1,0,2,139,1096,3780,1147,1444,3302,1599,1345],push:[3,2,5,214,1251,4266,1243,1635,3800,1838,1591]},
+    '新能源站': {comp:[0,0,0,77,328,1335,308,269,1204,635,439],push:[0,0,0,79,340,1355,308,270,1214,648,450]},
+    '金涵站': {comp:[0,0,0,4,26,136,45,53,114,60,49],push:[0,0,0,4,28,138,45,54,117,64,54]},
+    '七都站': {comp:[0,0,0,4,63,228,38,64,165,87,47],push:[0,0,0,4,65,230,39,64,173,87,48]},
+    '亿利城站': {comp:[0,0,0,19,180,530,177,226,508,180,144],push:[0,0,0,19,186,540,184,229,516,183,148]},
+    '天茂站': {comp:[0,0,0,41,325,897,334,402,806,374,319],push:[0,0,0,43,331,910,344,403,814,382,328]},
+    '城北站': {comp:[0,0,0,94,306,1017,357,501,1014,374,352],push:[0,0,0,100,314,1040,361,517,1032,380,359]},
+    '万达站': {comp:[0,0,0,28,208,1234,524,712,1384,629,421],push:[0,0,0,28,214,1249,536,729,1401,637,433]}
+  }
+};
+
+const STATION_DATA = {
+  '新能源站': {cancel: [0, 0, 0, 2, 12, 20, 0, 1, 10, 11, 11],complete: [0, 0, 0, 77, 327, 1323, 303, 267, 1198, 631, 439],push: [0, 0, 0, 79, 339, 1343, 303, 268, 1208, 642, 450],ot_d: [0, 0, 0, 0, 2, 14, 3, 0, 7, 3, 10],riders: [0, 0, 0, 18, 50, 78, 51, 56, 80, 70, 38],riders5: [0, 0, 0, 8, 29, 76, 32, 29, 79, 57, 31],attend: [0.0, 0.0, 0.0, 20.93, 58.14, 90.7, 59.3, 65.12, 93.02, 81.4, 44.19],ot_c: [0.0, 0.0, 0.0, 37.66, 20.18, 34.32, 25.41, 16.48, 30.05, 26.94, 31.89],total_riders: 86},
+  '金涵站': {cancel: [0, 0, 0, 0, 2, 1, 0, 1, 3, 4, 5],complete: [0, 0, 0, 4, 23, 132, 44, 49, 111, 55, 47],push: [0, 0, 0, 4, 25, 133, 44, 50, 114, 59, 52],ot_d: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],riders: [0, 0, 0, 3, 6, 13, 12, 9, 14, 11, 8],riders5: [0, 0, 0, 0, 4, 12, 4, 6, 12, 7, 6],attend: [0.0, 0.0, 0.0, 20.0, 40.0, 86.67, 80.0, 60.0, 93.33, 73.33, 53.33],ot_c: [0.0, 0.0, 0.0, 25.0, 21.74, 25.76, 11.36, 14.29, 23.42, 20.0, 27.66],total_riders: 15},
+  '七都站': {cancel: [0, 0, 0, 0, 2, 2, 1, 0, 8, 0, 1],complete: [0, 0, 0, 4, 63, 227, 37, 64, 158, 86, 47],push: [0, 0, 0, 4, 65, 229, 38, 64, 166, 86, 48],ot_d: [0, 0, 0, 0, 0, 6, 1, 1, 0, 3, 0],riders: [0, 0, 0, 2, 10, 15, 7, 12, 16, 10, 7],riders5: [0, 0, 0, 0, 5, 14, 5, 5, 14, 7, 4],attend: [0.0, 0.0, 0.0, 12.5, 62.5, 93.75, 43.75, 75.0, 100.0, 62.5, 43.75],ot_c: [0.0, 0.0, 0.0, 0.0, 23.81, 34.36, 29.73, 17.19, 35.44, 33.72, 36.17],total_riders: 16},
+  '亿利城站': {cancel: [0, 0, 0, 0, 6, 9, 7, 3, 8, 3, 4],complete: [0, 0, 0, 19, 180, 525, 166, 218, 494, 176, 142],push: [0, 0, 0, 19, 186, 534, 173, 221, 502, 179, 146],ot_d: [0, 0, 0, 0, 0, 2, 2, 0, 3, 0, 0],riders: [0, 0, 0, 9, 26, 44, 29, 30, 43, 27, 19],riders5: [0, 0, 0, 1, 18, 40, 16, 22, 38, 21, 14],attend: [0.0, 0.0, 0.0, 19.15, 55.32, 93.62, 61.7, 63.83, 91.49, 57.45, 40.43],ot_c: [0.0, 0.0, 0.0, 31.58, 15.0, 23.05, 18.07, 18.35, 28.34, 23.86, 23.24],total_riders: 47},
+  '天茂站': {cancel: [0, 0, 0, 2, 6, 12, 10, 1, 8, 8, 9],complete: [0, 0, 0, 41, 323, 885, 327, 396, 796, 366, 313],push: [0, 0, 0, 43, 329, 897, 337, 397, 804, 374, 322],ot_d: [0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 5],riders: [0, 0, 0, 10, 39, 72, 51, 63, 79, 51, 38],riders5: [0, 0, 0, 5, 29, 68, 33, 44, 70, 37, 26],attend: [0.0, 0.0, 0.0, 11.49, 44.83, 82.76, 58.62, 72.41, 90.8, 58.62, 43.68],ot_c: [0.0, 0.0, 0.0, 41.46, 17.96, 18.08, 20.49, 11.36, 20.98, 22.95, 29.07],total_riders: 87},
+  '城北站': {cancel: [0, 0, 0, 4, 6, 20, 2, 13, 16, 4, 7],complete: [0, 0, 0, 94, 294, 989, 343, 475, 972, 355, 330],push: [0, 0, 0, 98, 300, 1009, 345, 488, 988, 359, 337],ot_d: [0, 0, 0, 1, 1, 5, 5, 1, 15, 3, 5],riders: [0, 0, 0, 19, 47, 95, 64, 65, 102, 51, 39],riders5: [0, 0, 0, 13, 31, 85, 35, 50, 88, 38, 35],attend: [0.0, 0.0, 0.0, 15.97, 39.5, 79.83, 53.78, 54.62, 85.71, 42.86, 32.77],ot_c: [0.0, 0.0, 0.0, 38.3, 24.49, 24.17, 20.99, 17.47, 30.86, 36.06, 33.03],total_riders: 119},
+  '万达站': {cancel: [0, 0, 0, 0, 6, 13, 12, 17, 16, 8, 10],complete: [0, 0, 0, 28, 207, 1225, 519, 702, 1373, 621, 421],push: [0, 0, 0, 28, 213, 1238, 531, 719, 1389, 629, 433],ot_d: [0, 0, 0, 0, 0, 3, 1, 0, 18, 2, 20],riders: [0, 0, 0, 10, 49, 101, 69, 78, 104, 77, 40],riders5: [0, 0, 0, 2, 18, 97, 54, 68, 98, 58, 36],attend: [0.0, 0.0, 0.0, 8.62, 42.24, 87.07, 59.48, 67.24, 89.66, 66.38, 34.48],ot_c: [0.0, 0.0, 0.0, 42.86, 10.63, 24.0, 15.8, 19.37, 32.05, 31.24, 42.99],total_riders: 116}
+};
+const STATION_NAMES = ['新能源站','金涵站','七都站','亿利城站','天茂站','城北站','万达站'];
+const STATION_SUMMARY = {'新能源站':98.55,'金涵站':96.67,'七都站':98.0,'亿利城站':97.96,'天茂站':98.4,'城北站':98.17,'万达站':98.38};
+
+const CROWD_DATA = {
+  periods: ['夜宵3','夜宵4','夜宵5','早餐1','早餐2','午高峰','下午茶1','下午茶2','晚高峰','夜宵1','夜宵2','全天'],
+  rows: [
+    {label:'推完率(%)',vals:['33.33','0.00','40.00','64.95','87.61','88.61','92.28','88.32','86.89','87.00','84.54','87.42'],fmt:v=>v+'%'},
+    {label:'推完(完成/推单)',vals:['1/3','0/2','2/5','139/214','1096/1251','3780/4266','1147/1243','1444/1635','3302/3800','1599/1838','1345/1591','13855/15848'],fmt:v=>v},
+    {label:'超时率(%)',vals:['0.00','0.00','0.00','0.00','0.82','2.72','1.05','2.01','2.57','2.44','2.30','2.22'],fmt:v=>v+'%'},
+    {label:'超时(单/完成)',vals:['0/1','0/0','0/2','0/139','9/1096','103/3780','12/1147','29/1444','85/3302','39/1599','31/1345','308/13855'],fmt:v=>v},
+    {label:'悦跑出勤(人)',vals:[0, 0, 0, 4, 48, 131, 83, 77, 97, 39, 14, 153],fmt:v=>v},
+    {label:'出勤率(%)',vals:[0, 0, 0, 80.0, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],fmt:v=>v+'%'},
+    {label:'悦跑排班(人)',vals:[0, 0, 0, 5, 54, 142, 91, 85, 108, 48, 19, 169],fmt:v=>v},
+    {label:'排班出勤率(%)',vals:[0, 0, 0, 80.00, 88.89, 92.25, 91.21, 90.59, 89.81, 81.25, 73.68, 90.53],fmt:v=>v+'%'},
+    {label:'排班出勤率*绝(%)',vals:[0, 0, 0, 2.22, 26.67, 72.78, 46.11, 42.78, 53.89, 21.67, 7.78, 85.00],fmt:v=>v+'%'}
+  ]
+};
+
+const EXP_KPI = {"targets":{"ot_3km_in_target":0.02917,"ot_3km_out_target":0.03681,"fake_target":0.00027,"fake_threshold":0.00047,"cancel_target":0.00077,"cancel_threshold":0.00157,"ot_weight":0.4,"fake_weight":0.3,"cancel_weight":0.3,"experience_module_score":15,"push_module_score":20,"close_module_score":5,"push_threshold":0.97,"push_target":0.9855,"push_challenge":0.992,"food_close_target":0.89,"nonfood_close_target":0.66,"jm_target_w1":433,"jm_target_w2":433,"zb_target_w1":374,"zb_target_w2":374,"yp_target_w1":160,"yp_target_w2":160,"jm_target_2":450,"zb_target_w3":403,"yp_target_w3":160},"daily":[{"date":20260701,"date_label":"07-01","raw":{"jm":{"push":20896,"complete":20445,"complete_3in":18182,"complete_3out":2263,"rel_gen":450,"rel_sev":16,"abs_total":225,"abs_gen":213,"abs_sev":10,"abs_gen_3in":182,"abs_sev_3in":8,"abs_gen_3out":31,"abs_sev_3out":2,"cancel":5,"fake":2},"zb":{"push":8189,"complete":6665,"complete_3in":6415,"complete_3out":250,"rel_gen":648,"rel_sev":104,"abs_total":196,"abs_gen":172,"abs_sev":23,"abs_gen_3in":162,"abs_sev_3in":22,"abs_gen_3out":10,"abs_sev_3out":1,"cancel":17,"fake":2},"yp":{"push":10196,"complete":10017,"complete_3in":9735,"complete_3out":282,"rel_gen":546,"rel_sev":46,"abs_total":163,"abs_gen":155,"abs_sev":8,"abs_gen_3in":151,"abs_sev_3in":8,"abs_gen_3out":4,"abs_sev_3out":0,"cancel":19,"fake":1}},"kpi":{"ot_abs_3in":0.015525,"ot_abs_3out":0.017174,"ot_abs_3in_pct":"1.55%","ot_abs_3out_pct":"1.72%","fake_rate":0.00013467,"fake_pct":"0.0135%","cancel_rate":0.00104376,"cancel_pct":"0.1044%","push_rate":0.984253,"push_rate_pct":"98.43%","jm_n":20445,"jm_d":20631,"all_n":37127,"all_d":37721,"food_close":0.883929,"food_close_pct":"88.39%","nonfood_close":0.627411,"nonfood_close_pct":"62.74%"},"score":{"ot_in_comp":1.87892,"ot_out_comp":2.143416,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":2.004858,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.737716,"cancel_score_rate":0.737716,"cancel_score":3.3197,"total_exp_score":14.8697}},{"date":20260702,"date_label":"07-02","raw":{"jm":{"push":21687,"complete":21217,"complete_3in":18951,"complete_3out":2266,"rel_gen":488,"rel_sev":13,"abs_total":277,"abs_gen":263,"abs_sev":6,"abs_gen_3in":218,"abs_sev_3in":6,"abs_gen_3out":45,"abs_sev_3out":0,"cancel":6,"fake":6},"zb":{"push":8236,"complete":6616,"complete_3in":6365,"complete_3out":251,"rel_gen":576,"rel_sev":134,"abs_total":192,"abs_gen":170,"abs_sev":21,"abs_gen_3in":162,"abs_sev_3in":20,"abs_gen_3out":8,"abs_sev_3out":1,"cancel":8,"fake":0},"yp":{"push":9889,"complete":9693,"complete_3in":9421,"complete_3out":272,"rel_gen":561,"rel_sev":71,"abs_total":129,"abs_gen":118,"abs_sev":11,"abs_gen_3in":115,"abs_sev_3in":11,"abs_gen_3out":3,"abs_sev_3out":0,"cancel":21,"fake":0}},"kpi":{"ot_abs_3in":0.015315,"ot_abs_3out":0.020437,"ot_abs_3in_pct":"1.53%","ot_abs_3out_pct":"2.04%","fake_rate":0.00015989,"fake_pct":"0.0160%","cancel_rate":0.00087913,"cancel_pct":"0.0879%","push_rate":0.982588,"push_rate_pct":"98.26%","jm_n":21217,"jm_d":21397,"all_n":37526,"all_d":38191,"food_close":0.879866,"food_close_pct":"87.99%","nonfood_close":0.633671,"nonfood_close_pct":"63.37%"},"score":{"ot_in_comp":1.904658,"ot_out_comp":1.801107,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.68867,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.875864,"cancel_score_rate":0.875864,"cancel_score":3.9414,"total_exp_score":15.4914}},{"date":20260703,"date_label":"07-03","raw":{"jm":{"push":22763,"complete":22251,"complete_3in":19821,"complete_3out":2430,"rel_gen":487,"rel_sev":19,"abs_total":252,"abs_gen":231,"abs_sev":13,"abs_gen_3in":193,"abs_sev_3in":12,"abs_gen_3out":38,"abs_sev_3out":1,"cancel":0,"fake":9},"zb":{"push":8507,"complete":6957,"complete_3in":6692,"complete_3out":265,"rel_gen":578,"rel_sev":104,"abs_total":198,"abs_gen":168,"abs_sev":27,"abs_gen_3in":158,"abs_sev_3in":26,"abs_gen_3out":10,"abs_sev_3out":1,"cancel":6,"fake":1},"yp":{"push":10202,"complete":9968,"complete_3in":9748,"complete_3out":220,"rel_gen":503,"rel_sev":38,"abs_total":181,"abs_gen":172,"abs_sev":6,"abs_gen_3in":166,"abs_sev_3in":6,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":17,"fake":1}},"kpi":{"ot_abs_3in":0.015471,"ot_abs_3out":0.019211,"ot_abs_3in_pct":"1.55%","ot_abs_3out_pct":"1.92%","fake_rate":0.00028078,"fake_pct":"0.0281%","cancel_rate":0.00055459,"cancel_pct":"0.0555%","push_rate":0.985808,"push_rate_pct":"98.58%","jm_n":22251,"jm_d":22444,"all_n":39176,"all_d":39740,"food_close":0.878526,"food_close_pct":"87.85%","nonfood_close":0.620978,"nonfood_close_pct":"62.10%"},"score":{"ot_in_comp":1.885443,"ot_out_comp":1.916092,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.961593,"fake_score_rate":0.961593,"fake_score":4.3272,"cancel_comp":1.38841,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":15.8772}},{"date":20260704,"date_label":"07-04","raw":{"jm":{"push":24818,"complete":24274,"complete_3in":21612,"complete_3out":2662,"rel_gen":487,"rel_sev":16,"abs_total":231,"abs_gen":215,"abs_sev":9,"abs_gen_3in":173,"abs_sev_3in":7,"abs_gen_3out":42,"abs_sev_3out":2,"cancel":0,"fake":5},"zb":{"push":9407,"complete":7926,"complete_3in":7610,"complete_3out":316,"rel_gen":532,"rel_sev":79,"abs_total":210,"abs_gen":189,"abs_sev":21,"abs_gen_3in":182,"abs_sev_3in":20,"abs_gen_3out":7,"abs_sev_3out":1,"cancel":5,"fake":1},"yp":{"push":9949,"complete":9738,"complete_3in":9500,"complete_3out":238,"rel_gen":361,"rel_sev":26,"abs_total":132,"abs_gen":124,"abs_sev":8,"abs_gen_3in":118,"abs_sev_3in":8,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":23,"fake":0}},"kpi":{"ot_abs_3in":0.013119,"ot_abs_3out":0.018035,"ot_abs_3in_pct":"1.31%","ot_abs_3out_pct":"1.80%","fake_rate":0.00014307,"fake_pct":"0.0143%","cancel_rate":0.00063386,"cancel_pct":"0.0634%","push_rate":0.986823,"push_rate_pct":"98.68%","jm_n":24274,"jm_d":24506,"all_n":41938,"all_d":42498,"food_close":0.876161,"food_close_pct":"87.62%","nonfood_close":0.647421,"nonfood_close_pct":"64.74%"},"score":{"ot_in_comp":2.223466,"ot_out_comp":2.041051,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.88721,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.214785,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260705,"date_label":"07-05","raw":{"jm":{"push":26522,"complete":25939,"complete_3in":23039,"complete_3out":2900,"rel_gen":632,"rel_sev":26,"abs_total":330,"abs_gen":307,"abs_sev":14,"abs_gen_3in":259,"abs_sev_3in":11,"abs_gen_3out":48,"abs_sev_3out":3,"cancel":2,"fake":8},"zb":{"push":9880,"complete":8112,"complete_3in":7800,"complete_3out":312,"rel_gen":734,"rel_sev":169,"abs_total":282,"abs_gen":233,"abs_sev":44,"abs_gen_3in":214,"abs_sev_3in":43,"abs_gen_3out":19,"abs_sev_3out":1,"cancel":4,"fake":1},"yp":{"push":9457,"complete":9228,"complete_3in":8974,"complete_3out":254,"rel_gen":555,"rel_sev":49,"abs_total":173,"abs_gen":166,"abs_sev":7,"abs_gen_3in":163,"abs_sev_3in":5,"abs_gen_3out":3,"abs_sev_3out":2,"cancel":36,"fake":0}},"kpi":{"ot_abs_3in":0.017457,"ot_abs_3out":0.021927,"ot_abs_3in_pct":"1.75%","ot_abs_3out_pct":"2.19%","fake_rate":0.00020795,"fake_pct":"0.0208%","cancel_rate":0.00091585,"cancel_pct":"0.0916%","push_rate":0.982096,"push_rate_pct":"98.21%","jm_n":25939,"jm_d":26164,"all_n":43279,"all_d":44068,"food_close":0.885276,"food_close_pct":"88.53%","nonfood_close":0.663182,"nonfood_close_pct":"66.32%"},"score":{"ot_in_comp":1.671,"ot_out_comp":1.67873,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.29837,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.840748,"cancel_score_rate":0.840748,"cancel_score":3.7834,"total_exp_score":15.3334}},{"date":20260706,"date_label":"07-06","raw":{"jm":{"push":22480,"complete":22000,"complete_3in":19613,"complete_3out":2387,"rel_gen":442,"rel_sev":11,"abs_total":213,"abs_gen":199,"abs_sev":7,"abs_gen_3in":173,"abs_sev_3in":7,"abs_gen_3out":26,"abs_sev_3out":0,"cancel":0,"fake":6},"zb":{"push":7312,"complete":5893,"complete_3in":5693,"complete_3out":200,"rel_gen":457,"rel_sev":92,"abs_total":143,"abs_gen":130,"abs_sev":10,"abs_gen_3in":124,"abs_sev_3in":10,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":9,"fake":1},"yp":{"push":10259,"complete":10096,"complete_3in":9826,"complete_3out":270,"rel_gen":529,"rel_sev":36,"abs_total":138,"abs_gen":132,"abs_sev":6,"abs_gen_3in":130,"abs_sev_3in":6,"abs_gen_3out":2,"abs_sev_3out":0,"cancel":12,"fake":1}},"kpi":{"ot_abs_3in":0.012809,"ot_abs_3out":0.011901,"ot_abs_3in_pct":"1.28%","ot_abs_3out_pct":"1.19%","fake_rate":0.00021059,"fake_pct":"0.0211%","cancel_rate":0.00052433,"cancel_pct":"0.0524%","push_rate":0.984962,"push_rate_pct":"98.50%","jm_n":22000,"jm_d":22205,"all_n":37989,"all_d":38569,"food_close":0.880936,"food_close_pct":"88.09%","nonfood_close":0.630499,"nonfood_close_pct":"63.05%"},"score":{"ot_in_comp":2.277334,"ot_out_comp":3.093123,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.282129,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.468537,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260707,"date_label":"07-07","raw":{"jm":{"push":22524,"complete":22032,"complete_3in":19635,"complete_3out":2397,"rel_gen":504,"rel_sev":26,"abs_total":237,"abs_gen":214,"abs_sev":18,"abs_gen_3in":184,"abs_sev_3in":16,"abs_gen_3out":30,"abs_sev_3out":2,"cancel":4,"fake":7},"zb":{"push":7455,"complete":6003,"complete_3in":5772,"complete_3out":231,"rel_gen":491,"rel_sev":88,"abs_total":176,"abs_gen":156,"abs_sev":20,"abs_gen_3in":152,"abs_sev_3in":20,"abs_gen_3out":4,"abs_sev_3out":0,"cancel":8,"fake":0},"yp":{"push":10464,"complete":10279,"complete_3in":10010,"complete_3out":269,"rel_gen":466,"rel_sev":45,"abs_total":159,"abs_gen":143,"abs_sev":15,"abs_gen_3in":137,"abs_sev_3in":14,"abs_gen_3out":6,"abs_sev_3out":1,"cancel":11,"fake":2}},"kpi":{"ot_abs_3in":0.014767,"ot_abs_3out":0.014843,"ot_abs_3in_pct":"1.48%","ot_abs_3out_pct":"1.48%","fake_rate":0.0002349,"fake_pct":"0.0235%","cancel_rate":0.0005687,"cancel_pct":"0.0569%","push_rate":0.986559,"push_rate_pct":"98.66%","jm_n":22032,"jm_d":22230,"all_n":38314,"all_d":38836,"food_close":0.883165,"food_close_pct":"88.32%","nonfood_close":0.632427,"nonfood_close_pct":"63.24%"},"score":{"ot_in_comp":1.975361,"ot_out_comp":2.479967,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.14942,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.353961,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260708,"date_label":"07-08","raw":{"jm":{"push":23181,"complete":22663,"complete_3in":20307,"complete_3out":2356,"rel_gen":615,"rel_sev":25,"abs_total":348,"abs_gen":326,"abs_sev":12,"abs_gen_3in":264,"abs_sev_3in":11,"abs_gen_3out":62,"abs_sev_3out":1,"cancel":1,"fake":14},"zb":{"push":7646,"complete":6223,"complete_3in":5996,"complete_3out":227,"rel_gen":463,"rel_sev":85,"abs_total":183,"abs_gen":154,"abs_sev":23,"abs_gen_3in":141,"abs_sev_3in":21,"abs_gen_3out":13,"abs_sev_3out":2,"cancel":4,"fake":1},"yp":{"push":10580,"complete":10393,"complete_3in":10081,"complete_3out":312,"rel_gen":514,"rel_sev":50,"abs_total":173,"abs_gen":165,"abs_sev":8,"abs_gen_3in":156,"abs_sev_3in":7,"abs_gen_3out":9,"abs_sev_3out":1,"cancel":15,"fake":0}},"kpi":{"ot_abs_3in":0.016491,"ot_abs_3out":0.030397,"ot_abs_3in_pct":"1.65%","ot_abs_3out_pct":"3.04%","fake_rate":0.00038188,"fake_pct":"0.0382%","cancel_rate":0.00048301,"cancel_pct":"0.0483%","push_rate":0.986166,"push_rate_pct":"98.62%","jm_n":22663,"jm_d":22877,"all_n":39279,"all_d":39830,"food_close":0.883997,"food_close_pct":"88.40%","nonfood_close":0.617464,"nonfood_close_pct":"61.75%"},"score":{"ot_in_comp":1.768869,"ot_out_comp":1.210965,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.707022,"fake_score_rate":0.707022,"fake_score":3.1816,"cancel_comp":1.59417,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":14.7316}},{"date":20260709,"date_label":"07-09","raw":{"jm":{"push":23264,"complete":22741,"complete_3in":20247,"complete_3out":2494,"rel_gen":916,"rel_sev":268,"abs_total":498,"abs_gen":441,"abs_sev":48,"abs_gen_3in":364,"abs_sev_3in":30,"abs_gen_3out":77,"abs_sev_3out":18,"cancel":5,"fake":7},"zb":{"push":7607,"complete":5899,"complete_3in":5688,"complete_3out":211,"rel_gen":527,"rel_sev":110,"abs_total":182,"abs_gen":165,"abs_sev":13,"abs_gen_3in":152,"abs_sev_3in":13,"abs_gen_3out":13,"abs_sev_3out":0,"cancel":8,"fake":0},"yp":{"push":10099,"complete":9918,"complete_3in":9684,"complete_3out":234,"rel_gen":492,"rel_sev":67,"abs_total":152,"abs_gen":138,"abs_sev":12,"abs_gen_3in":136,"abs_sev_3in":12,"abs_gen_3out":2,"abs_sev_3out":0,"cancel":15,"fake":4}},"kpi":{"ot_abs_3in":0.019849,"ot_abs_3out":0.037428,"ot_abs_3in_pct":"1.98%","ot_abs_3out_pct":"3.74%","fake_rate":0.00028528,"fake_pct":"0.0285%","cancel_rate":0.00068343,"cancel_pct":"0.0683%","push_rate":0.982094,"push_rate_pct":"98.21%","jm_n":22741,"jm_d":22971,"all_n":38558,"all_d":39261,"food_close":0.874513,"food_close_pct":"87.45%","nonfood_close":0.640286,"nonfood_close_pct":"64.03%"},"score":{"ot_in_comp":1.469599,"ot_out_comp":0.983496,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.946424,"fake_score_rate":0.946424,"fake_score":4.2589,"cancel_comp":1.126675,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":15.8089}},{"date":20260710,"date_label":"07-10","raw":{"jm":{"push":22011,"complete":21480,"complete_3in":18990,"complete_3out":2490,"rel_gen":801,"rel_sev":256,"abs_total":355,"abs_gen":277,"abs_sev":57,"abs_gen_3in":226,"abs_sev_3in":45,"abs_gen_3out":51,"abs_sev_3out":12,"cancel":2,"fake":14},"zb":{"push":7314,"complete":5972,"complete_3in":5741,"complete_3out":231,"rel_gen":352,"rel_sev":51,"abs_total":129,"abs_gen":114,"abs_sev":11,"abs_gen_3in":111,"abs_sev_3in":11,"abs_gen_3out":3,"abs_sev_3out":0,"cancel":6,"fake":1},"yp":{"push":9338,"complete":9155,"complete_3in":8905,"complete_3out":250,"rel_gen":361,"rel_sev":24,"abs_total":110,"abs_gen":106,"abs_sev":4,"abs_gen_3in":105,"abs_sev_3in":3,"abs_gen_3out":1,"abs_sev_3out":1,"cancel":17,"fake":1}},"kpi":{"ot_abs_3in":0.014895,"ot_abs_3out":0.022888,"ot_abs_3in_pct":"1.49%","ot_abs_3out_pct":"2.29%","fake_rate":0.00043707,"fake_pct":"0.0437%","cancel_rate":0.00064661,"cancel_pct":"0.0647%","push_rate":0.985835,"push_rate_pct":"98.58%","jm_n":21480,"jm_d":21737,"all_n":36607,"all_d":37133,"food_close":0.875094,"food_close_pct":"87.51%","nonfood_close":0.643959,"nonfood_close_pct":"64.40%"},"score":{"ot_in_comp":1.958407,"ot_out_comp":1.608272,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.617743,"fake_score_rate":0.617743,"fake_score":2.7798,"cancel_comp":1.19082,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":14.3298}},{"date":20260711,"date_label":"07-11","raw":{"jm":{"push":19034,"complete":18593,"complete_3in":16187,"complete_3out":2406,"rel_gen":470,"rel_sev":34,"abs_total":201,"abs_gen":180,"abs_sev":15,"abs_gen_3in":142,"abs_sev_3in":12,"abs_gen_3out":38,"abs_sev_3out":3,"cancel":3,"fake":4},"zb":{"push":3923,"complete":2970,"complete_3in":2844,"complete_3out":126,"rel_gen":253,"rel_sev":63,"abs_total":70,"abs_gen":58,"abs_sev":9,"abs_gen_3in":51,"abs_sev_3in":9,"abs_gen_3out":7,"abs_sev_3out":0,"cancel":10,"fake":1},"yp":{"push":7464,"complete":7308,"complete_3in":7049,"complete_3out":259,"rel_gen":449,"rel_sev":36,"abs_total":119,"abs_gen":112,"abs_sev":7,"abs_gen_3in":107,"abs_sev_3in":7,"abs_gen_3out":5,"abs_sev_3out":0,"cancel":12,"fake":1}},"kpi":{"ot_abs_3in":0.012577,"ot_abs_3out":0.01899,"ot_abs_3in_pct":"1.26%","ot_abs_3out_pct":"1.90%","fake_rate":0.00020782,"fake_pct":"0.0208%","cancel_rate":0.0008218,"cancel_pct":"0.0822%","push_rate":0.981806,"push_rate_pct":"98.18%","jm_n":18593,"jm_d":18800,"all_n":28871,"all_d":29406,"food_close":0.888743,"food_close_pct":"88.87%","nonfood_close":0.708818,"nonfood_close_pct":"70.88%"},"score":{"ot_in_comp":2.319371,"ot_out_comp":1.938428,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.299195,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.936967,"cancel_score_rate":0.936967,"cancel_score":4.2164,"total_exp_score":15.7664}},{"date":20260712,"date_label":"07-12","raw":{"jm":{"push":20794,"complete":20401,"complete_3in":18005,"complete_3out":2396,"rel_gen":367,"rel_sev":16,"abs_total":156,"abs_gen":146,"abs_sev":6,"abs_gen_3in":120,"abs_sev_3in":5,"abs_gen_3out":26,"abs_sev_3out":1,"cancel":1,"fake":4},"zb":{"push":5371,"complete":4235,"complete_3in":4075,"complete_3out":160,"rel_gen":396,"rel_sev":64,"abs_total":123,"abs_gen":113,"abs_sev":7,"abs_gen_3in":106,"abs_sev_3in":6,"abs_gen_3out":7,"abs_sev_3out":1,"cancel":7,"fake":3},"yp":{"push":8643,"complete":8459,"complete_3in":8136,"complete_3out":323,"rel_gen":454,"rel_sev":34,"abs_total":131,"abs_gen":122,"abs_sev":7,"abs_gen_3in":115,"abs_sev_3in":7,"abs_gen_3out":7,"abs_sev_3out":0,"cancel":15,"fake":2}},"kpi":{"ot_abs_3in":0.011881,"ot_abs_3out":0.014588,"ot_abs_3in_pct":"1.19%","ot_abs_3out_pct":"1.46%","fake_rate":0.00027194,"fake_pct":"0.0272%","cancel_rate":0.00066077,"cancel_pct":"0.0661%","push_rate":0.986526,"push_rate_pct":"98.65%","jm_n":20401,"jm_d":20583,"all_n":33095,"all_d":33547,"food_close":0.877182,"food_close_pct":"87.72%","nonfood_close":0.694529,"nonfood_close_pct":"69.45%"},"score":{"ot_in_comp":2.455155,"ot_out_comp":2.523238,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.99285,"fake_score_rate":0.99285,"fake_score":4.4678,"cancel_comp":1.165311,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.0178}}],"monthly":{"days":12,"total_push":477361,"total_complete":451759,"ot_abs_3in":0.015124,"ot_abs_3out":0.0207,"fake_rate":0.00024571,"cancel_rate":0.00069968,"score":{"ot_in_comp":1.92868,"ot_out_comp":1.778229,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.098873,"fake_score_rate":1.098873,"fake_score":4.9449,"cancel_comp":1.100503,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.4949}}};
+
+const KPI = {
+  pr: 0.9865, pr_t: 0.9845, pr_g: 0.002,
+  jm_pr: 0.9811, jm_floor: 0.9880, jm_gap: -0.0069,
+  zb_pr: 0.9058, zb_gap: -0.0797,
+  ot3i: 0.01285, ot3i_t: 0.02917,
+  ot3o: 0.00149, ot3o_t: 0.03681,
+  fk: 0.000268, fk_t: 0.000247, fk_th: 0.00047,
+  cl: 0.000686, cl_t: 0.000768, cl_th: 0.00157,
+  n: 33095, d: 33547, weather: '非常恶劣',
+  dates: ['20260701','20260702','20260703','20260704','20260705','20260706','20260707','20260708','20260709','20260710','20260711','20260712'],
+  currentIdx: 11,
+  trend: [
+    {date:'20260701',weather:'一般恶劣',pr:0.9843,jm_pr:0.9784,zb_pr:0.9074,ot3i:0.01986,ot3o:0.02147,fk:0.000134,cl:0.001099,n:37127,d:37721},
+    {date:'20260702',weather:'一般恶劣',pr:0.9826,jm_pr:0.9783,zb_pr:0.8998,ot3i:0.01947,ot3o:0.02187,fk:0.000159,cl:0.000928,n:37526,d:38191},
+    {date:'20260703',weather:'一般恶劣',pr:0.9858,jm_pr:0.9775,zb_pr:0.9046,ot3i:0.0202,ot3o:0.02196,fk:0.000279,cl:0.000584,n:39176,d:39740},
+    {date:'20260704',weather:'比较恶劣',pr:0.9868,jm_pr:0.9781,zb_pr:0.9126,ot3i:0.01665,ot3o:0.02177,fk:0.000142,cl:0.000664,n:41938,d:42498},
+    {date:'20260705',weather:'一般恶劣',pr:0.9821,jm_pr:0.978,zb_pr:0.8967,ot3i:0.02326,ot3o:0.02885,fk:0.000207,cl:0.000966,n:43279,d:44068},
+    {date:'20260706',weather:'一般恶劣',pr:0.985,jm_pr:0.9786,zb_pr:0.91,ot3i:0.01536,ot3o:0.0119,fk:0.00021,cl:0.000551,n:37989,d:38569},
+    {date:'20260707',weather:'一般恶劣',pr:0.9866,jm_pr:0.9782,zb_pr:0.9086,ot3i:0.02031,ot3o:0.01899,fk:0.000234,cl:0.000598,n:38314,d:38836},
+    {date:'20260708',weather:'一般恶劣',pr:0.9862,jm_pr:0.9777,zb_pr:0.9117,ot3i:0.02068,ot3o:0.03592,fk:0.00038,cl:0.000507,n:39279,d:39830},
+    {date:'20260709',weather:'一般恶劣',pr:0.9821,jm_pr:0.9775,zb_pr:0.8933,ot3i:0.0259,ot3o:0.06193,fk:0.000258,cl:0.000749,n:38558,d:39261},
+    {date:'20260710',weather:'正常',pr:0.9858,jm_pr:0.9754,zb_pr:0.9084,ot3i:0.02139,ot3o:0.04011,fk:0.000435,cl:0.00087,n:36607,d:37133},
+    {date:'20260711',weather:'比较恶劣',pr:0.9818,jm_pr:0.9768,zb_pr:0.9026,ot3i:0.01678,ot3o:0.02329,fk:0.000276,cl:0.000931,n:28871,d:29406},
+    {date:'20260712',weather:'非常恶劣',pr:0.9865,jm_pr:0.9811,zb_pr:0.9058,ot3i:0.01285,ot3o:0.00149,fk:0.000268,cl:0.000686,n:33095,d:33547}
+  ]
+};
+
+// ======================================================================
+// 工具函数
+// ======================================================================
+function fmtPct(v){return(v*100).toFixed(2)+'%'}
+function fmtPct4(v){return(v*100).toFixed(4)+'%'}
+function cellClass(ratio){
+  if(ratio===null||ratio===undefined)return'cell-gray';
+  if(ratio>=0.9855)return'cell-green';
+  if(ratio>=0.97)return'cell-yellow';
+  return'cell-red';
+}
+function cellText(comp,push){
+  if(push===0)return'—';
+  return fmtPct(comp/push)+'<br><small>'+comp+'/'+push+'</small>';
+}
+function fmtVal(v,dec){
+  if(v===null||v===undefined)return '<span class="hourglass">⏳</span>';
+  return typeof v==='number' ? v.toFixed(dec!==undefined?dec:(Math.abs(v)<1?4:2)) : v;
+}
+function fmtRate(v){
+  if(v===null||v===undefined)return '<span class="hourglass">⏳</span>';
+  return (v*100).toFixed(2)+'%';
+}
+function scoreColor(score,max){
+  if(score===null||score===undefined)return 'muted';
+  if(score>=max)return 'success-text';
+  if(score>=max*0.9)return 'warning-text';
+  return 'danger-text';
+}
+function dotForRate(actual,target,threshold){
+  if(actual===null||actual===undefined)return 'dot-gray';
+  if(target!==undefined && actual<=target)return 'dot-green';
+  if(threshold!==undefined && actual<=threshold)return 'dot-yellow';
+  return 'dot-red';
+}
+
+// ======================================================================
+// 交互函数
+// ======================================================================
+function switchMainTab(tab){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.nav-tab[data-tab="'+tab+'"]').classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  // 延迟初始化图表
+  if(tab==='overtime' && !window._otChartsInit){ window._otChartsInit=true; setTimeout(initOtCharts,100); }
+  if(tab==='period1' && !window._p1ChartsInit){ window._p1ChartsInit=true; setTimeout(initP1Charts,100); }
+}
+
+function switchDate(idx){
+  KPI.currentIdx=idx;
+  const d=KPI.trend[idx];
+  KPI.pr=d.pr; KPI.jm_pr=d.jm_pr; KPI.zb_pr=d.zb_pr;
+  KPI.ot3i=d.ot3i; KPI.ot3o=d.ot3o; KPI.fk=d.fk; KPI.cl=d.cl;
+  KPI.n=d.n; KPI.d=d.d; KPI.weather=d.weather;
+  KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
+  document.getElementById('dateSelect').value=idx;
+  document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
+  renderAll();
+}
+
+function togglePanel(header){
+  const body=header.nextElementSibling;
+  const arrow=header.querySelector('.arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function toggleAllPanels(area){
+  const panels=document.querySelectorAll('#'+area+' .collapse-panel');
+  const allOpen=[...panels].every(p=>p.querySelector('.collapse-body').classList.contains('open'));
+  panels.forEach(p=>{
+    const body=p.querySelector('.collapse-body');
+    const arrow=p.querySelector('.arrow');
+    if(allOpen){body.classList.remove('open');arrow.classList.remove('open');}
+    else{body.classList.add('open');arrow.classList.add('open');}
+  });
+}
+
+function scrollToEl(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function exportTable(tableId,filename){
+  const table=document.getElementById(tableId);
+  if(!table){alert('表格未找到');return;}
+  let csv='\uFEFF';
+  table.querySelectorAll('tr').forEach(row=>{
+    const cells=[];
+    row.querySelectorAll('th,td').forEach(cell=>{cells.push('"'+cell.textContent.replace(/"/g,'""').trim()+'"');});
+    csv+=cells.join(',')+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename+'.csv';
+  a.click();
+}
+
+// ======================================================================
+// 渲染函数
+// ======================================================================
+function renderAll(){
+  renderKpiMainTable();
+  renderPeriodTable();
+  renderDailyDetail();
+  renderPressureCards();
+  renderOtSummary();
+}
+
+// --- 全月总览：核心考核总表 ---
+function renderKpiMainTable(){
+  const mk=MONTHLY_KPI;
+  let html='<table class="kpi-main-table" id="kpiMainTable">';
+  html+='<thead><tr><th colspan="8" style="font-size:14px;text-align:left">宁德 7 月 KPI 得分 <b style="color:var(--primary)">'+mk.score.toFixed(2)+'</b> / 40</th></tr>';
+  html+='<tr><th style="width:8%">模块</th><th style="width:12%">项目</th><th style="width:10%">拆分</th><th style="width:10%">考核目标</th><th style="width:12%">考核达成</th><th style="width:10%">完成率</th><th style="width:10%">得分率</th><th style="width:10%">得分</th></tr></thead><tbody>';
+
+  let prevType='';
+  mk.sections.forEach(sec=>{
+    if(sec.type!==prevType){
+      html+='<tr class="section-header"><td colspan="8">'+sec.type+'</td></tr>';
+      prevType=sec.type;
+    }
+    sec.rows.forEach((r,i)=>{
+      const targetStr = r.target<0.01 ? (r.target*100).toFixed(r.target<0.001?4:2)+'%' : r.target;
+      const actualStr = r.actual!==null ? (r.actual<0.01 ? (r.actual*100).toFixed(r.actual<0.001?4:2)+'%' : r.actual) : '<span class="hourglass">⏳</span>';
+      const rateStr = fmtRate(r.rate);
+      const srStr = fmtRate(r.score_rate);
+      const scoreStr = r.score!==null ? r.score.toFixed(2) : '<span class="hourglass">⏳</span>';
+      const sc = scoreColor(r.score, parseFloat(sec.score_label));
+      const showItem = i===0 ? r.item : '';
+      const showSub = i===0 ? r.sub : '';
+      const showLabel = i===0 ? sec.label : '';
+      html+='<tr>';
+      html+='<td class="l">'+(showLabel||'')+'</td>';
+      html+='<td class="l">'+(showItem||'')+' '+(showSub?'<small style="color:var(--text-muted)">'+showSub+'</small>':'')+'</td>';
+      html+='<td class="l">'+r.detail+'</td>';
+      html+='<td class="r">'+targetStr+'</td>';
+      html+='<td class="r '+sc+'">'+actualStr+'</td>';
+      html+='<td class="r">'+rateStr+'</td>';
+      html+='<td class="r">'+srStr+'</td>';
+      html+='<td class="r bold '+sc+'">'+scoreStr+'</td>';
+      html+='</tr>';
+    });
+  });
+  html+='</tbody></table>';
+  document.getElementById('kpiMainTable').innerHTML=html;
+}
+
+// --- 全月总览：考核周期运力模块 ---
+function renderPeriodTable(){
+  const ps=MONTHLY_KPI.periods;
+  let html='<table class="kpi-main-table" id="periodTable">';
+  html+='<thead><tr><th style="width:10%">期</th><th style="width:10%">周期</th><th style="width:15%">运力模块</th><th style="width:10%">目标</th><th style="width:12%">达成</th><th style="width:12%">完成率</th><th style="width:12%">得分率</th><th style="width:10%">得分</th></tr></thead><tbody>';
+
+  let prevType='';
+  ps.forEach(p=>{
+    if(p.type!==prevType){
+      html+='<tr class="section-header"><td colspan="8">'+p.type+'（考核周期运力模块）</td></tr>';
+      prevType=p.type;
+    }
+    const targetStr = p.target!==null ? p.target : '<span class="hourglass">⏳</span>';
+    const actualStr = p.actual!==null ? p.actual : '<span class="hourglass">⏳</span>';
+    const rateStr = p.rate!==null ? fmtRate(p.rate) : '<span class="hourglass">⏳</span>';
+    const srStr = p.score_rate!==null ? fmtRate(p.score_rate) : '<span class="hourglass">⏳</span>';
+    const scoreStr = p.score!==null ? p.score.toFixed(2) : '<span class="hourglass">⏳</span>';
+    html+='<tr>';
+    html+='<td class="l">'+(p.cycle==='整期'?'<b>'+p.type+'</b>':'')+'</td>';
+    html+='<td class="l">'+p.cycle+'</td>';
+    html+='<td class="l">'+p.item+'</td>';
+    html+='<td class="r">'+targetStr+'</td>';
+    html+='<td class="r">'+actualStr+'</td>';
+    html+='<td class="r">'+rateStr+'</td>';
+    html+='<td class="r">'+srStr+'</td>';
+    html+='<td class="r bold">'+scoreStr+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('periodTable').innerHTML=html;
+}
+
+// --- 每日履约明细 ---
+function renderDailyDetail(){
+  const tabs=document.getElementById('dailyWeekTabs');
+  tabs.innerHTML='<button class="sub-tab active" onclick="switchDailyWeek(-1)">全部</button>';
+  KPI.trend.forEach((d,i)=>{
+    const lbl=d.date.slice(4,6)+'-'+d.date.slice(6,8);
+    tabs.innerHTML+='<button class="sub-tab" onclick="switchDailyWeek('+i+')">'+lbl+'</button>';
+  });
+  renderDailyTable(-1);
+}
+
+function switchDailyWeek(idx){
+  document.querySelectorAll('#dailyWeekTabs .sub-tab').forEach((t,i)=>{
+    if((idx===-1&&i===0)||(idx===i-1)) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+  renderDailyTable(idx);
+}
+
+function renderDailyTable(weekIdx){
+  let data=KPI.trend;
+  if(weekIdx>=0) data=[KPI.trend[weekIdx]];
+  let html='<div class="matrix-wrap"><table class="data-table">';
+  html+='<thead><tr><th>日期</th><th>天气</th><th>总推单</th><th>整体推完率</th><th>加盟推完率</th><th>众包推完率</th><th>超时3km内</th><th>超时3km外</th><th>虚假点率</th><th>取消率</th><th>体验得分</th></tr></thead><tbody>';
+  data.forEach(d=>{
+    const kpiDate=d.date;
+    let ed=null;
+    for(let i=0;i<EXP_KPI.daily.length;i++){if(String(EXP_KPI.daily[i].date)===String(kpiDate)){ed=EXP_KPI.daily[i];break;}}
+    const k=ed?ed.kpi:null;
+    const s=ed?ed.score:null;
+    const T=EXP_KPI.targets;
+    html+='<tr>';
+    html+='<td class="ind-name">'+d.date.slice(4,6)+'-'+d.date.slice(6,8)+'</td>';
+    html+='<td>'+d.weather+'</td>';
+    html+='<td class="r">'+d.d.toLocaleString()+'</td>';
+    html+='<td class="r" style="color:'+(d.pr>=0.9855?'var(--success)':d.pr>=0.97?'var(--warning)':'var(--danger)')+'">'+fmtPct(d.pr)+'</td>';
+    html+='<td class="r">'+fmtPct(d.jm_pr)+'</td>';
+    html+='<td class="r">'+fmtPct(d.zb_pr)+'</td>';
+    html+='<td class="r" style="color:'+(k&&k.ot_abs_3in<=T.ot_3km_in_target?'var(--success)':'var(--danger)')+'">'+(k?fmtPct4(k.ot_abs_3in):'—')+'</td>';
+    html+='<td class="r" style="color:'+(k&&k.ot_abs_3out<=T.ot_3km_out_target?'var(--success)':'var(--danger)')+'">'+(k?fmtPct4(k.ot_abs_3out):'—')+'</td>';
+    html+='<td class="r" style="color:'+(k&&k.fake_rate<=T.fake_target?'var(--success)':'var(--danger)')+'">'+(k?fmtPct4(k.fake_rate):'—')+'</td>';
+    html+='<td class="r" style="color:'+(k&&k.cancel_rate<=T.cancel_target?'var(--success)':'var(--danger)')+'">'+(k?fmtPct4(k.cancel_rate):'—')+'</td>';
+    html+='<td class="r bold" style="color:'+(s&&s.total_exp_score>=15?'var(--success)':'var(--warning)')+'">'+(s?s.total_exp_score.toFixed(2):'—')+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('dailyDetailTable').innerHTML=html;
+}
+
+// --- 第1期 ---
+function renderP1Cards(){
+  const pk=MONTHLY_KPI.periods.filter(p=>p.type==='第一期');
+  const total=pk.reduce((s,p)=>s+(p.score||0),0);
+  const cards=[
+    {label:'专送得分',val: pk.find(p=>p.item.includes('专送')).score, target:20, good:true},
+    {label:'普众 W1',val:pk.find(p=>p.cycle==='W1'&&p.item.includes('普众')).score,target:10,good:true},
+    {label:'悦跑 W1',val:pk.find(p=>p.cycle==='W1'&&p.item.includes('悦跑')).score,target:30,good:true},
+    {label:'普众 W2',val:pk.find(p=>p.cycle==='W2'&&p.item.includes('普众')).score,target:10,good:true},
+    {label:'悦跑 W2',val:pk.find(p=>p.cycle==='W2'&&p.item.includes('悦跑')).score,target:30,good:false},
+    {label:'第1期总计',val:total.toFixed(2),target:100,good:total>=90},
+  ];
+  document.getElementById('period1Cards').innerHTML=cards.map(c=>{
+    const v=c.val!==null?c.val:'<span class="hourglass">⏳</span>';
+    return '<div class="summary-card '+(c.good?'good':'')+'"><div class="sc-label">'+c.label+'（满分'+c.target+'）</div><div class="sc-value">'+v+'</div></div>';
+  }).join('');
+}
+
+function switchP1Week(w){
+  document.querySelectorAll('#p1WeekTabs .sub-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('#p1WeekTabs .sub-tab[onclick*="'+w+'"]').classList.add('active');
+  // 渲染该周推完矩阵
+  const days = w==='w1' ? CYCLE.p1.w1.days : CYCLE.p1.w2.days;
+  const wLabel = w==='w1' ? 'W1 (07-01~07-08)' : 'W2 (07-09~07-14)';
+  let html='<div class="info-bar">'+wLabel+' 推完率分时段矩阵</div>';
+  html+='<div class="matrix-wrap"><table class="matrix-table"><thead><tr><th>维度</th>';
+  MATRIX.periods.forEach(p=>html+='<th>'+p+'</th>');
+  html+='<th>汇总</th></tr></thead><tbody>';
+  MATRIX.dims.forEach(dim=>{
+    html+='<tr><td class="dim-name">'+dim+'</td>';
+    let wComp=[], wPush=[];
+    for(let j=0;j<11;j++){
+      let c=0,p=0;
+      days.forEach(dk=>{
+        const dm=DAILY_MATRIX[dk];
+        if(dm&&dm[dim]){c+=dm[dim].comp[j];p+=dm[dim].push[j];}
+      });
+      wComp.push(c); wPush.push(p);
+      let cls,txt;
+      if(p===0){cls='cell-gray';txt='—';}
+      else{const r=c/p;cls=cellClass(r);txt=fmtPct(r)+'<br><small>'+c+'/'+p+'</small>';}
+      html+='<td class="'+cls+'">'+txt+'</td>';
+    }
+    const tc=wComp.reduce((a,b)=>a+b,0),tp=wPush.reduce((a,b)=>a+b,0);
+    const tr=tp>0?tc/tp:null;
+    const tcls=tr===null?'cell-gray':cellClass(tr);
+    html+='<td class="'+tcls+'" style="font-weight:600">'+(tr?fmtPct(tr)+'<br><small>'+tc+'/'+tp+'</small>':'—')+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('p1Content').innerHTML=html;
+}
+
+// --- 压力天 ---
+function renderPressureCards(){
+  const pressureDays=KPI.trend.filter(d=>d.weather==='比较恶劣'||d.weather==='非常恶劣');
+  const normalDays=KPI.trend.filter(d=>d.weather==='正常');
+  const cards=[
+    {label:'高峰日数',val:pressureDays.length+'天',sub:'比较恶劣+非常恶劣'},
+    {label:'正常日数',val:normalDays.length+'天',sub:''},
+    {label:'高峰日平均推完',val:pressureDays.length?(pressureDays.reduce((s,d)=>s+d.pr,0)/pressureDays.length*100).toFixed(2)+'%':'—',sub:''},
+    {label:'正常日平均推完',val:normalDays.length?(normalDays.reduce((s,d)=>s+d.pr,0)/normalDays.length*100).toFixed(2)+'%':'—',sub:''},
+  ];
+  document.getElementById('pressureCards').innerHTML=cards.map(c=>{
+    return '<div class="summary-card"><div class="sc-label">'+c.label+(c.sub?' · '+c.sub:'')+'</div><div class="sc-value">'+c.val+'</div></div>';
+  }).join('');
+
+  let html='<div class="matrix-wrap"><table class="data-table"><thead><tr><th>日期</th><th>天气</th><th>推单量</th><th>推完率</th><th>加盟</th><th>众包</th><th>超时3km内</th><th>超时3km外</th><th>体验得分</th></tr></thead><tbody>';
+  KPI.trend.forEach(d=>{
+    const isPressure=d.weather==='比较恶劣'||d.weather==='非常恶劣';
+    const kpiDate=d.date;
+    let ed=null;
+    for(let i=0;i<EXP_KPI.daily.length;i++){if(String(EXP_KPI.daily[i].date)===String(kpiDate)){ed=EXP_KPI.daily[i];break;}}
+    const bgStyle=isPressure?'background:#fff1f2 !important':'';
+    html+='<tr style="'+bgStyle+'">';
+    html+='<td class="ind-name">'+d.date.slice(4,6)+'-'+d.date.slice(6,8)+(isPressure?' ⚠':'')+'</td>';
+    html+='<td>'+(isPressure?'<span style="color:var(--danger);font-weight:600">'+d.weather+'</span>':d.weather)+'</td>';
+    html+='<td class="r">'+d.d.toLocaleString()+'</td>';
+    html+='<td class="r" style="color:'+(d.pr>=0.9855?'var(--success)':'var(--warning)')+'">'+fmtPct(d.pr)+'</td>';
+    html+='<td class="r">'+fmtPct(d.jm_pr)+'</td>';
+    html+='<td class="r">'+fmtPct(d.zb_pr)+'</td>';
+    html+='<td class="r">'+fmtPct4(d.ot3i)+'</td>';
+    html+='<td class="r">'+fmtPct4(d.ot3o)+'</td>';
+    html+='<td class="r bold">'+(ed?ed.score.total_exp_score.toFixed(2):'—')+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('pressureContent').innerHTML=html;
+}
+
+// --- 复合超时校准 ---
+function renderOtSummary(){
+  if(typeof EXP_KPI==='undefined') return;
+  const kpiDate=KPI.trend[KPI.currentIdx].date;
+  let ed=null;
+  for(let i=0;i<EXP_KPI.daily.length;i++){if(String(EXP_KPI.daily[i].date)===String(kpiDate)){ed=EXP_KPI.daily[i];break;}}
+  if(!ed)return;
+  const k=ed.kpi, s=ed.score, T=EXP_KPI.targets;
+  const cards=[
+    {label:'复合超时 3km内',val:(k.ot_abs_3in*100).toFixed(2)+'%',target:(T.ot_3km_in_target*100).toFixed(2)+'%',good:k.ot_abs_3in<=T.ot_3km_in_target,pct:k.ot_abs_3in*100,tpct:T.ot_3km_in_target*100},
+    {label:'复合超时 3km外',val:(k.ot_abs_3out*100).toFixed(2)+'%',target:(T.ot_3km_out_target*100).toFixed(2)+'%',good:k.ot_abs_3out<=T.ot_3km_out_target,pct:k.ot_abs_3out*100,tpct:T.ot_3km_out_target*100},
+    {label:'虚假点率',val:(k.fake_rate*100).toFixed(4)+'%',target:(T.fake_target*100).toFixed(3)+'%',good:k.fake_rate<=T.fake_target,pct:k.fake_rate*100,tpct:T.fake_target*100},
+    {label:'配送取消率',val:(k.cancel_rate*100).toFixed(4)+'%',target:(T.cancel_target*100).toFixed(3)+'%',good:k.cancel_rate<=T.cancel_target,pct:k.cancel_rate*100,tpct:T.cancel_target*100},
+    {label:'体验模块得分',val:s.total_exp_score.toFixed(2),target:'15分',good:s.total_exp_score>=13.5,pct:s.total_exp_score,tpct:15}
+  ];
+  document.getElementById('otSummaryCards').innerHTML=cards.map(c=>{
+    const barW=Math.min(c.pct/c.tpct*100,130);
+    const barColor=c.good?'var(--success)':'var(--danger)';
+    return '<div class="exp-card" style="border-left:3px solid '+(c.good?'var(--success)':'var(--danger)')+'"><div class="ec-label">'+c.label+'</div><div class="ec-value">'+c.val+'</div><div class="ec-target">目标: '+c.target+'</div><div class="ec-status '+(c.good?'good':'bad')+'">'+(c.good?'达标':'未达标')+'</div><div class="ec-bar"><div class="fill" style="width:'+barW+'%;background:'+barColor+'"></div></div></div>';
+  }).join('');
+
+  // 每日汇总表
+  renderOtDailyTable();
+  // 渠道明细
+  renderOtCatTables();
+}
+
+function renderOtDailyTable(){
+  const daily=EXP_KPI.daily, T=EXP_KPI.targets;
+  let html='<div class="matrix-wrap"><table class="data-table" id="otDailyTable"><thead><tr><th>日期</th><th>总推单</th><th>总完成</th><th>超时3km内</th><th>超时3km外</th><th>虚假点率</th><th>配取率</th><th>体验分</th></tr></thead><tbody>';
+  daily.forEach(d=>{
+    const k=d.kpi, s=d.score;
+    const totalPush=d.raw.jm.push+d.raw.zb.push+d.raw.yp.push;
+    const totalComp=d.raw.jm.complete+d.raw.zb.complete+d.raw.yp.complete;
+    html+='<tr><td>'+d.date_label+'</td><td class="r">'+totalPush.toLocaleString()+'</td><td class="r">'+totalComp.toLocaleString()+'</td>';
+    html+='<td class="r" style="color:'+(k.ot_abs_3in<=T.ot_3km_in_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(k.ot_abs_3in)+'</td>';
+    html+='<td class="r" style="color:'+(k.ot_abs_3out<=T.ot_3km_out_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(k.ot_abs_3out)+'</td>';
+    html+='<td class="r" style="color:'+(k.fake_rate<=T.fake_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(k.fake_rate)+'</td>';
+    html+='<td class="r" style="color:'+(k.cancel_rate<=T.cancel_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(k.cancel_rate)+'</td>';
+    html+='<td class="r bold" style="color:'+(s.total_exp_score>=15?'var(--success)':'var(--warning)')+'">'+s.total_exp_score.toFixed(2)+'</td></tr>';
+  });
+  const m=EXP_KPI.monthly, ms=m.score;
+  html+='<tr style="font-weight:700;background:var(--primary-light)"><td>月度汇总</td><td class="r">'+m.total_push.toLocaleString()+'</td><td class="r">'+m.total_complete.toLocaleString()+'</td>';
+  html+='<td class="r" style="color:'+(m.ot_abs_3in<=T.ot_3km_in_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(m.ot_abs_3in)+'</td>';
+  html+='<td class="r" style="color:'+(m.ot_abs_3out<=T.ot_3km_out_target?'var(--success)':'var(--danger)')+'">'+fmtPct4(m.ot_abs_3out)+'</td>';
+  html+='<td class="r">'+fmtPct4(m.fake_rate)+'</td><td class="r">'+fmtPct4(m.cancel_rate)+'</td>';
+  html+='<td class="r bold" style="color:var(--success)">'+ms.total_exp_score.toFixed(2)+'</td></tr>';
+  html+='</tbody></table></div>';
+  document.getElementById('otDailyTable').innerHTML=html;
+}
+
+function renderOtCatTables(){
+  const daily=EXP_KPI.daily;
+  const cats=[
+    {key:'jm',label:'加盟(城代)',cls:'tag-pill blue'},
+    {key:'zb',label:'普通众包',cls:'tag-pill yellow'},
+    {key:'yp',label:'悦跑',cls:'tag-pill green'}
+  ];
+  let html='';
+  cats.forEach(cat=>{
+    html+='<div style="overflow-x:auto"><span class="'+cat.cls+'" style="margin-bottom:4px;display:inline-block">'+cat.label+'</span>';
+    html+='<table class="data-table" style="margin-top:4px"><thead><tr><th>日期</th><th>推单</th><th>完成</th><th>绝对超时</th><th>绝对率</th><th>取消</th><th>虚假点</th></tr></thead><tbody>';
+    daily.forEach(d=>{
+      const r=d.raw[cat.key];
+      const absRate=r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;
+      html+='<tr><td>'+d.date_label+'</td><td class="r">'+r.push.toLocaleString()+'</td><td class="r">'+r.complete.toLocaleString()+'</td><td class="r">'+r.abs_total+'</td><td class="r">'+absRate.toFixed(2)+'%</td><td class="r">'+r.cancel+'</td><td class="r">'+r.fake+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+  });
+  document.getElementById('otCatTables').innerHTML=html;
+}
+
+// ======================================================================
+// 图表
+// ======================================================================
+let chartInstances={};
+
+function initOtCharts(){
+  const daily=EXP_KPI.daily, T=EXP_KPI.targets;
+  const labels=daily.map(d=>d.date_label);
+  const opts={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:10}}}},scales:{x:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}},y:{ticks:{callback:v=>v.toFixed(2)+'%',font:{size:10}},grid:{color:'#f0f0f0'}}}};
+
+  if(chartInstances.otTrend) chartInstances.otTrend.destroy();
+  chartInstances.otTrend=new Chart(document.getElementById('otTrendChart'),{
+    type:'line',data:{labels,datasets:[
+      {label:'3km内',data:daily.map(d=>d.kpi.ot_abs_3in*100),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,tension:.3,pointRadius:3},
+      {label:'3km外',data:daily.map(d=>d.kpi.ot_abs_3out*100),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:true,tension:.3,pointRadius:3},
+      {label:'目标3km内',data:Array(labels.length).fill(T.ot_3km_in_target*100),borderColor:'#3b82f6',borderDash:[6,4],borderWidth:1,pointRadius:0},
+      {label:'目标3km外',data:Array(labels.length).fill(T.ot_3km_out_target*100),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:1,pointRadius:0}
+    ]},options:opts});
+
+  if(chartInstances.otCat) chartInstances.otCat.destroy();
+  chartInstances.otCat=new Chart(document.getElementById('otCatChart'),{
+    type:'line',data:{labels,datasets:[
+      {label:'加盟',data:daily.map(d=>{const r=d.raw.jm;return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;}),borderColor:'#3b82f6',tension:.3,pointRadius:3},
+      {label:'普通众包',data:daily.map(d=>{const r=d.raw.zb;return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;}),borderColor:'#8b5cf6',tension:.3,pointRadius:3},
+      {label:'悦跑',data:daily.map(d=>{const r=d.raw.yp;return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;}),borderColor:'#10b981',tension:.3,pointRadius:3}
+    ]},options:opts});
+
+  if(chartInstances.fcTrend) chartInstances.fcTrend.destroy();
+  chartInstances.fcTrend=new Chart(document.getElementById('fcTrendChart'),{
+    type:'line',data:{labels,datasets:[
+      {label:'虚假点率',data:daily.map(d=>d.kpi.fake_rate*100),borderColor:'#ef4444',tension:.3,pointRadius:3},
+      {label:'取消率',data:daily.map(d=>d.kpi.cancel_rate*100),borderColor:'#8b5cf6',tension:.3,pointRadius:3},
+      {label:'虚假点目标',data:Array(labels.length).fill(T.fake_target*100),borderColor:'#ef4444',borderDash:[6,4],borderWidth:1,pointRadius:0},
+      {label:'取消目标',data:Array(labels.length).fill(T.cancel_target*100),borderColor:'#8b5cf6',borderDash:[6,4],borderWidth:1,pointRadius:0}
+    ]},options:opts});
+
+  if(chartInstances.scoreTrend) chartInstances.scoreTrend.destroy();
+  chartInstances.scoreTrend=new Chart(document.getElementById('scoreTrendChart'),{
+    type:'bar',data:{labels,datasets:[
+      {label:'体验得分',data:daily.map(d=>d.score.total_exp_score),backgroundColor:daily.map(d=>d.score.total_exp_score>=15?'rgba(16,185,129,.6)':'rgba(248,113,113,.6)'),borderRadius:4},
+      {label:'满分15',data:Array(labels.length).fill(15),type:'line',borderColor:'#94a3b8',borderDash:[6,4],borderWidth:1,pointRadius:0}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:8,font:{size:10}}}},scales:{x:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}},y:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}}}}});
+}
+
+function initP1Charts(){
+  // 占位：第1期图表
+}
+
+// ======================================================================
+// 悬浮导航可见性
+// ======================================================================
+window.addEventListener('scroll',function(){
+  const nav=document.getElementById('floatNav');
+  if(window.scrollY>200) nav.classList.add('visible');
+  else nav.classList.remove('visible');
+});
+
+// ======================================================================
+// 初始化
+// ======================================================================
+function init(){
+  const sel=document.getElementById('dateSelect');
+  KPI.trend.forEach((d,i)=>{
+    const opt=document.createElement('option');
+    opt.value=i;
+    const dateStr=d.date.slice(0,4)+'-'+d.date.slice(4,6)+'-'+d.date.slice(6,8);
+    opt.textContent=dateStr+' · '+d.weather;
+    sel.appendChild(opt);
+  });
+  document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
+  switchDate(KPI.currentIdx);
+  renderP1Cards();
+  switchP1Week('w1');
+}
+
+function runInit(){if(!window._initDone){window._initDone=true;init();}}
+if(document.readyState==='complete'){runInit();}else{window.addEventListener('load',runInit);}
+</script>
+</body>
+</html>
