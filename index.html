@@ -567,7 +567,7 @@ function switchDate(idx){
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
   renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
-  setTimeout(renderExpKpi,50);}
+}
 
 
 // 天气聚合统计
@@ -1011,7 +1011,7 @@ function renderExpCatTable(cat, catLabel){
 
 // switchTab和switchDate的patch将在注入时合并到原始函数中（见下方）
 
-function runInit(){if(!window._initDone){window._initDone=true;init();setTimeout(renderExpKpi,200);}}
+function runInit(){if(!window._initDone){window._initDone=true;init();setTimeout(function(){renderExpKpi();},300);}}
 if(document.readyState==='complete'){runInit();}else{window.addEventListener('load',runInit);}
 </script>
 </body>
