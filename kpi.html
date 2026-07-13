@@ -1178,6 +1178,38 @@ function switchFoldTab(name, btn){
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script>
 (function(){
+  // === 自定义数值标签插件 ===
+  var datalabelPlugin = {
+    id:'customDatalabels',
+    afterDatasetsDraw:function(chart){
+      var ctx=chart.ctx;
+      chart.data.datasets.forEach(function(ds,i){
+        var meta=chart.getDatasetMeta(i);
+        if(!meta.visible) return;
+        // 跳过无数据点的参考线(pointRadius===0或未定义)
+        if(ds.pointRadius===0 && !ds.barPercentage) return;
+        // 跳过bar图中非bar类型的隐藏数据集
+        meta.data.forEach(function(el,idx){
+          var v=ds.data[idx];
+          if(v==null||v===undefined) return;
+          var txt='';
+          if(chart.config.type==='bar'){
+            txt=v>=10000?(v/10000).toFixed(1)+'万':v.toLocaleString();
+          }else{
+            txt=Math.abs(v)<1?v.toFixed(4)+'%':v.toFixed(2)+'%';
+          }
+          ctx.save();
+          ctx.font='bold 9px PingFang SC,Microsoft YaHei,sans-serif';
+          ctx.fillStyle=ds.borderColor||'#333';
+          ctx.textAlign='center';
+          ctx.textBaseline='bottom';
+          ctx.fillText(txt,el.x,el.y-5);
+          ctx.restore();
+        });
+      });
+    }
+  };
+  Chart.register(datalabelPlugin);
   // === 每日KPI趋势数据 ===
     var LABELS = ["7/1", "7/2", "7/3", "7/4", "7/5", "7/6", "7/7", "7/8", "7/9", "7/10", "7/11", "7/12"];
   var DATA = {
