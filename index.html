@@ -7,17 +7,17 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;color:#333;padding:16px}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;color:#333;padding:16px}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
-.header h1{font-size:22px;color:#1a3a5c}
+.header h1{font-size:22px;color:#2563eb}
 .header .meta{font-size:12px;color:#888}
-.badge{background:#1a3a5c;color:#fff;padding:4px 12px;border-radius:12px;font-size:12px;display:inline-block}
+.badge{background:#2563eb;color:#fff;padding:4px 12px;border-radius:12px;font-size:12px;display:inline-block}
 .grid{display:grid;gap:12px;margin-bottom:12px}
 .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 2px 8px rgba(37,99,235,.06)}
 .card-title{font-size:13px;color:#666;margin-bottom:4px}
 .card-sub{font-size:11px;color:#999;margin-bottom:8px}
-.card-value{font-size:28px;font-weight:700;color:#1a3a5c}
+.card-value{font-size:28px;font-weight:700;color:#2563eb}
 .card-detail{font-size:12px;color:#666;margin-top:4px}
 .card-gap{font-size:13px;font-weight:600;margin-top:2px}
 .gap-pos{color:#e74c3c}.gap-neg{color:#27ae60}
@@ -25,7 +25,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
 .exp-item .exp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .exp-item .exp-label{font-weight:600;font-size:14px}
 .exp-item .exp-method{font-size:11px;color:#999}
-.exp-item .exp-value{font-size:24px;font-weight:700;color:#1a3a5c;margin-bottom:4px}
+.exp-item .exp-value{font-size:24px;font-weight:700;color:#2563eb;margin-bottom:4px}
 .exp-item .exp-target{font-size:12px;color:#888}
 .exp-item .exp-detail{font-size:11px;color:#666;margin-top:2px}
 .exp-bar{height:6px;border-radius:3px;background:#e8e8e8;margin-top:6px;overflow:hidden}
@@ -33,17 +33,17 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
 .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 @media(max-width:768px){.chart-row{grid-template-columns:1fr}}
 .chart-container{position:relative;height:250px}
-.tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid #e0e0e0}
+.tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid #bfdbfe}
 .tab-btn{padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
-.tab-btn.active{color:#1a3a5c;font-weight:600;border-bottom-color:#1a3a5c;background:#fff}
-.tab-btn:hover{color:#1a3a5c}
+.tab-btn.active{color:#2563eb;font-weight:600;border-bottom-color:#2563eb;background:#fff}
+.tab-btn:hover{color:#2563eb}
 .tab-content{display:none}.tab-content.active{display:block}
 .matrix-wrap{overflow-x:auto;margin-top:12px}
 .matrix-table{width:100%;border-collapse:collapse;font-size:12px}
-.matrix-table th{background:#1a3a5c;color:#fff;padding:6px 8px;text-align:center;white-space:nowrap;position:sticky;top:0}
+.matrix-table th{background:#1e5f99;color:#fff;padding:6px 8px;text-align:center;white-space:nowrap;position:sticky;top:0}
 .matrix-table td{padding:5px 8px;text-align:center;border:1px solid #e8e8e8;white-space:nowrap}
-.matrix-table tr:hover{background:#f5f7fa}
-.matrix-table .dim-name{font-weight:600;text-align:left;background:#f8f9fb;position:sticky;left:0}
+.matrix-table tr:hover{background:#e8f4fd}
+.matrix-table .dim-name{font-weight:600;text-align:left;background:#e8f4fd;position:sticky;left:0}
 .cell-green{background:#c6efce;color:#006100}
 .cell-yellow{background:#ffeb9c;color:#9c6500}
 .cell-red{background:#ffc7ce;color:#9c0006}
@@ -52,21 +52,21 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
 .legend-item{display:flex;align-items:center;gap:4px}
 .legend-dot{width:12px;height:12px;border-radius:3px}
 .station-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
-.station-card{background:#f8f9fb;border-radius:6px;padding:10px;text-align:center}
-.station-name{font-size:12px;color:#666}
-.station-ratio{font-size:18px;font-weight:700;color:#1a3a5c;margin:2px 0}
+.station-card{background:#e8f4fd;border-radius:6px;padding:10px;text-align:center}
+.station-name{font-size:12px;color:#3b82f6}
+.station-ratio{font-size:18px;font-weight:700;color:#2563eb;margin:2px 0}
 .station-detail{font-size:10px;color:#999}
 .footer{text-align:center;padding:16px;color:#999;font-size:11px}
 .json-box{background:#1e1e1e;color:#d4d4d4;padding:12px;border-radius:6px;font-family:Consolas,Courier New,monospace;font-size:11px;overflow-x:auto;white-space:pre;margin-top:8px}
-.json-label{font-size:12px;color:#2F5496;font-weight:600;margin-top:12px;margin-bottom:4px}
-.info-note{font-size:11px;color:#999;padding:12px;background:#f8f9fb;border-radius:6px;margin-top:8px;border-left:3px solid #2F5496}
+.json-label{font-size:12px;color:#2563eb;font-weight:600;margin-top:12px;margin-bottom:4px}
+.info-note{font-size:11px;color:#64748b;padding:12px;background:#e8f4fd;border-radius:6px;margin-top:8px;border-left:3px solid #2563eb}
 .station-select{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
 .station-select button{padding:6px 14px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;cursor:pointer;font-size:12px;transition:all .2s}
-.station-select button.active{background:#1a3a5c;color:#fff;border-color:#1a3a5c}
+.station-select button.active{background:#2563eb;color:#fff;border-color:#2563eb}
 .station-data-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
-.station-data-table th{background:#f0f2f5;color:#333;padding:5px 6px;text-align:center;border:1px solid #e0e0e0;font-weight:600;white-space:nowrap}
+.station-data-table th{background:#e8f4fd;color:#1e3a5f;padding:5px 6px;text-align:center;border:1px solid #b8d8f0;font-weight:600;white-space:nowrap}
 .station-data-table td{padding:4px 6px;text-align:center;border:1px solid #e8e8e8}
-.station-data-table .ind-name{font-weight:600;text-align:left;background:#f8f9fb}
+.station-data-table .ind-name{font-weight:600;text-align:left;background:#e8f4fd}
 
 /* ===== 天蓝清爽体验模块风格 ===== */
 .exp-sky-card{background:linear-gradient(135deg,#e8f4fd,#f0f8ff);border:1px solid #b8d8f0;border-radius:10px;padding:14px;text-align:center;transition:all .3s}
@@ -102,7 +102,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
     <div class="meta">数据源：合作商用履约 xlsx · v2.1 · 三步固化口径A</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <select id="dateSelect" style="padding:4px 10px;border:1px solid #1a3a5c;border-radius:12px;background:#1a3a5c;color:#fff;font-size:12px;cursor:pointer" onchange="switchDate(parseInt(this.value))"></select>
+    <select id="dateSelect" style="padding:4px 10px;border:1px solid #2563eb;border-radius:12px;background:#2563eb;color:#fff;font-size:12px;cursor:pointer" onchange="switchDate(parseInt(this.value))"></select>
     <span class="meta" id="updateBadge"></span>
   </div>
 </div>
