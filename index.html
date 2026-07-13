@@ -128,12 +128,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <!-- 深度分析 Tabs -->
 <div class="card" style="margin-bottom:12px">
   <div class="tabs" id="tabs">
-    <button class="tab-btn active" onclick="switchTab('matrix')">📊 推完矩阵</button>
-    <button class="tab-btn" onclick="switchTab('experience')">⭐ 体验KPI</button>
+    <button class="tab-btn active" onclick="switchTab('experience')">⭐ 体验KPI</button>
+    <button class="tab-btn" onclick="switchTab('matrix')">📊 推完矩阵</button>
   </div>
 
-  <!-- Tab 1: 推完率矩阵 -->
-  <div class="tab-content active" id="tab-matrix">
+  <!-- Tab: 体验KPI详细 -->
+  <div class="tab-content active" id="tab-experience">
     <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
@@ -146,8 +146,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   </div>
 
 
-  <!-- Tab 4: 体验KPI -->
-  <div class="tab-content" id="tab-experience">
+  <!-- Tab: 推完率矩阵 -->
+  <div class="tab-content" id="tab-matrix">
     <div style="font-size:12px;color:#666;margin:8px 0">体验模块满分15分 = 复合超时(6分) + 虚假点(4.5分) + 配取(4.5分) · 权重40:30:30 · 绝对超时口径</div>
 
     <!-- 体验得分总览 -->
