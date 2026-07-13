@@ -116,31 +116,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <!-- KPI -->
 <div class="grid kpi-grid" id="kpiCards"></div>
 
-<!-- 深度分析 Tabs -->
-<div class="card" style="margin-bottom:12px">
-  <div class="tabs" id="tabs">
-    <button class="tab-btn active" onclick="switchTab('experience')">⭐ 体验KPI</button>
-    <button class="tab-btn" onclick="switchTab('matrix')">📊 推完矩阵</button>
-    <button class="tab-btn" onclick="switchTab('crowd')">🏃 众包盘点</button>
-    <button class="tab-btn" onclick="switchTab('station')">🏬 站点数据</button>
-  </div>
 
-  <!-- Tab: 体验KPI详细 -->
-  <div class="tab-content" id="tab-matrix">
-    <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
-    </div>
-    <div class="matrix-wrap" id="matrixTable"></div>
-    <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
-  </div>
-
-
-  <!-- Tab: 推完率矩阵 -->
-  <div class="tab-content active" id="tab-experience">
+<!-- 体验KPI（平铺） -->
     <div style="font-size:12px;color:#666;margin:8px 0">体验模块满分15分 = 复合超时(6分) + 虚假点(4.5分) + 配取(4.5分) · 权重40:30:30 · 绝对超时口径</div>
 
     <!-- 体验得分总览 -->
@@ -192,6 +169,31 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     </div>
   </div>
 
+<!-- 深度分析 Tabs -->
+<div class="card" style="margin-bottom:12px">
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" onclick="switchTab('matrix')">📊 推完矩阵</button>
+    <button class="tab-btn" onclick="switchTab('crowd')">🏃 众包盘点</button>
+    <button class="tab-btn" onclick="switchTab('station')">🏬 站点数据</button>
+  </div>
+
+  <!-- Tab: 推完率矩阵 -->
+  <div class="tab-content active" id="tab-matrix">
+    <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
+    </div>
+    <div class="matrix-wrap" id="matrixTable"></div>
+    <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
+  </div>
+
+
+  <!-- Tab: 推完率矩阵 -->
+  </div>
+
   <!-- Tab: 众包盘点 -->
   <div class="tab-content" id="tab-crowd">
     <div class="matrix-wrap" style="margin-top:12px">
@@ -221,6 +223,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   </div>
 </div>
 </div>
+
 
 
 
@@ -564,7 +567,7 @@ function switchDate(idx){
   document.getElementById('dateSelect').value=idx;
   document.getElementById('updateBadge').textContent='更新: '+new Date().toLocaleString();
   renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderJSON();
-  if(window._expRendered){var ct=document.getElementById('expCatTables');if(ct)ct.innerHTML='';setTimeout(renderExpKpi,50);}}
+  renderExpKpi();}
 
 
 // 天气聚合统计
@@ -826,7 +829,7 @@ function switchTab(tab){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.querySelector('.tab-btn[onclick*="'+tab+'"]').classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='experience' && !window._expRendered){window._expRendered=true;setTimeout(renderExpKpi,100);}}
+}}
 
 // JSON
 function renderJSON(){
