@@ -255,7 +255,7 @@ function switchDate(idx){
   KPI.pr=d.pr; KPI.jm_pr=d.jm_pr; KPI.zb_pr=d.zb_pr;
   KPI.ot3i=d.ot3i; KPI.ot3o=d.ot3o; KPI.fk=d.fk; KPI.cl=d.cl;
   KPI.n=d.n; KPI.d=d.d; KPI.weather=d.weather;
-  KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
+  KPI.pr_g=KPI.pr-KPI.pr_t; KPI.jm_floor=KPI.jm_floor||0.988;KPI.jm_gap=KPI.jm_pr-KPI.jm_floor; KPI.zb_gap=KPI.zb_pr-0.9855;
   var dsEl=document.getElementById('dateSelect');if(dsEl)dsEl.value=idx;
   var ubEl=document.getElementById('updateBadge');if(ubEl)ubEl.textContent='更新: '+new Date().toLocaleString();
   renderKPI();renderMatrix();renderCrowd();renderStations();renderStationTabs();renderExpKpi();
