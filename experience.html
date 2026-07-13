@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宁德KPI - 体验模块看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f1923;--card:#1a2736;--card2:#1e3044;--border:#2a4055;
+  --text:#e0e8f0;--text2:#8ba4be;--text3:#5a7a9a;
+  --green:#00d68f;--red:#ff6b6b;--yellow:#ffc107;--blue:#4dabf7;--purple:#9775fa;--orange:#ff922b;
+  --jm:#4dabf7;--zb:#9775fa;--yp:#20c997;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:16px;min-height:100vh}
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.header h1{font-size:22px;font-weight:700;color:var(--text)}
+.header .sub{font-size:13px;color:var(--text2)}
+.date-nav{display:flex;gap:6px;align-items:center}
+.date-nav button{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:all .2s}
+.date-nav button:hover{background:var(--border)}
+.date-nav button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* 月度总览卡片 */
+.summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.s-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.s-card .label{font-size:12px;color:var(--text2);margin-bottom:6px}
+.s-card .val{font-size:28px;font-weight:700}
+.s-card .target{font-size:11px;color:var(--text3);margin-top:4px}
+.s-card.good .val{color:var(--green)}
+.s-card.bad .val{color:var(--red)}
+.s-card.warn .val{color:var(--yellow)}
+.s-card .progress{height:6px;background:var(--border);border-radius:3px;margin-top:8px;overflow:hidden}
+.s-card .progress .bar{height:100%;border-radius:3px;transition:width .5s}
+
+/* 体验得分详情 */
+.score-detail{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px}
+.score-detail h2{font-size:16px;margin-bottom:16px;color:var(--text2)}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.score-item{background:var(--card2);border-radius:8px;padding:14px}
+.score-item .si-label{font-size:13px;color:var(--text2);margin-bottom:8px}
+.score-item .si-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:13px}
+.score-item .si-val{font-weight:600}
+.score-item .si-score{font-size:20px;font-weight:700;color:var(--blue);text-align:center;margin-top:6px}
+
+/* 双列布局 */
+.dual-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:900px){.dual-col{grid-template-columns:1fr}}
+
+.chart-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
+.chart-box h3{font-size:14px;color:var(--text2);margin-bottom:12px}
+.chart-wrap{position:relative;height:280px}
+
+/* 数据表格 */
+.table-section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px;overflow-x:auto}
+.table-section h3{font-size:14px;color:var(--text2);margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--card2);color:var(--text2);padding:8px 10px;text-align:center;border-bottom:2px solid var(--border);position:sticky;top:0;white-space:nowrap}
+td{padding:7px 10px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+tr:hover{background:rgba(77,171,247,.08)}
+td.good{color:var(--green)}
+td.bad{color:var(--red)}
+td.neutral{color:var(--text2)}
+.col-header{background:var(--card2);font-weight:600;color:var(--text)}
+.cat-jm{background:rgba(77,171,247,.15);color:var(--jm)}
+.cat-zb{background:rgba(151,117,250,.15);color:var(--zb)}
+.cat-yp{background:rgba(32,201,151,.15);color:var(--yp)}
+
+/* 日期切换的高亮 */
+.today-row{background:rgba(77,171,247,.1)}
+
+/* 口径说明 */
+.caveat{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:20px;font-size:12px;color:var(--text2);line-height:1.8}
+.caveat strong{color:var(--text)}
+
+/* 标签 */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.tag-jm{background:rgba(77,171,247,.2);color:var(--jm)}
+.tag-zb{background:rgba(151,117,250,.2);color:var(--zb)}
+.tag-yp{background:rgba(32,201,151,.2);color:var(--yp)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>宁德KPI - 体验模块看板</h1>
+    <div class="sub" id="headerSub">数据来源：履约数据考核看板（合作商用）| 67列KPI拆解</div>
+  </div>
+  <div class="date-nav" id="dateNav"></div>
+</div>
+
+<div class="caveat">
+  <strong>体验模块满分15分</strong> = 复合超时率(6分) × 得分率 + 虚假点送达(4.5分) × 得分率 + 配送取消(4.5分) × 得分率<br>
+  <strong>得分率</strong> = 目标值 / 实际值（越低越好），capped at [0, 1.1]<br>
+  <strong>复合超时</strong> = 全渠道(加盟+普通众包+悦跑)绝对超时单 / 配送完成单量，分3km内外<br>
+  <strong>数据口径</strong>：体验表原始67列，复合超时用绝对口径（col47-67），非相对口径（col9-40）
+</div>
+
+<div id="summaryCards" class="summary-row"></div>
+
+<div id="scoreDetail" class="score-detail"></div>
+
+<div class="dual-col">
+  <div class="chart-box">
+    <h3>复合超时率趋势（分距离）</h3>
+    <div class="chart-wrap"><canvas id="chartOt"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>虚假点送达率 + 配送取消率趋势</h3>
+    <div class="chart-wrap"><canvas id="chartFakeCancel"></canvas></div>
+  </div>
+</div>
+
+<div class="dual-col">
+  <div class="chart-box">
+    <h3>各渠道绝对超时率趋势</h3>
+    <div class="chart-wrap"><canvas id="chartOtByCat"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>体验得分趋势</h3>
+    <div class="chart-wrap"><canvas id="chartScore"></canvas></div>
+  </div>
+</div>
+
+<div id="dailyTable" class="table-section"></div>
+
+<div class="dual-col">
+  <div id="jmTable" class="table-section"></div>
+  <div id="zbTable" class="table-section"></div>
+</div>
+<div id="ypTable" class="table-section"></div>
+
+<script>
+// ====== DATA ======
+const EXP_DATA = {"targets":{"ot_3km_in_target":0.02917,"ot_3km_out_target":0.03681,"fake_target":0.00027,"fake_threshold":0.00047,"cancel_target":0.00077,"cancel_threshold":0.00157,"ot_weight":0.4,"fake_weight":0.3,"cancel_weight":0.3,"experience_module_score":15,"push_module_score":20,"close_module_score":5,"push_threshold":0.97,"push_target":0.9855,"push_challenge":0.992,"food_close_target":0.89,"nonfood_close_target":0.66,"jm_target_w1":433,"jm_target_w2":433,"zb_target_w1":374,"zb_target_w2":374,"yp_target_w1":160,"yp_target_w2":160,"jm_target_2":450,"zb_target_w3":403,"yp_target_w3":160},"daily":[{"date":20260701,"date_label":"07-01","raw":{"jm":{"push":20896,"complete":20445,"complete_3in":18182,"complete_3out":2263,"rel_gen":450,"rel_sev":16,"abs_total":225,"abs_gen":213,"abs_sev":10,"abs_gen_3in":182,"abs_sev_3in":8,"abs_gen_3out":31,"abs_sev_3out":2,"cancel":5,"fake":2},"zb":{"push":8189,"complete":6665,"complete_3in":6415,"complete_3out":250,"rel_gen":648,"rel_sev":104,"abs_total":196,"abs_gen":172,"abs_sev":23,"abs_gen_3in":162,"abs_sev_3in":22,"abs_gen_3out":10,"abs_sev_3out":1,"cancel":17,"fake":2},"yp":{"push":10196,"complete":10017,"complete_3in":9735,"complete_3out":282,"rel_gen":546,"rel_sev":46,"abs_total":163,"abs_gen":155,"abs_sev":8,"abs_gen_3in":151,"abs_sev_3in":8,"abs_gen_3out":4,"abs_sev_3out":0,"cancel":19,"fake":1}},"kpi":{"ot_abs_3in":0.015525,"ot_abs_3out":0.017174,"ot_abs_3in_pct":"1.55%","ot_abs_3out_pct":"1.72%","fake_rate":0.00013467,"fake_pct":"0.0135%","cancel_rate":0.00104376,"cancel_pct":"0.1044%","push_rate":0.984253,"push_rate_pct":"98.43%","jm_n":20445,"jm_d":20631,"all_n":37127,"all_d":37721,"food_close":0.883929,"food_close_pct":"88.39%","nonfood_close":0.627411,"nonfood_close_pct":"62.74%"},"score":{"ot_in_comp":1.87892,"ot_out_comp":2.143416,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":2.004858,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.737716,"cancel_score_rate":0.737716,"cancel_score":3.3197,"total_exp_score":14.8697}},{"date":20260702,"date_label":"07-02","raw":{"jm":{"push":21687,"complete":21217,"complete_3in":18951,"complete_3out":2266,"rel_gen":488,"rel_sev":13,"abs_total":277,"abs_gen":263,"abs_sev":6,"abs_gen_3in":218,"abs_sev_3in":6,"abs_gen_3out":45,"abs_sev_3out":0,"cancel":6,"fake":6},"zb":{"push":8236,"complete":6616,"complete_3in":6365,"complete_3out":251,"rel_gen":576,"rel_sev":134,"abs_total":192,"abs_gen":170,"abs_sev":21,"abs_gen_3in":162,"abs_sev_3in":20,"abs_gen_3out":8,"abs_sev_3out":1,"cancel":8,"fake":0},"yp":{"push":9889,"complete":9693,"complete_3in":9421,"complete_3out":272,"rel_gen":561,"rel_sev":71,"abs_total":129,"abs_gen":118,"abs_sev":11,"abs_gen_3in":115,"abs_sev_3in":11,"abs_gen_3out":3,"abs_sev_3out":0,"cancel":21,"fake":0}},"kpi":{"ot_abs_3in":0.015315,"ot_abs_3out":0.020437,"ot_abs_3in_pct":"1.53%","ot_abs_3out_pct":"2.04%","fake_rate":0.00015989,"fake_pct":"0.0160%","cancel_rate":0.00087913,"cancel_pct":"0.0879%","push_rate":0.982588,"push_rate_pct":"98.26%","jm_n":21217,"jm_d":21397,"all_n":37526,"all_d":38191,"food_close":0.879866,"food_close_pct":"87.99%","nonfood_close":0.633671,"nonfood_close_pct":"63.37%"},"score":{"ot_in_comp":1.904658,"ot_out_comp":1.801107,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.68867,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.875864,"cancel_score_rate":0.875864,"cancel_score":3.9414,"total_exp_score":15.4914}},{"date":20260703,"date_label":"07-03","raw":{"jm":{"push":22763,"complete":22251,"complete_3in":19821,"complete_3out":2430,"rel_gen":487,"rel_sev":19,"abs_total":252,"abs_gen":231,"abs_sev":13,"abs_gen_3in":193,"abs_sev_3in":12,"abs_gen_3out":38,"abs_sev_3out":1,"cancel":0,"fake":9},"zb":{"push":8507,"complete":6957,"complete_3in":6692,"complete_3out":265,"rel_gen":578,"rel_sev":104,"abs_total":198,"abs_gen":168,"abs_sev":27,"abs_gen_3in":158,"abs_sev_3in":26,"abs_gen_3out":10,"abs_sev_3out":1,"cancel":6,"fake":1},"yp":{"push":10202,"complete":9968,"complete_3in":9748,"complete_3out":220,"rel_gen":503,"rel_sev":38,"abs_total":181,"abs_gen":172,"abs_sev":6,"abs_gen_3in":166,"abs_sev_3in":6,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":17,"fake":1}},"kpi":{"ot_abs_3in":0.015471,"ot_abs_3out":0.019211,"ot_abs_3in_pct":"1.55%","ot_abs_3out_pct":"1.92%","fake_rate":0.00028078,"fake_pct":"0.0281%","cancel_rate":0.00055459,"cancel_pct":"0.0555%","push_rate":0.985808,"push_rate_pct":"98.58%","jm_n":22251,"jm_d":22444,"all_n":39176,"all_d":39740,"food_close":0.878526,"food_close_pct":"87.85%","nonfood_close":0.620978,"nonfood_close_pct":"62.10%"},"score":{"ot_in_comp":1.885443,"ot_out_comp":1.916092,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.961593,"fake_score_rate":0.961593,"fake_score":4.3272,"cancel_comp":1.38841,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":15.8772}},{"date":20260704,"date_label":"07-04","raw":{"jm":{"push":24818,"complete":24274,"complete_3in":21612,"complete_3out":2662,"rel_gen":487,"rel_sev":16,"abs_total":231,"abs_gen":215,"abs_sev":9,"abs_gen_3in":173,"abs_sev_3in":7,"abs_gen_3out":42,"abs_sev_3out":2,"cancel":0,"fake":5},"zb":{"push":9407,"complete":7926,"complete_3in":7610,"complete_3out":316,"rel_gen":532,"rel_sev":79,"abs_total":210,"abs_gen":189,"abs_sev":21,"abs_gen_3in":182,"abs_sev_3in":20,"abs_gen_3out":7,"abs_sev_3out":1,"cancel":5,"fake":1},"yp":{"push":9949,"complete":9738,"complete_3in":9500,"complete_3out":238,"rel_gen":361,"rel_sev":26,"abs_total":132,"abs_gen":124,"abs_sev":8,"abs_gen_3in":118,"abs_sev_3in":8,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":23,"fake":0}},"kpi":{"ot_abs_3in":0.013119,"ot_abs_3out":0.018035,"ot_abs_3in_pct":"1.31%","ot_abs_3out_pct":"1.80%","fake_rate":0.00014307,"fake_pct":"0.0143%","cancel_rate":0.00063386,"cancel_pct":"0.0634%","push_rate":0.986823,"push_rate_pct":"98.68%","jm_n":24274,"jm_d":24506,"all_n":41938,"all_d":42498,"food_close":0.876161,"food_close_pct":"87.62%","nonfood_close":0.647421,"nonfood_close_pct":"64.74%"},"score":{"ot_in_comp":2.223466,"ot_out_comp":2.041051,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.88721,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.214785,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260705,"date_label":"07-05","raw":{"jm":{"push":26522,"complete":25939,"complete_3in":23039,"complete_3out":2900,"rel_gen":632,"rel_sev":26,"abs_total":330,"abs_gen":307,"abs_sev":14,"abs_gen_3in":259,"abs_sev_3in":11,"abs_gen_3out":48,"abs_sev_3out":3,"cancel":2,"fake":8},"zb":{"push":9880,"complete":8112,"complete_3in":7800,"complete_3out":312,"rel_gen":734,"rel_sev":169,"abs_total":282,"abs_gen":233,"abs_sev":44,"abs_gen_3in":214,"abs_sev_3in":43,"abs_gen_3out":19,"abs_sev_3out":1,"cancel":4,"fake":1},"yp":{"push":9457,"complete":9228,"complete_3in":8974,"complete_3out":254,"rel_gen":555,"rel_sev":49,"abs_total":173,"abs_gen":166,"abs_sev":7,"abs_gen_3in":163,"abs_sev_3in":5,"abs_gen_3out":3,"abs_sev_3out":2,"cancel":36,"fake":0}},"kpi":{"ot_abs_3in":0.017457,"ot_abs_3out":0.021927,"ot_abs_3in_pct":"1.75%","ot_abs_3out_pct":"2.19%","fake_rate":0.00020795,"fake_pct":"0.0208%","cancel_rate":0.00091585,"cancel_pct":"0.0916%","push_rate":0.982096,"push_rate_pct":"98.21%","jm_n":25939,"jm_d":26164,"all_n":43279,"all_d":44068,"food_close":0.885276,"food_close_pct":"88.53%","nonfood_close":0.663182,"nonfood_close_pct":"66.32%"},"score":{"ot_in_comp":1.671,"ot_out_comp":1.67873,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.29837,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.840748,"cancel_score_rate":0.840748,"cancel_score":3.7834,"total_exp_score":15.3334}},{"date":20260706,"date_label":"07-06","raw":{"jm":{"push":22480,"complete":22000,"complete_3in":19613,"complete_3out":2387,"rel_gen":442,"rel_sev":11,"abs_total":213,"abs_gen":199,"abs_sev":7,"abs_gen_3in":173,"abs_sev_3in":7,"abs_gen_3out":26,"abs_sev_3out":0,"cancel":0,"fake":6},"zb":{"push":7312,"complete":5893,"complete_3in":5693,"complete_3out":200,"rel_gen":457,"rel_sev":92,"abs_total":143,"abs_gen":130,"abs_sev":10,"abs_gen_3in":124,"abs_sev_3in":10,"abs_gen_3out":6,"abs_sev_3out":0,"cancel":9,"fake":1},"yp":{"push":10259,"complete":10096,"complete_3in":9826,"complete_3out":270,"rel_gen":529,"rel_sev":36,"abs_total":138,"abs_gen":132,"abs_sev":6,"abs_gen_3in":130,"abs_sev_3in":6,"abs_gen_3out":2,"abs_sev_3out":0,"cancel":12,"fake":1}},"kpi":{"ot_abs_3in":0.012809,"ot_abs_3out":0.011901,"ot_abs_3in_pct":"1.28%","ot_abs_3out_pct":"1.19%","fake_rate":0.00021059,"fake_pct":"0.0211%","cancel_rate":0.00052433,"cancel_pct":"0.0524%","push_rate":0.984962,"push_rate_pct":"98.50%","jm_n":22000,"jm_d":22205,"all_n":37989,"all_d":38569,"food_close":0.880936,"food_close_pct":"88.09%","nonfood_close":0.630499,"nonfood_close_pct":"63.05%"},"score":{"ot_in_comp":2.277334,"ot_out_comp":3.093123,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.282129,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.468537,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260707,"date_label":"07-07","raw":{"jm":{"push":22524,"complete":22032,"complete_3in":19635,"complete_3out":2397,"rel_gen":504,"rel_sev":26,"abs_total":237,"abs_gen":214,"abs_sev":18,"abs_gen_3in":184,"abs_sev_3in":16,"abs_gen_3out":30,"abs_sev_3out":2,"cancel":4,"fake":7},"zb":{"push":7455,"complete":6003,"complete_3in":5772,"complete_3out":231,"rel_gen":491,"rel_sev":88,"abs_total":176,"abs_gen":156,"abs_sev":20,"abs_gen_3in":152,"abs_sev_3in":20,"abs_gen_3out":4,"abs_sev_3out":0,"cancel":8,"fake":0},"yp":{"push":10464,"complete":10279,"complete_3in":10010,"complete_3out":269,"rel_gen":466,"rel_sev":45,"abs_total":159,"abs_gen":143,"abs_sev":15,"abs_gen_3in":137,"abs_sev_3in":14,"abs_gen_3out":6,"abs_sev_3out":1,"cancel":11,"fake":2}},"kpi":{"ot_abs_3in":0.014767,"ot_abs_3out":0.014843,"ot_abs_3in_pct":"1.48%","ot_abs_3out_pct":"1.48%","fake_rate":0.0002349,"fake_pct":"0.0235%","cancel_rate":0.0005687,"cancel_pct":"0.0569%","push_rate":0.986559,"push_rate_pct":"98.66%","jm_n":22032,"jm_d":22230,"all_n":38314,"all_d":38836,"food_close":0.883165,"food_close_pct":"88.32%","nonfood_close":0.632427,"nonfood_close_pct":"63.24%"},"score":{"ot_in_comp":1.975361,"ot_out_comp":2.479967,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.14942,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":1.353961,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.5}},{"date":20260708,"date_label":"07-08","raw":{"jm":{"push":23181,"complete":22663,"complete_3in":20307,"complete_3out":2356,"rel_gen":615,"rel_sev":25,"abs_total":348,"abs_gen":326,"abs_sev":12,"abs_gen_3in":264,"abs_sev_3in":11,"abs_gen_3out":62,"abs_sev_3out":1,"cancel":1,"fake":14},"zb":{"push":7646,"complete":6223,"complete_3in":5996,"complete_3out":227,"rel_gen":463,"rel_sev":85,"abs_total":183,"abs_gen":154,"abs_sev":23,"abs_gen_3in":141,"abs_sev_3in":21,"abs_gen_3out":13,"abs_sev_3out":2,"cancel":4,"fake":1},"yp":{"push":10580,"complete":10393,"complete_3in":10081,"complete_3out":312,"rel_gen":514,"rel_sev":50,"abs_total":173,"abs_gen":165,"abs_sev":8,"abs_gen_3in":156,"abs_sev_3in":7,"abs_gen_3out":9,"abs_sev_3out":1,"cancel":15,"fake":0}},"kpi":{"ot_abs_3in":0.016491,"ot_abs_3out":0.030397,"ot_abs_3in_pct":"1.65%","ot_abs_3out_pct":"3.04%","fake_rate":0.00038188,"fake_pct":"0.0382%","cancel_rate":0.00048301,"cancel_pct":"0.0483%","push_rate":0.986166,"push_rate_pct":"98.62%","jm_n":22663,"jm_d":22877,"all_n":39279,"all_d":39830,"food_close":0.883997,"food_close_pct":"88.40%","nonfood_close":0.617464,"nonfood_close_pct":"61.75%"},"score":{"ot_in_comp":1.768869,"ot_out_comp":1.210965,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.707022,"fake_score_rate":0.707022,"fake_score":3.1816,"cancel_comp":1.59417,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":14.7316}},{"date":20260709,"date_label":"07-09","raw":{"jm":{"push":23264,"complete":22741,"complete_3in":20247,"complete_3out":2494,"rel_gen":916,"rel_sev":268,"abs_total":498,"abs_gen":441,"abs_sev":48,"abs_gen_3in":364,"abs_sev_3in":30,"abs_gen_3out":77,"abs_sev_3out":18,"cancel":5,"fake":7},"zb":{"push":7607,"complete":5899,"complete_3in":5688,"complete_3out":211,"rel_gen":527,"rel_sev":110,"abs_total":182,"abs_gen":165,"abs_sev":13,"abs_gen_3in":152,"abs_sev_3in":13,"abs_gen_3out":13,"abs_sev_3out":0,"cancel":8,"fake":0},"yp":{"push":10099,"complete":9918,"complete_3in":9684,"complete_3out":234,"rel_gen":492,"rel_sev":67,"abs_total":152,"abs_gen":138,"abs_sev":12,"abs_gen_3in":136,"abs_sev_3in":12,"abs_gen_3out":2,"abs_sev_3out":0,"cancel":15,"fake":4}},"kpi":{"ot_abs_3in":0.019849,"ot_abs_3out":0.037428,"ot_abs_3in_pct":"1.98%","ot_abs_3out_pct":"3.74%","fake_rate":0.00028528,"fake_pct":"0.0285%","cancel_rate":0.00068343,"cancel_pct":"0.0683%","push_rate":0.982094,"push_rate_pct":"98.21%","jm_n":22741,"jm_d":22971,"all_n":38558,"all_d":39261,"food_close":0.874513,"food_close_pct":"87.45%","nonfood_close":0.640286,"nonfood_close_pct":"64.03%"},"score":{"ot_in_comp":1.469599,"ot_out_comp":0.983496,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.946424,"fake_score_rate":0.946424,"fake_score":4.2589,"cancel_comp":1.126675,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":15.8089}},{"date":20260710,"date_label":"07-10","raw":{"jm":{"push":22011,"complete":21480,"complete_3in":18990,"complete_3out":2490,"rel_gen":801,"rel_sev":256,"abs_total":355,"abs_gen":277,"abs_sev":57,"abs_gen_3in":226,"abs_sev_3in":45,"abs_gen_3out":51,"abs_sev_3out":12,"cancel":2,"fake":14},"zb":{"push":7314,"complete":5972,"complete_3in":5741,"complete_3out":231,"rel_gen":352,"rel_sev":51,"abs_total":129,"abs_gen":114,"abs_sev":11,"abs_gen_3in":111,"abs_sev_3in":11,"abs_gen_3out":3,"abs_sev_3out":0,"cancel":6,"fake":1},"yp":{"push":9338,"complete":9155,"complete_3in":8905,"complete_3out":250,"rel_gen":361,"rel_sev":24,"abs_total":110,"abs_gen":106,"abs_sev":4,"abs_gen_3in":105,"abs_sev_3in":3,"abs_gen_3out":1,"abs_sev_3out":1,"cancel":17,"fake":1}},"kpi":{"ot_abs_3in":0.014895,"ot_abs_3out":0.022888,"ot_abs_3in_pct":"1.49%","ot_abs_3out_pct":"2.29%","fake_rate":0.00043707,"fake_pct":"0.0437%","cancel_rate":0.00064661,"cancel_pct":"0.0647%","push_rate":0.985835,"push_rate_pct":"98.58%","jm_n":21480,"jm_d":21737,"all_n":36607,"all_d":37133,"food_close":0.875094,"food_close_pct":"87.51%","nonfood_close":0.643959,"nonfood_close_pct":"64.40%"},"score":{"ot_in_comp":1.958407,"ot_out_comp":1.608272,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.617743,"fake_score_rate":0.617743,"fake_score":2.7798,"cancel_comp":1.19082,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":14.3298}},{"date":20260711,"date_label":"07-11","raw":{"jm":{"push":19034,"complete":18593,"complete_3in":16187,"complete_3out":2406,"rel_gen":470,"rel_sev":34,"abs_total":201,"abs_gen":180,"abs_sev":15,"abs_gen_3in":142,"abs_sev_3in":12,"abs_gen_3out":38,"abs_sev_3out":3,"cancel":3,"fake":4},"zb":{"push":3923,"complete":2970,"complete_3in":2844,"complete_3out":126,"rel_gen":253,"rel_sev":63,"abs_total":70,"abs_gen":58,"abs_sev":9,"abs_gen_3in":51,"abs_sev_3in":9,"abs_gen_3out":7,"abs_sev_3out":0,"cancel":10,"fake":1},"yp":{"push":7464,"complete":7308,"complete_3in":7049,"complete_3out":259,"rel_gen":449,"rel_sev":36,"abs_total":119,"abs_gen":112,"abs_sev":7,"abs_gen_3in":107,"abs_sev_3in":7,"abs_gen_3out":5,"abs_sev_3out":0,"cancel":12,"fake":1}},"kpi":{"ot_abs_3in":0.012577,"ot_abs_3out":0.01899,"ot_abs_3in_pct":"1.26%","ot_abs_3out_pct":"1.90%","fake_rate":0.00020782,"fake_pct":"0.0208%","cancel_rate":0.0008218,"cancel_pct":"0.0822%","push_rate":0.981806,"push_rate_pct":"98.18%","jm_n":18593,"jm_d":18800,"all_n":28871,"all_d":29406,"food_close":0.888743,"food_close_pct":"88.87%","nonfood_close":0.708818,"nonfood_close_pct":"70.88%"},"score":{"ot_in_comp":2.319371,"ot_out_comp":1.938428,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.299195,"fake_score_rate":1.1,"fake_score":4.95,"cancel_comp":0.936967,"cancel_score_rate":0.936967,"cancel_score":4.2164,"total_exp_score":15.7664}},{"date":20260712,"date_label":"07-12","raw":{"jm":{"push":20794,"complete":20401,"complete_3in":18005,"complete_3out":2396,"rel_gen":367,"rel_sev":16,"abs_total":156,"abs_gen":146,"abs_sev":6,"abs_gen_3in":120,"abs_sev_3in":5,"abs_gen_3out":26,"abs_sev_3out":1,"cancel":1,"fake":4},"zb":{"push":5371,"complete":4235,"complete_3in":4075,"complete_3out":160,"rel_gen":396,"rel_sev":64,"abs_total":123,"abs_gen":113,"abs_sev":7,"abs_gen_3in":106,"abs_sev_3in":6,"abs_gen_3out":7,"abs_sev_3out":1,"cancel":7,"fake":3},"yp":{"push":8643,"complete":8459,"complete_3in":8136,"complete_3out":323,"rel_gen":454,"rel_sev":34,"abs_total":131,"abs_gen":122,"abs_sev":7,"abs_gen_3in":115,"abs_sev_3in":7,"abs_gen_3out":7,"abs_sev_3out":0,"cancel":15,"fake":2}},"kpi":{"ot_abs_3in":0.011881,"ot_abs_3out":0.014588,"ot_abs_3in_pct":"1.19%","ot_abs_3out_pct":"1.46%","fake_rate":0.00027194,"fake_pct":"0.0272%","cancel_rate":0.00066077,"cancel_pct":"0.0661%","push_rate":0.986526,"push_rate_pct":"98.65%","jm_n":20401,"jm_d":20583,"all_n":33095,"all_d":33547,"food_close":0.877182,"food_close_pct":"87.72%","nonfood_close":0.694529,"nonfood_close_pct":"69.45%"},"score":{"ot_in_comp":2.455155,"ot_out_comp":2.523238,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":0.99285,"fake_score_rate":0.99285,"fake_score":4.4678,"cancel_comp":1.165311,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.0178}}],"monthly":{"days":12,"total_push":477361,"total_complete":451759,"ot_abs_3in":0.015124,"ot_abs_3out":0.0207,"fake_rate":0.00024571,"cancel_rate":0.00069968,"score":{"ot_in_comp":1.92868,"ot_out_comp":1.778229,"ot_score_rate":1.1,"ot_score":6.6,"fake_comp":1.098873,"fake_score_rate":1.098873,"fake_score":4.9449,"cancel_comp":1.100503,"cancel_score_rate":1.1,"cancel_score":4.95,"total_exp_score":16.4949}},"overview":{"r3":{"module":"履约-体验\n(15分)","item":"复合超时\n(6分)","split":"3KM内","target":0.02917,"actual":0.0196825745772918,"comp_rate":1.4286,"score_rate":1.1,"score":6.08511793294588},"r5":{"module":null,"item":"虚假点\n(4.5分)","split":"虚假点送达","target":0.00027,"actual":0.000244546179571802,"comp_rate":1.0636345510705,"score_rate":1,"score":4.5},"r6":{"module":null,"item":"配取\n(4.5分)","split":"配送取消","target":0.00077,"actual":0.000735841657450287,"comp_rate":1.02134896409357,"score_rate":1,"score":4.5},"r7":{"module":"履约-推完\n(20分)","item":"推完（20分）","split":"推单完成率","target":0.9855,"actual":0.984653443766347,"comp_rate":0.994538346879658,"score_rate":0.994538346879658,"score":19.8907669375932},"r8":{"module":"履约-完结\n(5分)","item":"商家订单完结率","split":"餐饮F1","target":0.89,"actual":0.880501354898446,"comp_rate":0.9879,"score_rate":0.9879,"score":2.47},"r10":{"module":"周期","item":"运力模块","split":"考核目标","target":"考核达成","actual":"指标完成率","comp_rate":"指标得分率","score_rate":"指标得分","score":"周期得分"},"r11":{"module":"整期","item":"专送（20分）","split":433,"target":436.3,"actual":1.00762124711316,"comp_rate":1,"score_rate":20,"score":"整期"},"r12":{"module":"W1","item":"普众(10分）","split":374,"target":418,"actual":1.11764705882353,"comp_rate":1.1,"score_rate":11,"score":"W1得分"},"r13":{"module":null,"item":"悦跑（30分）","split":160,"target":161,"actual":1.00625,"comp_rate":1.00625,"score_rate":30.1875,"score":101.518266937593},"r14":{"module":"W2","item":"普众(10分）","split":374,"target":429,"actual":1.14705882352941,"comp_rate":1.1,"score_rate":11,"score":"W2"},"r15":{"module":null,"item":"悦跑（30分）","split":160,"target":154,"actual":0.9625,"comp_rate":0.9625,"score_rate":28.875,"score":100.205766937593},"r16":{"module":"周期","item":"运力模块","split":"考核目标","target":"考核达成","actual":"指标完成率","comp_rate":"指标得分率","score_rate":"指标得分","score":"周期得分"},"r17":{"module":"整期","item":"专送（20分）","split":450,"target":null,"actual":0,"comp_rate":0,"score_rate":0,"score":"整期"},"r18":{"module":"W3","item":"普众(10分）\n【90%，110%】","split":403,"target":null,"actual":0,"comp_rate":0,"score_rate":0,"score":"W3得分"},"r19":{"module":null,"item":"悦跑（30分）\n【90%，110%】","split":160,"target":null,"actual":0,"comp_rate":0,"score_rate":0,"score":40.3307669375932},"r20":{"module":"W4","item":"普众(10分）\n【90%，110%】","split":null,"target":null,"actual":"#DIV/0!","comp_rate":"#DIV/0!","score_rate":"#DIV/0!","score":"W4得分"},"r21":{"module":null,"item":"悦跑（30分）\n【90%，110%】","split":null,"target":null,"actual":"#DIV/0!","comp_rate":"#DIV/0!","score_rate":"#DIV/0!","score":null}}};
+const daily = EXP_DATA.daily;
+const monthly = EXP_DATA.monthly;
+const T = EXP_DATA.targets;
+
+// ====== DATE NAV ======
+let selectedIdx = daily.length - 1;
+const nav = document.getElementById('dateNav');
+daily.forEach((d, i) => {
+  const btn = document.createElement('button');
+  btn.textContent = d.date_label;
+  btn.onclick = () => { selectedIdx = i; renderAll(); };
+  btn.id = 'navBtn' + i;
+  nav.appendChild(btn);
+});
+
+function renderAll() {
+  renderNav();
+  renderSummary();
+  renderScoreDetail();
+  renderCharts();
+  renderDailyTable();
+  renderCatTable('jm', '加盟(城代)');
+  renderCatTable('zb', '普通众包');
+  renderCatTable('yp', '悦跑');
+}
+
+function renderNav() {
+  daily.forEach((_, i) => {
+    document.getElementById('navBtn' + i).classList.toggle('active', i === selectedIdx);
+  });
+}
+
+// ====== SUMMARY CARDS ======
+function renderSummary() {
+  const d = daily[selectedIdx];
+  const k = d.kpi;
+  const s = d.score;
+  const cards = [
+    { label: '复合超时 3km内', val: k.ot_abs_3in_pct, target: T.ot_3km_in_target, good: k.ot_abs_3in <= T.ot_3km_in_target, cls: '' },
+    { label: '复合超时 3km外', val: k.ot_abs_3out_pct, target: T.ot_3km_out_target, good: k.ot_abs_3out <= T.ot_3km_out_target, cls: '' },
+    { label: '虚假点送达率', val: k.fake_pct, target: T.fake_target, good: k.fake_rate <= T.fake_target, cls: '' },
+    { label: '配送取消率', val: k.cancel_pct, target: T.cancel_target, good: k.cancel_rate <= T.cancel_target, cls: '' },
+    { label: '推单完成率', val: k.push_rate_pct, target: (T.push_target*100)+'%', good: k.push_rate >= T.push_target, cls: '' },
+    { label: '体验模块得分', val: s.total_exp_score.toFixed(2), target: '15分', good: s.total_exp_score >= 13.5, cls: '' },
+  ];
+  document.getElementById('summaryCards').innerHTML = cards.map(c => {
+    const pct = c.val.replace('%','');
+    const tpct = c.target.replace('%','');
+    const barW = Math.min(parseFloat(pct)/parseFloat(tpct)*100, 120);
+    return `<div class="s-card ${c.good?'good':'bad'}">
+      <div class="label">${c.label}</div>
+      <div class="val">${c.val}</div>
+      <div class="target">目标: ${c.target} ${c.good?'达标':'未达标'}</div>
+      <div class="progress"><div class="bar" style="width:${barW}%;background:${c.good?'var(--green)':'var(--red)'}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ====== SCORE DETAIL ======
+function renderScoreDetail() {
+  const s = daily[selectedIdx].score;
+  document.getElementById('scoreDetail').innerHTML = `
+    <h2>体验得分拆解 (${daily[selectedIdx].date_label})</h2>
+    <div class="score-grid">
+      <div class="score-item">
+        <div class="si-label">复合超时率 (满分6分)</div>
+        <div class="si-row"><span>3km内完成率</span><span class="si-val" style="color:${s.ot_in_comp>=1?'var(--green)':'var(--red)'}">${(s.ot_in_comp*100).toFixed(1)}%</span></div>
+        <div class="si-row"><span>3km外完成率</span><span class="si-val" style="color:${s.ot_out_comp>=1?'var(--green)':'var(--red)'}">${(s.ot_out_comp*100).toFixed(1)}%</span></div>
+        <div class="si-row"><span>得分率</span><span class="si-val">${(s.ot_score_rate*100).toFixed(1)}%</span></div>
+        <div class="si-score">${s.ot_score.toFixed(2)}</div>
+      </div>
+      <div class="score-item">
+        <div class="si-label">虚假点送达 (满分4.5分)</div>
+        <div class="si-row"><span>完成率</span><span class="si-val" style="color:${s.fake_comp>=1?'var(--green)':'var(--red)'}">${(s.fake_comp*100).toFixed(1)}%</span></div>
+        <div class="si-row"><span>得分率</span><span class="si-val">${(s.fake_score_rate*100).toFixed(1)}%</span></div>
+        <div class="si-score">${s.fake_score.toFixed(2)}</div>
+      </div>
+      <div class="score-item">
+        <div class="si-label">配送取消 (满分4.5分)</div>
+        <div class="si-row"><span>完成率</span><span class="si-val" style="color:${s.cancel_comp>=1?'var(--green)':'var(--red)'}">${(s.cancel_comp*100).toFixed(1)}%</span></div>
+        <div class="si-row"><span>得分率</span><span class="si-val">${(s.cancel_score_rate*100).toFixed(1)}%</span></div>
+        <div class="si-score">${s.cancel_score.toFixed(2)}</div>
+      </div>
+      <div class="score-item" style="border-left:3px solid var(--blue)">
+        <div class="si-label">体验模块总分</div>
+        <div class="si-row"><span>超时 + 虚假点 + 配取</span><span class="si-val">${s.ot_score.toFixed(2)} + ${s.fake_score.toFixed(2)} + ${s.cancel_score.toFixed(2)}</span></div>
+        <div class="si-score" style="font-size:28px">${s.total_exp_score.toFixed(2)}<span style="font-size:14px;color:var(--text2)"> / 15</span></div>
+      </div>
+    </div>`;
+}
+
+// ====== CHARTS ======
+let chartOt, chartFC, chartOtCat, chartScore;
+function renderCharts() {
+  const labels = daily.map(d => d.date_label);
+  
+  if (chartOt) chartOt.destroy();
+  chartOt = new Chart(document.getElementById('chartOt'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '3km内超时率', data: daily.map(d=>(d.kpi.ot_abs_3in*100)), borderColor: var_blue(), backgroundColor: 'rgba(77,171,247,.1)', fill: true, tension: .3, pointRadius: 3 },
+        { label: '3km外超时率', data: daily.map(d=>(d.kpi.ot_abs_3out*100)), borderColor: var_orange(), backgroundColor: 'rgba(255,146,43,.1)', fill: true, tension: .3, pointRadius: 3 },
+        { label: '目标3km内', data: Array(labels.length).fill(T.ot_3km_in_target*100), borderColor: var_blue(), borderDash: [6,4], borderWidth: 1, pointRadius: 0 },
+        { label: '目标3km外', data: Array(labels.length).fill(T.ot_3km_out_target*100), borderColor: var_orange(), borderDash: [6,4], borderWidth: 1, pointRadius: 0 },
+      ]
+    },
+    options: chartOpts('%')
+  });
+
+  if (chartFC) chartFC.destroy();
+  chartFC = new Chart(document.getElementById('chartFakeCancel'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '虚假点送达率', data: daily.map(d=>(d.kpi.fake_rate*100)), borderColor: var_red(), tension: .3, pointRadius: 3, yAxisID: 'y' },
+        { label: '配送取消率', data: daily.map(d=>(d.kpi.cancel_rate*100)), borderColor: var_purple(), tension: .3, pointRadius: 3, yAxisID: 'y' },
+        { label: '虚假点目标', data: Array(labels.length).fill(T.fake_target*100), borderColor: var_red(), borderDash: [6,4], borderWidth: 1, pointRadius: 0 },
+        { label: '配取目标', data: Array(labels.length).fill(T.cancel_target*100), borderColor: var_purple(), borderDash: [6,4], borderWidth: 1, pointRadius: 0 },
+      ]
+    },
+    options: chartOpts('%')
+  });
+
+  // 各渠道超时率
+  if (chartOtCat) chartOtCat.destroy();
+  chartOtCat = new Chart(document.getElementById('chartOtByCat'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '加盟绝对超时率', data: daily.map(d => {
+          const r=d.raw.jm; return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;
+        }), borderColor: '#4dabf7', tension: .3, pointRadius: 3 },
+        { label: '普通众包绝对超时率', data: daily.map(d => {
+          const r=d.raw.zb; return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;
+        }), borderColor: '#9775fa', tension: .3, pointRadius: 3 },
+        { label: '悦跑绝对超时率', data: daily.map(d => {
+          const r=d.raw.yp; return r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;
+        }), borderColor: '#20c997', tension: .3, pointRadius: 3 },
+      ]
+    },
+    options: chartOpts('%')
+  });
+
+  if (chartScore) chartScore.destroy();
+  chartScore = new Chart(document.getElementById('chartScore'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: '体验得分', data: daily.map(d=>d.score.total_exp_score), backgroundColor: daily.map(d=>d.score.total_exp_score>=15?'rgba(0,214,143,.6)':'rgba(255,107,107,.6)'), borderRadius: 4 },
+        { label: '满分15', data: Array(labels.length).fill(15), type: 'line', borderColor: '#fff', borderDash: [6,4], borderWidth: 1, pointRadius: 0 },
+      ]
+    },
+    options: chartOpts('分')
+  });
+}
+
+function chartOpts(unit) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8ba4be', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5a7a9a', font: { size: 11 } }, grid: { color: 'rgba(42,64,85,.3)' } },
+      y: { ticks: { color: '#5a7a9a', font: { size: 11 }, callback: v => v.toFixed(2)+unit }, grid: { color: 'rgba(42,64,85,.3)' } }
+    }
+  };
+}
+function var_blue(){return'#4dabf7'} function var_orange(){return'#ff922b'}
+function var_red(){return'#ff6b6b'} function var_purple(){return'#9775fa'} function var_green(){return'#00d68f'}
+
+// ====== DAILY TABLE ======
+function renderDailyTable() {
+  const rows = daily.map((d,i) => {
+    const k=d.kpi, s=d.score;
+    const cls = i===selectedIdx?'today-row':'';
+    return `<tr class="${cls}">
+      <td><button onclick="selectedIdx=${i};renderAll()" style="background:none;border:none;color:var(--blue);cursor:pointer;font-size:12px;text-decoration:underline">${d.date_label}</button></td>
+      <td>${(d.raw.jm.push+d.raw.zb.push+d.raw.yp.push).toLocaleString()}</td>
+      <td>${(d.raw.jm.complete+d.raw.zb.complete+d.raw.yp.complete).toLocaleString()}</td>
+      <td class="${k.ot_abs_3in<=T.ot_3km_in_target?'good':'bad'}">${k.ot_abs_3in_pct}</td>
+      <td class="${k.ot_abs_3out<=T.ot_3km_out_target?'good':'bad'}">${k.ot_abs_3out_pct}</td>
+      <td class="${k.fake_rate<=T.fake_target?'good':'bad'}">${k.fake_pct}</td>
+      <td class="${k.cancel_rate<=T.cancel_target?'good':'bad'}">${k.cancel_pct}</td>
+      <td class="${k.push_rate>=T.push_target?'good':'bad'}">${k.push_rate_pct}</td>
+      <td style="font-weight:700;color:${s.total_exp_score>=15?'var(--green)':'var(--yellow)'}">${s.total_exp_score.toFixed(2)}</td>
+    </tr>`;
+  });
+  // 月度汇总行
+  const mk = monthly;
+  const mScore = monthly.score;
+  const rows2 = `<tr style="font-weight:700;border-top:2px solid var(--blue);background:rgba(77,171,247,.08)">
+    <td>月度汇总</td>
+    <td>${mk.total_push.toLocaleString()}</td>
+    <td>${mk.total_complete.toLocaleString()}</td>
+    <td class="${mk.ot_abs_3in<=T.ot_3km_in_target?'good':'bad'}">${(mk.ot_abs_3in*100).toFixed(2)}%</td>
+    <td class="${mk.ot_abs_3out<=T.ot_3km_out_target?'good':'bad'}">${(mk.ot_abs_3out*100).toFixed(2)}%</td>
+    <td class="${mk.fake_rate<=T.fake_target?'good':'bad'}">${(mk.fake_rate*100).toFixed(4)}%</td>
+    <td class="${mk.cancel_rate<=T.cancel_target?'good':'bad'}">${(mk.cancel_rate*100).toFixed(4)}%</td>
+    <td>—</td>
+    <td style="color:${mScore.total_exp_score>=15?'var(--green)':'var(--yellow)'}">${mScore.total_exp_score.toFixed(2)}</td>
+  </tr>`;
+  
+  document.getElementById('dailyTable').innerHTML = `
+    <h3>每日体验KPI总览</h3>
+    <table>
+      <tr>
+        <th>日期</th><th>总推单</th><th>总完成</th>
+        <th>超时3km内</th><th>超时3km外</th>
+        <th>虚假点率</th><th>配取率</th>
+        <th>推完率</th><th>体验分</th>
+      </tr>
+      ${rows.join('')}
+      ${rows2}
+    </table>`;
+}
+
+// ====== CATEGORY TABLE ======
+function renderCatTable(cat, catLabel) {
+  const tagCls = cat==='jm'?'jm':cat==='zb'?'zb':'yp';
+  const rows = daily.map((d,i) => {
+    const r=d.raw[cat];
+    const cls = i===selectedIdx?'today-row':'';
+    const absRate = r.complete>0?((r.abs_gen_3in+r.abs_sev_3in+r.abs_gen_3out+r.abs_sev_3out)/r.complete*100):0;
+    return `<tr class="${cls}">
+      <td>${d.date_label}</td>
+      <td>${r.push.toLocaleString()}</td>
+      <td>${r.complete.toLocaleString()}</td>
+      <td>${r.complete_3in.toLocaleString()}</td>
+      <td>${r.complete_3out.toLocaleString()}</td>
+      <td>${r.rel_gen}</td>
+      <td>${r.rel_sev}</td>
+      <td>${r.abs_total}</td>
+      <td>${absRate.toFixed(2)}%</td>
+      <td>${r.cancel}</td>
+      <td>${r.fake}</td>
+    </tr>`;
+  });
+  
+  document.getElementById(cat+'Table').innerHTML = `
+    <h3><span class="tag tag-${tagCls}">${catLabel}</span> 每日明细</h3>
+    <table>
+      <tr>
+        <th>日期</th><th>推单</th><th>完成</th><th>完成3km内</th><th>完成3km外</th>
+        <th>相对一般超时</th><th>相对严重超时</th><th>绝对超时</th><th>绝对超时率</th>
+        <th>配送取消</th><th>虚假点送达</th>
+      </tr>
+      ${rows.join('')}
+    </table>`;
+}
+
+// ====== INIT ======
+renderAll();
+</script>
+</body>
+</html>
