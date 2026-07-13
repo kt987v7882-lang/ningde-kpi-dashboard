@@ -174,17 +174,17 @@ function renderSummary() {
   const k = d.kpi;
   const s = d.score;
   const cards = [
-    { label: '复合超时 3km内', val: k.ot_abs_3in_pct, target: T.ot_3km_in_target, good: k.ot_abs_3in <= T.ot_3km_in_target, cls: '' },
-    { label: '复合超时 3km外', val: k.ot_abs_3out_pct, target: T.ot_3km_out_target, good: k.ot_abs_3out <= T.ot_3km_out_target, cls: '' },
-    { label: '虚假点送达率', val: k.fake_pct, target: T.fake_target, good: k.fake_rate <= T.fake_target, cls: '' },
-    { label: '配送取消率', val: k.cancel_pct, target: T.cancel_target, good: k.cancel_rate <= T.cancel_target, cls: '' },
-    { label: '推单完成率', val: k.push_rate_pct, target: (T.push_target*100)+'%', good: k.push_rate >= T.push_target, cls: '' },
+    { label: '复合超时 3km内', val: k.ot_abs_3in_pct, target: (T.ot_3km_in_target*100).toFixed(3)+'%', good: k.ot_abs_3in <= T.ot_3km_in_target, cls: '' },
+    { label: '复合超时 3km外', val: k.ot_abs_3out_pct, target: (T.ot_3km_out_target*100).toFixed(3)+'%', good: k.ot_abs_3out <= T.ot_3km_out_target, cls: '' },
+    { label: '虚假点送达率', val: k.fake_pct, target: (T.fake_target*100).toFixed(3)+'%', good: k.fake_rate <= T.fake_target, cls: '' },
+    { label: '配送取消率', val: k.cancel_pct, target: (T.cancel_target*100).toFixed(3)+'%', good: k.cancel_rate <= T.cancel_target, cls: '' },
+    { label: '推单完成率', val: k.push_rate_pct, target: (T.push_target*100).toFixed(2)+'%', good: k.push_rate >= T.push_target, cls: '' },
     { label: '体验模块得分', val: s.total_exp_score.toFixed(2), target: '15分', good: s.total_exp_score >= 13.5, cls: '' },
   ];
   document.getElementById('summaryCards').innerHTML = cards.map(c => {
-    const pct = c.val.replace('%','');
-    const tpct = c.target.replace('%','');
-    const barW = Math.min(parseFloat(pct)/parseFloat(tpct)*100, 120);
+    const pct = parseFloat(c.val) || 0;
+    const tpct = parseFloat(c.target) || 1;
+    const barW = Math.min(pct/tpct*100, 120);
     return `<div class="s-card ${c.good?'good':'bad'}">
       <div class="label">${c.label}</div>
       <div class="val">${c.val}</div>
