@@ -110,9 +110,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
 <!-- KPI -->
 <div class="grid kpi-grid" id="kpiCards"></div>
 
-<!-- 体验四项 -->
-<div style="margin-bottom:8px;font-weight:600;color:#1a3a5c;font-size:13px">体验四项 · V5 v2.1 权重 40:30:30（复合:虚假:配取）</div>
-<div class="grid experience-grid" id="expCards"></div>
+<!-- 体验KPI汇总卡片 -->
+<div id="expSummaryCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:10px 0"></div>
 
 <!-- 趋势图 -->
 <div class="chart-row">
@@ -623,20 +622,25 @@ function renderKPI(){
     </div>`).join('');
 }
 
-// 体验四项
+// 体验KPI汇总卡片（推完卡片下方）
 function renderExp(){
-  const items=[
-    {label:'复合超时 3km内',method:'差异化',val:KPI.ot3i,target:KPI.ot3i_t,detail:'完成 '+KPI.in_n.toLocaleString()+' · 超时 '+KPI.in_o.toLocaleString()},
-    {label:'复合超时 3km外',method:'差异化',val:KPI.ot3o,target:KPI.ot3o_t,detail:'完成 '+KPI.out_n.toLocaleString()+' · 超时 '+KPI.out_o.toLocaleString()},
-    {label:'虚假点占比',method:'封顶100%',val:KPI.fk,target:KPI.fk_t,detail:'虚假 '+KPI.fk_n+' 单 / 完成 '+KPI.n.toLocaleString(),th:KPI.fk_th},
-    {label:'配送取消率',method:'分段线性',val:KPI.cl,target:KPI.cl_t,detail:'取消 '+KPI.cl_n+' 单 / 推单 '+KPI.d.toLocaleString(),th:KPI.cl_th}
+  if(typeof EXP_KPI==='undefined') return;
+  const kpiDate=KPI.trend[KPI.currentIdx].date;
+  let ed=null;
+  for(let i=0;i<EXP_KPI.daily.length;i++){if(String(EXP_KPI.daily[i].date)===String(kpiDate)){ed=EXP_KPI.daily[i];break;}}
+  if(!ed){document.getElementById('expSummaryCards').innerHTML='';return;}
+  const k=ed.kpi, s=ed.score, T=EXP_KPI.targets;
+  const cards=[
+    {label:'复合超时3km内',val:(k.ot_abs_3in*100).toFixed(2)+'%',target:(T.ot_3km_in_target*100).toFixed(2)+'%',good:k.ot_abs_3in<=T.ot_3km_in_target,pct:k.ot_abs_3in*100,tpct:T.ot_3km_in_target*100},
+    {label:'复合超时3km外',val:(k.ot_abs_3out*100).toFixed(2)+'%',target:(T.ot_3km_out_target*100).toFixed(2)+'%',good:k.ot_abs_3out<=T.ot_3km_out_target,pct:k.ot_abs_3out*100,tpct:T.ot_3km_out_target*100},
+    {label:'虚假点率',val:(k.fake_rate*100).toFixed(4)+'%',target:(T.fake_target*100).toFixed(3)+'%',good:k.fake_rate<=T.fake_target,pct:k.fake_rate*100,tpct:T.fake_target*100},
+    {label:'配送取消率',val:(k.cancel_rate*100).toFixed(4)+'%',target:(T.cancel_target*100).toFixed(3)+'%',good:k.cancel_rate<=T.cancel_target,pct:k.cancel_rate*100,tpct:T.cancel_target*100},
+    {label:'体验得分',val:s.total_exp_score.toFixed(2),target:'15分',good:s.total_exp_score>=13.5,pct:s.total_exp_score,tpct:15}
   ];
-  document.getElementById('expCards').innerHTML=items.map(item=>{
-    const gap=item.val-item.target;
-    const barPct=Math.min(item.val/item.target*100,200);
-    const barColor=gap>0?'#e74c3c':'#27ae60';
-    const thHtml=item.th?'<div style="font-size:10px;color:#e74c3c;margin-top:2px">⚠️ 门槛 '+fmtPct4(item.th)+'</div>':'';
-    return '<div class="card exp-item"><div class="exp-header"><span class="exp-label">'+item.label+'</span><span class="exp-method">'+item.method+'</span></div><div class="exp-value">'+fmtPct4(item.val)+'</div><div class="exp-target">🎯 目标 '+fmtPct4(item.target)+' · '+(gap>0?'🔺':'✅')+' '+(gap*100).toFixed(4)+'pp</div><div class="exp-detail">'+item.detail+'</div><div class="exp-bar"><div class="exp-bar-fill" style="width:'+barPct+'%;background:'+barColor+'"></div></div>'+thHtml+'</div>';
+  document.getElementById('expSummaryCards').innerHTML=cards.map(c=>{
+    const barW=Math.min(c.pct/c.tpct*100,130);
+    const barColor=c.good?'#38bdf8':'#f87171';
+    return '<div style="background:linear-gradient(135deg,#e0f2fe,#f0f9ff);border-radius:8px;padding:10px;border-left:3px solid '+(c.good?'#0ea5e9':'#ef4444')+'"><div style="font-size:11px;color:#475569;margin-bottom:4px">'+c.label+'</div><div style="font-size:18px;font-weight:700;color:#0c4a6e">'+c.val+'</div><div style="font-size:10px;color:#64748b">目标: '+c.target+' · <span style="color:'+(c.good?'#059669':'#dc2626')+'">'+(c.good?'达标':'未达标')+'</span></div><div style="margin-top:4px;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden"><div style="height:100%;width:'+barW+'%;background:'+barColor+';border-radius:2px"></div></div></div>';
   }).join('');
 }
 
