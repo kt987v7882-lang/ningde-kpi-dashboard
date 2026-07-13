@@ -119,13 +119,17 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   <div class="card"><div class="card-title">超时率趋势</div><div class="chart-container"><canvas id="overtimeChart"></canvas></div></div>
 </div>
 
+<!-- 站点推完率总览 -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title" style="margin-bottom:8px">站点推完率总览</div>
+  <div class="station-grid" id="stationCards"></div>
+</div>
+
 <!-- 深度分析 Tabs -->
 <div class="card" style="margin-bottom:12px">
   <div class="tabs" id="tabs">
-    <button class="tab-btn active" onclick="switchTab('matrix')">📊 推完率矩阵</button>
-    <button class="tab-btn" onclick="switchTab('crowd')">🏃 众包盘点</button>
+    <button class="tab-btn active" onclick="switchTab('matrix')">📊 推完矩阵</button>
     <button class="tab-btn" onclick="switchTab('experience')">⭐ 体验KPI</button>
-    <button class="tab-btn" onclick="switchTab('station')">🏬 站点数据</button>
   </div>
 
   <!-- Tab 1: 推完率矩阵 -->
@@ -141,40 +145,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
   </div>
 
-  <!-- Tab 2: 众包盘点 -->
-  <div class="tab-content" id="tab-crowd">
-    <div class="info-note" data-fold="false" style="cursor:pointer" onclick="toggleFoldCrowd(event)">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <strong>📌 众包盘点说明</strong>
-        <span id="crowdFoldArrow" style="font-size:12px;color:#999;transition:transform .2s">▾</span>
-      </div>
-      <div id="crowdFoldBody" style="margin-top:12px">
-      推完/超时率 从订单详情三步清洗后众包子集算得<br>
-      超时=D端·送达晚于最晚考核·分母=已送达<br><br>
-      <b>悦跑 8 指标</b> 已全量接入 07-10<br>
-      数据源 <b>69 期签约=180 人（生效）</b>+<b>69 期排班</b><br>
-      当日排班 175 人 · 全天悦跑出勤 <b>167/180=92.78%</b><br>
-      排班出勤 <b>166/175=94.86%</b> · 排班出勤率*绝 <b>92.22%</b><br>
-      超 KPI 门槛 90% <b>+2.22pp</b> · 当日达标<br><br>
-      环比/同比缺少 07-09 及 07-03 订单详情，暂留空<br>
-      分母口径：出勤率=签约 180 人（固定）· 排班出勤率=当日排班人数（动态）
-      </div>
-    </div>
-    <div class="matrix-wrap" style="margin-top:12px">
-      <table class="station-data-table" id="crowdTable">
-        <thead>
-          <tr>
-            <th>指标 \ 时段</th>
-            <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
-            <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
-            <th>全天</th>
-          </tr>
-        </thead>
-        <tbody id="crowdBody"></tbody>
-      </table>
-    </div>
-    <div style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
-  </div>
 
   <!-- Tab 4: 体验KPI -->
   <div class="tab-content" id="tab-experience">
@@ -207,8 +177,51 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     <div id="expCatTables" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"></div>
   </div>
 
-  <!-- Tab 3: 站点数据 -->
-  <div class="tab-content" id="tab-station">
+</div>
+
+
+
+
+<!-- ===== 众包盘点（平铺） ===== -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title" style="margin-bottom:8px">🏃 众包盘点</div>
+    <div class="info-note" data-fold="false" style="cursor:pointer" onclick="toggleFoldCrowd(event)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>📌 众包盘点说明</strong>
+        <span id="crowdFoldArrow" style="font-size:12px;color:#999;transition:transform .2s">▾</span>
+      </div>
+      <div id="crowdFoldBody" style="margin-top:12px">
+      推完/超时率 从订单详情三步清洗后众包子集算得<br>
+      超时=D端·送达晚于最晚考核·分母=已送达<br><br>
+      <b>悦跑 8 指标</b> 已全量接入 07-10<br>
+      数据源 <b>69 期签约=180 人（生效）</b>+<b>69 期排班</b><br>
+      当日排班 175 人 · 全天悦跑出勤 <b>167/180=92.78%</b><br>
+      排班出勤 <b>166/175=94.86%</b> · 排班出勤率*绝 <b>92.22%</b><br>
+      超 KPI 门槛 90% <b>+2.22pp</b> · 当日达标<br><br>
+      环比/同比缺少 07-09 及 07-03 订单详情，暂留空<br>
+      分母口径：出勤率=签约 180 人（固定）· 排班出勤率=当日排班人数（动态）
+      </div>
+    </div>
+    <div class="matrix-wrap" style="margin-top:12px">
+      <table class="station-data-table" id="crowdTable">
+        <thead>
+          <tr>
+            <th>指标 \ 时段</th>
+            <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
+            <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
+            <th>全天</th>
+          </tr>
+        </thead>
+        <tbody id="crowdBody"></tbody>
+      </table>
+    </div>
+    <div style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
+</div>
+
+
+<!-- ===== 站点数据（平铺） ===== -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-title" style="margin-bottom:8px">🏬 站点数据</div>
     <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
     <div class="station-select" id="stationBtns"></div>
     <div style="font-size:11px;color:#888;margin-bottom:8px">
@@ -216,16 +229,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       <span id="stationSummary"></span>
     </div>
     <div class="matrix-wrap" id="stationDataTable"></div>
-  </div>
 </div>
-
-
-<!-- 站点推完率总览 -->
-<div class="card" style="margin-bottom:12px">
-  <div class="card-title" style="margin-bottom:8px">站点推完率总览</div>
-  <div class="station-grid" id="stationCards"></div>
-</div>
-
 <!-- JSON输出 -->
 <div class="card" style="margin-bottom:12px">
   <div class="card-title" style="margin-bottom:8px">JSON 输出 · 直接复制给AI</div>
