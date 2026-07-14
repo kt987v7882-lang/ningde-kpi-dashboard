@@ -451,9 +451,11 @@ function renderCrowd(){
     if(zb){const c=zb.comp[i]||0,p=zb.push[i]||0;prVals.push(p>0?(c/p*100).toFixed(2):'0.00');pdVals.push(c+'/'+p);}
     else{prVals.push('—');pdVals.push('—');}
   }
-  // 全天
-  if(zb){const tc=zb.comp.reduce((a,b)=>a+b,0),tp=zb.push.reduce((a,b)=>a+b,0);prVals.push(tp>0?(tc/tp*100).toFixed(2):'0.00');pdVals.push(tc+'/'+tp);}
-  else{prVals.push('—');pdVals.push('—');}
+  // 全天: 推完率用KPI差值法(考核口径)
+  if(zb){const tc=zb.comp.reduce((a,b)=>a+b,0),tp=zb.push.reduce((a,b)=>a+b,0);prVals.push('—');}
+  else{prVals.push('—');}
+  // 全天差值法推完率单独取KPI
+  const zbPrDaily=KPI.trend[KPI.currentIdx]?(KPI.trend[KPI.currentIdx].zb_pr*100).toFixed(2):'—';
   // --- 超时率(全天from EXP_KPI,分时段无数据则"—") ---
   const otR=[], otD=[];
   for(let i=0;i<11;i++){
@@ -497,12 +499,12 @@ function renderCrowd(){
   // --- 更新脚注 ---
   const fn=document.getElementById('crowdFootnote');
   if(fn){
-    const crowdTotal=zkRaw?zkRaw:'(无全天数据)';
-    fn.textContent='众包推完 '+prVals[11]+'% · 全天数据来源: 订单详情'+(cd?' + 骑手出勤表':'')+' '+dateKey.slice(4,6)+'-'+dateKey.slice(6,8);
+    const zbPrFromKPI=KPI.trend[KPI.currentIdx]?(KPI.trend[KPI.currentIdx].zb_pr*100).toFixed(2):prVals[11];
+    fn.textContent='众包推完(差值法) '+zbPrFromKPI+'% · 全天数据来源: 订单详情'+(cd?' + 骑手出勤表':'')+' · 编制'+schVals[11]+' · '+dateKey.slice(4,6)+'-'+dateKey.slice(6,8);
   }
   // --- 构建行数据 ---
   const rows=[
-    {label:'推完率(%)',vals:prVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
+    {label:'推完率(%)',vals:prVals.slice(0,11).concat([zbPrDaily]),fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
     {label:'取消单',vals:cd?(cd.cancel||new Array(12).fill(0)):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'超时单',vals:cd?cd.ot_detail.ot.concat([cd.ot_detail.ot.reduce((a,b)=>a+b,0)]):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'超时率(%)',vals:otR,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
