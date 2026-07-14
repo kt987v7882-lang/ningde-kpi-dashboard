@@ -471,15 +471,18 @@ function renderCrowd(){
   // --- 出勤相关 (仅cd有真实出勤数据时显示数值，否则"—") ---
   const hasAttend=cd && cd.attend[11]>0;
   const attVals=hasAttend?cd.attend:new Array(12).fill('—');
-  // --- 环比/同比出勤 ---
+  // --- 环比/同比出勤 (数据源必须一致才可比) ---
   const hbVals=[], tbVals=[];
+  const curSource=cd?cd.attend_source:'none';
+  const prevSource=prevCd?prevCd.attend_source:'none';
+  const lwSource=lastWeekCd?lastWeekCd.attend_source:'none';
   for(let i=0;i<12;i++){
     const cur=cd?cd.attend[i]:0;
-    if(prevCd && cd && i<prevCd.attend.length && cur>0 && prevCd.attend[i]>0){
+    if(prevCd && cd && curSource===prevSource && i<prevCd.attend.length && cur>0 && prevCd.attend[i]>0){
       const diff=cur-prevCd.attend[i];
       hbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
     }else{hbVals.push('-');}
-    if(lastWeekCd && cd && i<lastWeekCd.attend.length && cur>0 && lastWeekCd.attend[i]>0){
+    if(lastWeekCd && cd && curSource===lwSource && i<lastWeekCd.attend.length && cur>0 && lastWeekCd.attend[i]>0){
       const diff=cur-lastWeekCd.attend[i];
       tbVals.push(diff===0?'±0':(diff>0?'<span style="color:#27ae60">+'+diff+'</span>':'<span style="color:#e74c3c">'+diff+'</span>'));
     }else{tbVals.push('-');}
@@ -500,9 +503,10 @@ function renderCrowd(){
   // --- 构建行数据 ---
   const rows=[
     {label:'推完率(%)',vals:prVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
-    {label:'推完(完成/推单)',vals:pdVals,fmt:v=>v},
+    {label:'取消单',vals:cd?(cd.cancel||new Array(12).fill(0)):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
+    {label:'超时单',vals:cd?cd.ot_detail.ot.concat([cd.ot_detail.ot.reduce((a,b)=>a+b,0)]):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'超时率(%)',vals:otR,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
-    {label:'超时(单/完成)',vals:otD,fmt:v=>v},
+    {label:'完成单',vals:cd?cd.ot_detail.total.concat([cd.ot_detail.total.reduce((a,b)=>a+b,0)]):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'悦跑出勤(人)',vals:attVals,fmt:v=>typeof v==='number'?v:v},
     {label:'环比出勤',vals:hbVals,fmt:v=>v,isHtml:true},
     {label:'同比出勤',vals:tbVals,fmt:v=>v,isHtml:true},
@@ -826,7 +830,7 @@ function renderExpDailyTable(){
     html+='<td style="color:'+(k.ot_abs_3out<=T.ot_3km_out_target?'#059669':'#dc2626')+'">'+(k.ot_abs_3out*100).toFixed(2)+'%</td>';
     html+='<td style="color:'+(k.fake_rate<=T.fake_target?'#059669':'#dc2626')+'">'+(k.fake_rate*100).toFixed(4)+'%</td>';
     html+='<td style="color:'+(k.cancel_rate<=T.cancel_target?'#059669':'#dc2626')+'">'+(k.cancel_rate*100).toFixed(4)+'%</td>';
-    var _pr=KPI.trend.find(function(t){return t.date===d.date;});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td>';
+    var _pr=KPI.trend.find(function(t){return String(t.date)===String(d.date);});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td>';
     html+='<td style="font-weight:700;color:'+(s.total_exp_score>=15?'#059669':'#d97706')+'">'+s.total_exp_score.toFixed(2)+'</td></tr>';
   });
   // 月度汇总
