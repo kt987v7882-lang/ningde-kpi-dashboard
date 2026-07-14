@@ -826,7 +826,7 @@ function renderExpDailyTable(){
     html+='<td style="color:'+(k.ot_abs_3out<=T.ot_3km_out_target?'#059669':'#dc2626')+'">'+(k.ot_abs_3out*100).toFixed(2)+'%</td>';
     html+='<td style="color:'+(k.fake_rate<=T.fake_target?'#059669':'#dc2626')+'">'+(k.fake_rate*100).toFixed(4)+'%</td>';
     html+='<td style="color:'+(k.cancel_rate<=T.cancel_target?'#059669':'#dc2626')+'">'+(k.cancel_rate*100).toFixed(4)+'%</td>';
-    var _pr=KPI.trend.find(function(t){return t.date===d.date;});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td>';
+    var _pr=KPI.trend.find(function(t){return String(t.date)===String(d.date);});html+='<td>'+(_pr?(_pr.pr*100).toFixed(2):'—')+'%</td';
     html+='<td style="font-weight:700;color:'+(s.total_exp_score>=15?'#059669':'#d97706')+'">'+s.total_exp_score.toFixed(2)+'</td></tr>';
   });
   // 月度汇总
