@@ -449,25 +449,27 @@ function renderCrowd(){
   const prVals=[], pdVals=[];
   for(let i=0;i<11;i++){
     if(zb){const c=zb.comp[i]||0,p=zb.push[i]||0;prVals.push(p>0?(c/p*100).toFixed(2):'0.00');pdVals.push(c+'/'+p);}
-    else{prVals.push('—');pdVals.push('—');}
+    else{prVals.push('—');}
   }
   // 全天
-  if(zb){const tc=zb.comp.reduce((a,b)=>a+b,0),tp=zb.push.reduce((a,b)=>a+b,0);prVals.push(tp>0?(tc/tp*100).toFixed(2):'0.00');pdVals.push(tc+'/'+tp);}
-  else{prVals.push('—');pdVals.push('—');}
+  if(zb){const tc=zb.comp.reduce((a,b)=>a+b,0),tp=zb.push.reduce((a,b)=>a+b,0);prVals.push(tp>0?(tc/tp*100).toFixed(2):'0.00');}
+  else{prVals.push('—');}
+  // --- 取消单 (全天from EXP_KPI zbRaw+ypRaw, 分时段无数据) ---
+  const cancelVals=new Array(11).fill('—');
+  if(zbRaw&&ypRaw){cancelVals.push(zbRaw.cancel+ypRaw.cancel);}else if(zbRaw){cancelVals.push(zbRaw.cancel);}else if(ypRaw){cancelVals.push(ypRaw.cancel);}else{cancelVals.push('—');}
   // --- 超时率(全天from EXP_KPI,分时段无数据则"—") ---
   const otR=[], otD=[];
   for(let i=0;i<11;i++){
     if(cd && cd.ot_rate[i]!==undefined){otR.push(cd.ot_rate[i]);otD.push((cd.ot_detail.ot[i]||0)+'/'+(cd.ot_detail.total[i]||0));}
-    else{otR.push('—');otD.push('—');}
+    else{otR.push('—');}
   }
   // 全天超时
   if(zkRaw){
     const zkComp=zkRaw.complete||0;
     const zkOt=zkRaw.abs_total||0;
     otR.push(zkComp>0?(zkOt/zkComp*100).toFixed(2):'0.00');
-    otD.push(zkOt+'/'+zkComp);
-  }else if(cd){otR.push(cd.ot_rate[11]||'—');otD.push((cd.ot_detail.ot[11]||0)+'/'+(cd.ot_detail.total[11]||0));}
-  else{otR.push('—');otD.push('—');}
+  }else if(cd){otR.push(cd.ot_rate[11]||'—');}
+  else{otR.push('—');}
   // --- 出勤相关 (仅cd有真实出勤数据时显示数值，否则"—") ---
   const hasAttend=cd && cd.attend[11]>0;
   const attVals=hasAttend?cd.attend:new Array(12).fill('—');
@@ -500,9 +502,10 @@ function renderCrowd(){
   // --- 构建行数据 ---
   const rows=[
     {label:'推完率(%)',vals:prVals,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
-    {label:'推完(完成/推单)',vals:pdVals,fmt:v=>v},
+    {label:'取消单',vals:cancelVals,fmt:v=>typeof v==='number'?v:v},
+    {label:'超时单',vals:cd?cd.ot_detail.ot.concat([cd.ot_detail.ot.reduce((a,b)=>a+b,0)]):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'超时率(%)',vals:otR,fmt:v=>typeof v==='number'?v.toFixed(2)+'%':v+'%'},
-    {label:'超时(单/完成)',vals:otD,fmt:v=>v},
+    {label:'完成单',vals:cd?cd.ot_detail.total.concat([cd.ot_detail.total.reduce((a,b)=>a+b,0)]):new Array(12).fill('—'),fmt:v=>typeof v==='number'?v:v},
     {label:'悦跑出勤(人)',vals:attVals,fmt:v=>typeof v==='number'?v:v},
     {label:'环比出勤',vals:hbVals,fmt:v=>v,isHtml:true},
     {label:'同比出勤',vals:tbVals,fmt:v=>v,isHtml:true},
