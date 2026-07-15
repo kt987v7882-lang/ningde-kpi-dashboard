@@ -424,6 +424,7 @@ const KPI = {"pr":0.990459,"jm_pr":0.992,"zb_pr":0.8864,"ot3i":0.01312,"ot3o":0,
 
 
 
+KPI.jm_floor=KPI.jm_floor||0.988;
 function fmtPct(v){return(v*100).toFixed(2)+'%'}
 function fmtPct4(v){return(v*100).toFixed(4)+'%'}
 function cellClass(ratio){
@@ -496,7 +497,7 @@ function init(){
 function renderKPI(){
   const cards=[
     {title:'当日整体推完率',sub:'目标98.55% · 口径B',val:KPI.pr,detail:'完成 '+KPI.n.toLocaleString()+' / 推单 '+KPI.d.toLocaleString()+' · 天气 '+KPI.weather,gap:KPI.pr_g,label:'与目标差'},
-    {title:'城代推完率',sub:'美配主力 · 兜底线98.8%',val:KPI.jm_pr,detail:'完成 '+KPI.jm_n.toLocaleString()+' / 推单 '+KPI.jm_d.toLocaleString(),gap:KPI.jm_gap,label:'与兜底线差'},
+    {title:'城代推完率',sub:'美配主力 · 兜底线98.8%',val:KPI.jm_pr,detail:'完成 '+KPI.n.toLocaleString()+' / 推单 '+KPI.d.toLocaleString(),gap:KPI.jm_gap,label:'与兜底线差'},
     {title:'众包推完率',sub:'差值法 · 目标98.55%',val:KPI.zb_pr,detail:'(美配n-加盟n) 15,126 / (美配d-加盟d) 15,403',gap:KPI.zb_gap,label:'与目标差'}
   ];
   document.getElementById('kpiCards').innerHTML=cards.map(c=>`
@@ -723,6 +724,8 @@ function renderJSON(){
 
 
 
+  function renderExpKpi(){
+  const daily=EXP_KPI.daily;
   const T=EXP_KPI.targets;
   const idx=KPI.currentIdx;
   const dateKey='202607'+String(daily[0].date).slice(6);
@@ -871,3 +874,11 @@ function renderExpCatTable(cat, catLabel){
 
 
 // ===== 体验KPI渲染函数 =====
+
+const STATION_NAMES = ["新能源站","金涵站","七都站","亿利城站","天茂站","城北站","万达站"];
+
+window.onload = init();
+
+</script>
+</body>
+</html>
