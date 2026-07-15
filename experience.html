@@ -53,6 +53,22 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .chart-box h3{font-size:14px;color:var(--text2);margin-bottom:12px}
 .chart-wrap{position:relative;height:280px}
 
+/* 自定义滚动条 */
+.table-section::-webkit-scrollbar{height:6px}
+.table-section::-webkit-scrollbar-track{background:var(--border);border-radius:3px}
+.table-section::-webkit-scrollbar-thumb{background:var(--text3);border-radius:3px}
+.table-section::-webkit-scrollbar-thumb:hover{background:var(--text2)}
+
+/* 双列布局中宽表格紧凑显示 */
+.dual-col .table-section table{font-size:11px}
+.dual-col .table-section th,.dual-col .table-section td{padding:5px 6px}
+
+/* 固定首列，水平滚动时保持可见 */
+.table-section table th:first-child,.table-section table td:first-child{position:sticky;left:0;z-index:2}
+.table-section table th:first-child{background:var(--card2);z-index:3}
+.table-section table td:first-child{background:var(--card)}
+.table-section table tr:hover td:first-child{background:rgba(77,171,247,.12)}
+
 /* 数据表格 */
 .table-section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:20px;overflow-x:auto}
 .table-section h3{font-size:14px;color:var(--text2);margin-bottom:12px}
