@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+[execute_script] 成功
+  Result: <html lang="zh-CN"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>宁德-配送日看板</title>
@@ -108,23 +107,44 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     <div class="meta">数据源：合作商用履约 xlsx · v2.1 · 三步固化口径A</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <select id="dateSelect" style="padding:4px 10px;border:1px solid #2563eb;border-radius:12px;background:#2563eb;color:#fff;font-size:12px;cursor:pointer" onchange="switchDate(parseInt(this.value))"></select>
-    <span class="meta" id="updateBadge"></span>
+    <select id="dateSelect" style="padding:4px 10px;border:1px solid #2563eb;border-radius:12px;background:#2563eb;color:#fff;font-size:12px;cursor:pointer" onchange="switchDate(parseInt(this.value))"><option value="0">2026-07-01 · 一般恶劣</option><option value="1">2026-07-02 · 一般恶劣</option><option value="2">2026-07-03 · 一般恶劣</option><option value="3">2026-07-04 · 比较恶劣</option><option value="4">2026-07-05 · 一般恶劣</option><option value="5">2026-07-06 · 一般恶劣</option><option value="6">2026-07-07 · 一般恶劣</option><option value="7">2026-07-08 · 一般恶劣</option><option value="8">2026-07-09 · 一般恶劣</option><option value="9">2026-07-10 · 正常</option><option value="10">2026-07-11 · 比较恶劣</option><option value="11">2026-07-12 · 非常恶劣</option><option value="12">2026-07-13 · 比较恶劣</option><option value="13">2026-07-14 · 一般恶劣</option></select>
+    <span class="meta" id="updateBadge">更新: 2026/7/16 04:21:32</span>
   </div>
 </div>
 
 <!-- KPI -->
-<div class="grid kpi-grid" id="kpiCards"></div>
+<div class="grid kpi-grid" id="kpiCards">
+    <div class="card">
+      <div class="card-title">当日整体推完率</div>
+      <div class="card-sub">目标98.55% · 口径B</div>
+      <div class="card-value">99.05%</div>
+      <div class="card-detail">完成 34,467 / 推单 34,799 · 天气 一般恶劣</div>
+      <div class="card-gap gap-neg">与目标差 0.60pp</div>
+    </div>
+    <div class="card">
+      <div class="card-title">城代推完率</div>
+      <div class="card-sub">美配主力 · 兜底线98.8%</div>
+      <div class="card-value">99.18%</div>
+      <div class="card-detail">完成 19,047 / 推单 19,440</div>
+      <div class="card-gap gap-neg">与兜底线差 0.38pp</div>
+    </div>
+    <div class="card">
+      <div class="card-title">众包推完率</div>
+      <div class="card-sub">差值法 · 目标98.55%</div>
+      <div class="card-value">98.88%</div>
+      <div class="card-detail">(美配n-加盟n) 15,420 / (美配d-加盟d) 15,595</div>
+      <div class="card-gap gap-neg">与目标差 0.33pp</div>
+    </div></div>
 
 
 <!-- 体验KPI（平铺） -->
     <div style="font-size:12px;color:#666;margin:8px 0">体验模块满分15分 = 复合超时(6分) + 虚假点(4.5分) + 配取(4.5分) · 权重40:30:30 · 绝对超时口径</div>
 
     <!-- 体验得分总览 -->
-    <div id="expKpiSummary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px"></div>
+    <div id="expKpiSummary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px"><div class="exp-sky-card"><div class="sky-label">复合超时 3km内</div><div class="sky-val">1.20%</div><div class="sky-target">目标: 2.92%</div><div class="sky-status good">达标</div><div class="exp-sky-bar"><div class="fill" style="width:41.2170037709976%;background:#34d399"></div></div></div><div class="exp-sky-card"><div class="sky-label">复合超时 3km外</div><div class="sky-val">1.50%</div><div class="sky-target">目标: 3.68%</div><div class="sky-status good">达标</div><div class="exp-sky-bar"><div class="fill" style="width:40.82042923118718%;background:#34d399"></div></div></div><div class="exp-sky-card"><div class="sky-label">虚假点送达率</div><div class="sky-val">0.0116%</div><div class="sky-target">目标: 0.027%</div><div class="sky-status good">达标</div><div class="exp-sky-bar"><div class="fill" style="width:42.98148148148149%;background:#34d399"></div></div></div><div class="exp-sky-card"><div class="sky-label">配送取消率</div><div class="sky-val">0.0825%</div><div class="sky-target">目标: 0.077%</div><div class="sky-status bad">未达标</div><div class="exp-sky-bar"><div class="fill" style="width:107.08311688311689%;background:#f87171"></div></div></div><div class="exp-sky-card"><div class="sky-label">体验模块得分</div><div class="sky-val">14.69</div><div class="sky-target">目标: 15分</div><div class="sky-status good">达标</div><div class="exp-sky-bar"><div class="fill" style="width:97.95466666666665%;background:#34d399"></div></div></div></div>
 
     <!-- 体验得分拆解 -->
-    <div id="expKpiScoreDetail" style="margin-bottom:12px"></div>
+    <div id="expKpiScoreDetail" style="margin-bottom:12px"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><div class="exp-score-card"><div class="score-title">复合超时率 (满分6分)</div><div class="score-row"><span>3km内完成率</span><span class="score-val" style="color:#059669">242.6%</span></div><div class="score-row"><span>3km外完成率</span><span class="score-val" style="color:#059669">245.0%</span></div><div class="score-row"><span>得分率</span><span class="score-val">100.0%</span></div><div class="score-total">6.00</div></div><div class="exp-score-card"><div class="score-title">虚假点送达 (满分4.5分)</div><div class="score-row"><span>完成率</span><span class="score-val" style="color:#059669">100.0%</span></div><div class="score-row"><span>得分率</span><span class="score-val">100.0%</span></div><div class="score-total">4.50</div></div><div class="exp-score-card"><div class="score-title">配送取消 (满分4.5分)</div><div class="score-row"><span>完成率</span><span class="score-val" style="color:#dc2626">92.9%</span></div><div class="score-row"><span>得分率</span><span class="score-val">93.2%</span></div><div class="score-total">4.19</div></div><div class="exp-score-card" style="border-left:3px solid #1e5f99"><div class="score-title">体验模块总分</div><div class="score-row"><span>超时+虚假点+配取</span><span class="score-val">6.00 + 4.50 + 4.19</span></div><div class="score-total" style="font-size:26px">14.69<span style="font-size:13px;color:#7ea8cb"> / 15</span></div></div></div></div>
 
     <!-- 体验图表（默认折叠） -->
     <div class="card" style="margin-bottom:12px;padding:0;overflow:hidden">
@@ -134,12 +154,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       </div>
       <div id="expChartsBody" style="display:none;padding:0 16px 12px 16px">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="card"><div class="card-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="expOtChart"></canvas></div></div>
-          <div class="card"><div class="card-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="expFcChart"></canvas></div></div>
+          <div class="card"><div class="card-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="expOtChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
+          <div class="card"><div class="card-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="expFcChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
-          <div class="card"><div class="card-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="expCatOtChart"></canvas></div></div>
-          <div class="card"><div class="card-title">体验得分趋势</div><div class="chart-container"><canvas id="expScoreChart"></canvas></div></div>
+          <div class="card"><div class="card-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="expCatOtChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
+          <div class="card"><div class="card-title">体验得分趋势</div><div class="chart-container"><canvas id="expScoreChart" style="box-sizing: border-box; display: block; height: 0px; width: 0px;" width="0" height="0"></canvas></div></div>
         </div>
       </div>
     </div>
@@ -156,10 +176,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           <button class="tab3-btn" onclick="switchTab3('station')" id="tab3Btn-station" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">站点数据</button>
         </div>
       </div>
-      <div style="padding:8px 16px 16px 16px">
-        <!-- Tab1: KPI得分总表（首Tab，默认激活） -->
-        <div id="tab3-kpiScore" class="tab3-content" style="display:block">
-（首Tab，默认激活） -->
+      <div style="padding:8px 16px 16px 16px"><div id="tab3-kpiScore" class="tab3-content" style="display:block">
+（首Tab，默认激活） --&gt;
         <div style="margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:13px">
           <span style="color:#333">宁德真一派·7月V5 KPI考核明细表</span>
           <span style="background:#fef3c7;color:#333;padding:2px 8px;border-radius:4px;font-weight:600">军哥模板-v14.17</span>
@@ -269,12 +287,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
 </tbody></table>
         </div>
-        </div>
-        </div>
-
-        <!-- Tab2: 7月每日运营明细 -->
-        <div id="tab3-dailyDetail" class="tab3-content" style="display:none">
--->
+        </div><div id="tab3-dailyDetail" class="tab3-content" style="display:none">
+--&gt;
         <div style="margin-top:16px">
           <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
           <div style="overflow-x:auto">
@@ -462,39 +476,39 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           </table>
         </div>
         </div>
-        </div>
-
-        <!-- Tab3: 三渠道分版面 -->
-        <div id="tab3-channels" class="tab3-content" style="display:none">
--->
+        </div><div id="tab3-channels" class="tab3-content" style="display:none">
+--&gt;
         <div style="font-size:12px;color:#666;margin:8px 0">三渠道分版面 · 加盟(城代) / 普通众包 / 悦跑 · 众包 = 普通众包 + 悦跑</div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
             <!-- 加盟(城代) -->
             <div style="border:1px solid #d4e6f1;border-radius:8px;overflow:hidden">
               <div style="background:#e8f4fd;padding:8px 12px;font-size:13px;font-weight:600;color:#1e3a5f">加盟(城代)</div>
               <div style="padding:8px" id="channelJM">
-                <div class="exp-cat-content" id="expCat-jm"></div>
+                <div class="exp-cat-content" id="expCat-jm"><span class="exp-tag exp-tag-jm">加盟(城代)</span><table class="station-data-table exp-table-blue" style="margin-top:6px"><thead><tr><th>日期</th><th>推单</th><th>完成</th><th>完成3km内</th><th>完成3km外</th><th>一般超时</th><th>严重超时</th><th>绝对超时</th><th>绝对率</th><th>取消</th><th>虚假点</th></tr></thead><tbody><tr><td>07-01</td><td>20,896</td><td>20,445</td><td>18,182</td><td>2,263</td><td>450</td><td>16</td><td>225</td><td>1.09%</td><td>5</td><td>2</td></tr><tr><td>07-02</td><td>21,687</td><td>21,217</td><td>18,951</td><td>2,266</td><td>488</td><td>13</td><td>277</td><td>1.27%</td><td>6</td><td>6</td></tr><tr><td>07-03</td><td>22,763</td><td>22,251</td><td>19,821</td><td>2,430</td><td>487</td><td>19</td><td>252</td><td>1.10%</td><td>0</td><td>9</td></tr><tr><td>07-04</td><td>24,818</td><td>24,274</td><td>21,612</td><td>2,662</td><td>487</td><td>16</td><td>231</td><td>0.92%</td><td>0</td><td>5</td></tr><tr><td>07-05</td><td>26,522</td><td>25,939</td><td>23,039</td><td>2,900</td><td>632</td><td>26</td><td>330</td><td>1.24%</td><td>2</td><td>8</td></tr><tr><td>07-06</td><td>22,480</td><td>22,000</td><td>19,613</td><td>2,387</td><td>442</td><td>11</td><td>213</td><td>0.94%</td><td>0</td><td>6</td></tr><tr><td>07-07</td><td>22,524</td><td>22,032</td><td>19,635</td><td>2,397</td><td>504</td><td>26</td><td>237</td><td>1.05%</td><td>4</td><td>7</td></tr><tr><td>07-08</td><td>23,181</td><td>22,663</td><td>20,307</td><td>2,356</td><td>615</td><td>25</td><td>348</td><td>1.49%</td><td>1</td><td>14</td></tr><tr><td>07-09</td><td>23,264</td><td>22,741</td><td>20,247</td><td>2,494</td><td>916</td><td>268</td><td>498</td><td>2.15%</td><td>5</td><td>7</td></tr><tr><td>07-10</td><td>22,011</td><td>21,480</td><td>18,990</td><td>2,490</td><td>801</td><td>256</td><td>355</td><td>1.55%</td><td>2</td><td>14</td></tr><tr><td>07-11</td><td>19,034</td><td>18,593</td><td>16,187</td><td>2,406</td><td>470</td><td>34</td><td>201</td><td>1.05%</td><td>3</td><td>4</td></tr><tr><td>07-12</td><td>20,794</td><td>20,410</td><td>18,012</td><td>2,398</td><td>368</td><td>16</td><td>157</td><td>0.75%</td><td>0</td><td>4</td></tr><tr><td>07-13</td><td>18,728</td><td>18,386</td><td>16,283</td><td>2,103</td><td>269</td><td>8</td><td>106</td><td>0.56%</td><td>1</td><td>4</td></tr><tr><td>07-14</td><td>19,440</td><td>19,047</td><td>16,966</td><td>2,081</td><td>343</td><td>10</td><td>152</td><td>0.79%</td><td>0</td><td>2</td></tr></tbody></table></div>
               </div>
             </div>
             <!-- 普通众包 -->
             <div style="border:1px solid #ede9fe;border-radius:8px;overflow:hidden">
               <div style="background:#f3e8ff;padding:8px 12px;font-size:13px;font-weight:600;color:#5b21b6">普通众包</div>
               <div style="padding:8px" id="channelZB">
-                <div class="exp-cat-content" id="expCat-zb"></div>
+                <div class="exp-cat-content" id="expCat-zb"><span class="exp-tag exp-tag-zb">普通众包</span><table class="station-data-table exp-table-blue" style="margin-top:6px"><thead><tr><th>日期</th><th>推单</th><th>完成</th><th>完成3km内</th><th>完成3km外</th><th>一般超时</th><th>严重超时</th><th>绝对超时</th><th>绝对率</th><th>取消</th><th>虚假点</th></tr></thead><tbody><tr><td>07-01</td><td>8,189</td><td>6,665</td><td>6,415</td><td>250</td><td>648</td><td>104</td><td>196</td><td>2.93%</td><td>17</td><td>2</td></tr><tr><td>07-02</td><td>8,236</td><td>6,616</td><td>6,365</td><td>251</td><td>576</td><td>134</td><td>192</td><td>2.89%</td><td>8</td><td>0</td></tr><tr><td>07-03</td><td>8,507</td><td>6,957</td><td>6,692</td><td>265</td><td>578</td><td>104</td><td>198</td><td>2.80%</td><td>6</td><td>1</td></tr><tr><td>07-04</td><td>9,407</td><td>7,926</td><td>7,610</td><td>316</td><td>532</td><td>79</td><td>210</td><td>2.65%</td><td>5</td><td>1</td></tr><tr><td>07-05</td><td>9,880</td><td>8,112</td><td>7,800</td><td>312</td><td>734</td><td>169</td><td>282</td><td>3.41%</td><td>4</td><td>1</td></tr><tr><td>07-06</td><td>7,312</td><td>5,893</td><td>5,693</td><td>200</td><td>457</td><td>92</td><td>143</td><td>2.38%</td><td>9</td><td>1</td></tr><tr><td>07-07</td><td>7,455</td><td>6,003</td><td>5,772</td><td>231</td><td>491</td><td>88</td><td>176</td><td>2.93%</td><td>8</td><td>0</td></tr><tr><td>07-08</td><td>7,646</td><td>6,223</td><td>5,996</td><td>227</td><td>463</td><td>85</td><td>183</td><td>2.84%</td><td>4</td><td>1</td></tr><tr><td>07-09</td><td>7,607</td><td>5,899</td><td>5,688</td><td>211</td><td>527</td><td>110</td><td>182</td><td>3.02%</td><td>8</td><td>0</td></tr><tr><td>07-10</td><td>7,314</td><td>5,972</td><td>5,741</td><td>231</td><td>352</td><td>51</td><td>129</td><td>2.09%</td><td>6</td><td>1</td></tr><tr><td>07-11</td><td>3,923</td><td>2,970</td><td>2,844</td><td>126</td><td>253</td><td>63</td><td>70</td><td>2.26%</td><td>10</td><td>1</td></tr><tr><td>07-12</td><td>5,371</td><td>4,237</td><td>4,077</td><td>160</td><td>398</td><td>64</td><td>123</td><td>2.83%</td><td>7</td><td>2</td></tr><tr><td>07-13</td><td>7,516</td><td>6,093</td><td>5,876</td><td>217</td><td>441</td><td>49</td><td>174</td><td>2.84%</td><td>10</td><td>1</td></tr><tr><td>07-14</td><td>8,358</td><td>6,999</td><td>6,767</td><td>232</td><td>446</td><td>32</td><td>195</td><td>2.71%</td><td>14</td><td>1</td></tr></tbody></table></div>
               </div>
             </div>
             <!-- 悦跑 -->
             <div style="border:1px solid #d1fae5;border-radius:8px;overflow:hidden">
               <div style="background:#ecfdf5;padding:8px 12px;font-size:13px;font-weight:600;color:#065f46">悦跑</div>
               <div style="padding:8px" id="channelYP">
-                <div class="exp-cat-content" id="expCat-yp">
-        </div>
+                <div class="exp-cat-content" id="expCat-yp"><span class="exp-tag exp-tag-yp">悦跑</span><table class="station-data-table exp-table-blue" style="margin-top:6px"><thead><tr><th>日期</th><th>推单</th><th>完成</th><th>完成3km内</th><th>完成3km外</th><th>一般超时</th><th>严重超时</th><th>绝对超时</th><th>绝对率</th><th>取消</th><th>虚假点</th></tr></thead><tbody><tr><td>07-01</td><td>10,196</td><td>10,017</td><td>9,735</td><td>282</td><td>546</td><td>46</td><td>163</td><td>1.63%</td><td>19</td><td>1</td></tr><tr><td>07-02</td><td>9,889</td><td>9,693</td><td>9,421</td><td>272</td><td>561</td><td>71</td><td>129</td><td>1.33%</td><td>21</td><td>0</td></tr><tr><td>07-03</td><td>10,202</td><td>9,968</td><td>9,748</td><td>220</td><td>503</td><td>38</td><td>181</td><td>1.79%</td><td>17</td><td>1</td></tr><tr><td>07-04</td><td>9,949</td><td>9,738</td><td>9,500</td><td>238</td><td>361</td><td>26</td><td>132</td><td>1.36%</td><td>23</td><td>0</td></tr><tr><td>07-05</td><td>9,457</td><td>9,228</td><td>8,974</td><td>254</td><td>555</td><td>49</td><td>173</td><td>1.87%</td><td>36</td><td>0</td></tr><tr><td>07-06</td><td>10,259</td><td>10,096</td><td>9,826</td><td>270</td><td>529</td><td>36</td><td>138</td><td>1.37%</td><td>12</td><td>1</td></tr><tr><td>07-07</td><td>10,464</td><td>10,279</td><td>10,010</td><td>269</td><td>466</td><td>45</td><td>159</td><td>1.54%</td><td>11</td><td>2</td></tr><tr><td>07-08</td><td>10,580</td><td>10,393</td><td>10,081</td><td>312</td><td>514</td><td>50</td><td>173</td><td>1.66%</td><td>15</td><td>0</td></tr><tr><td>07-09</td><td>10,099</td><td>9,918</td><td>9,684</td><td>234</td><td>492</td><td>67</td><td>152</td><td>1.51%</td><td>15</td><td>4</td></tr><tr><td>07-10</td><td>9,338</td><td>9,155</td><td>8,905</td><td>250</td><td>361</td><td>24</td><td>110</td><td>1.20%</td><td>17</td><td>1</td></tr><tr><td>07-11</td><td>7,464</td><td>7,308</td><td>7,049</td><td>259</td><td>449</td><td>36</td><td>119</td><td>1.63%</td><td>11</td><td>1</td></tr><tr><td>07-12</td><td>8,643</td><td>8,459</td><td>8,136</td><td>323</td><td>454</td><td>34</td><td>131</td><td>1.53%</td><td>13</td><td>2</td></tr><tr><td>07-13</td><td>9,069</td><td>8,907</td><td>8,654</td><td>253</td><td>363</td><td>19</td><td>84</td><td>0.93%</td><td>8</td><td>4</td></tr><tr><td>07-14</td><td>8,586</td><td>8,421</td><td>8,205</td><td>216</td><td>316</td><td>8</td><td>83</td><td>0.97%</td><td>16</td><td>1</td></tr></tbody></table></div>
         </div>
         </div>
 
         <!-- Tab4: 推完矩阵 -->
-        <div id="tab3-matrix" class="tab3-content" style="display:none">
--->
+        
+
+    
+        </div>
+        </div><div id="tab3-matrix" class="tab3-content" style="display:none">
+--&gt;
         <div id="tab-matrix">
     <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
     <div class="legend">
@@ -503,19 +517,11 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
       <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
     </div>
-    <div class="matrix-wrap" id="matrixTable"></div>
+    <div class="matrix-wrap" id="matrixTable"><table class="matrix-table"><thead><tr><th>维度</th><th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th><th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th><th>汇总</th></tr></thead><tbody><tr><td class="dim-name">整体(美配口径)</td><td class="cell-red">90.91%<br><small>1421/1563</small></td><td class="cell-red">87.42%<br><small>542/620</small></td><td class="cell-red">90.82%<br><small>287/316</small></td><td class="cell-red">90.56%<br><small>748/826</small></td><td class="cell-red">91.52%<br><small>2449/2676</small></td><td class="cell-red">94.35%<br><small>9579/10153</small></td><td class="cell-red">95.52%<br><small>2476/2592</small></td><td class="cell-red">95.67%<br><small>3046/3184</small></td><td class="cell-red">93.68%<br><small>7661/8178</small></td><td class="cell-red">91.90%<br><small>3994/4346</small></td><td class="cell-red">90.68%<br><small>3357/3702</small></td><td class="cell-red" style="font-weight:600">93.20%<br><small>35560/38156</small></td></tr><tr><td class="dim-name">加盟</td><td class="cell-yellow">97.17%<br><small>619/637</small></td><td class="cell-red">94.36%<br><small>251/266</small></td><td class="cell-green">98.64%<br><small>145/147</small></td><td class="cell-green">98.65%<br><small>438/444</small></td><td class="cell-yellow">97.52%<br><small>1259/1291</small></td><td class="cell-yellow">98.34%<br><small>5083/5169</small></td><td class="cell-yellow">98.26%<br><small>1357/1381</small></td><td class="cell-yellow">98.38%<br><small>1644/1671</small></td><td class="cell-yellow">98.21%<br><small>4339/4418</small></td><td class="cell-yellow">98.04%<br><small>2150/2193</small></td><td class="cell-yellow">97.98%<br><small>1701/1736</small></td><td class="cell-yellow" style="font-weight:600">98.10%<br><small>18986/19353</small></td></tr><tr><td class="dim-name">众包(悦跑+普众合并)</td><td class="cell-red">86.61%<br><small>802/926</small></td><td class="cell-red">82.20%<br><small>291/354</small></td><td class="cell-red">84.02%<br><small>142/169</small></td><td class="cell-red">81.15%<br><small>310/382</small></td><td class="cell-red">85.92%<br><small>1190/1385</small></td><td class="cell-red">90.21%<br><small>4496/4984</small></td><td class="cell-red">92.40%<br><small>1119/1211</small></td><td class="cell-red">92.66%<br><small>1402/1513</small></td><td class="cell-red">88.35%<br><small>3322/3760</small></td><td class="cell-red">85.65%<br><small>1844/2153</small></td><td class="cell-red">84.23%<br><small>1656/1966</small></td><td class="cell-red" style="font-weight:600">88.15%<br><small>16574/18803</small></td></tr><tr><td class="dim-name">新能源站</td><td class="cell-yellow">97.35%<br><small>110/113</small></td><td class="cell-green">100.00%<br><small>27/27</small></td><td class="cell-green">100.00%<br><small>21/21</small></td><td class="cell-yellow">97.30%<br><small>72/74</small></td><td class="cell-red">96.93%<br><small>158/163</small></td><td class="cell-yellow">98.30%<br><small>867/882</small></td><td class="cell-red">94.78%<br><small>127/134</small></td><td class="cell-yellow">97.14%<br><small>136/140</small></td><td class="cell-yellow">97.75%<br><small>566/579</small></td><td class="cell-yellow">97.98%<br><small>436/445</small></td><td class="cell-yellow">97.10%<br><small>268/276</small></td><td class="cell-yellow" style="font-weight:600">97.69%<br><small>2788/2854</small></td></tr><tr><td class="dim-name">金涵站</td><td class="cell-green">100.00%<br><small>1/1</small></td><td class="cell-gray">—</td><td class="cell-gray">—</td><td class="cell-green">100.00%<br><small>4/4</small></td><td class="cell-red">96.55%<br><small>28/29</small></td><td class="cell-yellow">98.35%<br><small>119/121</small></td><td class="cell-red">96.67%<br><small>29/30</small></td><td class="cell-red">96.15%<br><small>25/26</small></td><td class="cell-yellow">98.42%<br><small>187/190</small></td><td class="cell-red">96.80%<br><small>121/125</small></td><td class="cell-green">99.00%<br><small>99/100</small></td><td class="cell-yellow" style="font-weight:600">97.92%<br><small>613/626</small></td></tr><tr><td class="dim-name">七都站</td><td class="cell-gray">—</td><td class="cell-gray">—</td><td class="cell-green">100.00%<br><small>1/1</small></td><td class="cell-green">100.00%<br><small>3/3</small></td><td class="cell-yellow">98.15%<br><small>53/54</small></td><td class="cell-green">99.15%<br><small>116/117</small></td><td class="cell-green">100.00%<br><small>32/32</small></td><td class="cell-green">100.00%<br><small>40/40</small></td><td class="cell-red">95.65%<br><small>110/115</small></td><td class="cell-green">98.82%<br><small>84/85</small></td><td class="cell-green">100.00%<br><small>41/41</small></td><td class="cell-yellow" style="font-weight:600">98.36%<br><small>480/488</small></td></tr><tr><td class="dim-name">亿利城站</td><td class="cell-green">98.63%<br><small>72/73</small></td><td class="cell-red">85.71%<br><small>12/14</small></td><td class="cell-green">100.00%<br><small>1/1</small></td><td class="cell-yellow">97.37%<br><small>37/38</small></td><td class="cell-yellow">97.16%<br><small>171/176</small></td><td class="cell-yellow">97.87%<br><small>552/564</small></td><td class="cell-green">99.30%<br><small>141/142</small></td><td class="cell-yellow">98.52%<br><small>133/135</small></td><td class="cell-green">98.59%<br><small>419/425</small></td><td class="cell-yellow">98.31%<br><small>174/177</small></td><td class="cell-yellow">98.14%<br><small>211/215</small></td><td class="cell-yellow" style="font-weight:600">98.11%<br><small>1923/1960</small></td></tr><tr><td class="dim-name">天茂站</td><td class="cell-red">94.74%<br><small>108/114</small></td><td class="cell-red">93.48%<br><small>43/46</small></td><td class="cell-red">95.83%<br><small>23/24</small></td><td class="cell-green">100.00%<br><small>103/103</small></td><td class="cell-red">96.27%<br><small>284/295</small></td><td class="cell-green">99.07%<br><small>960/969</small></td><td class="cell-green">99.61%<br><small>253/254</small></td><td class="cell-yellow">98.40%<br><small>369/375</small></td><td class="cell-green">98.91%<br><small>815/824</small></td><td class="cell-green">98.59%<br><small>419/425</small></td><td class="cell-yellow">97.50%<br><small>312/320</small></td><td class="cell-yellow" style="font-weight:600">98.40%<br><small>3689/3749</small></td></tr><tr><td class="dim-name">城北站</td><td class="cell-red">96.67%<br><small>116/120</small></td><td class="cell-red">91.11%<br><small>41/45</small></td><td class="cell-green">100.00%<br><small>44/44</small></td><td class="cell-green">99.30%<br><small>141/142</small></td><td class="cell-yellow">97.93%<br><small>284/290</small></td><td class="cell-green">98.61%<br><small>1136/1152</small></td><td class="cell-yellow">98.34%<br><small>296/301</small></td><td class="cell-yellow">97.38%<br><small>371/381</small></td><td class="cell-yellow">97.44%<br><small>1029/1056</small></td><td class="cell-yellow">97.95%<br><small>335/342</small></td><td class="cell-yellow">98.29%<br><small>344/350</small></td><td class="cell-yellow" style="font-weight:600">97.96%<br><small>4137/4223</small></td></tr><tr><td class="dim-name">万达站</td><td class="cell-yellow">98.15%<br><small>212/216</small></td><td class="cell-red">95.52%<br><small>128/134</small></td><td class="cell-yellow">98.21%<br><small>55/56</small></td><td class="cell-yellow">97.50%<br><small>78/80</small></td><td class="cell-green">98.94%<br><small>281/284</small></td><td class="cell-yellow">97.73%<br><small>1333/1364</small></td><td class="cell-yellow">98.16%<br><small>479/488</small></td><td class="cell-green">99.30%<br><small>570/574</small></td><td class="cell-green">98.70%<br><small>1213/1229</small></td><td class="cell-yellow">97.81%<br><small>581/594</small></td><td class="cell-yellow">98.16%<br><small>426/434</small></td><td class="cell-yellow" style="font-weight:600">98.22%<br><small>5356/5453</small></td></tr></tbody></table><div style="font-size:10px;color:#999;margin-top:4px">数据源：<span style="color:#27ae60">✓ 订单详情分时段数据</span> · 按商家推单时间归入时段</div></div>
     <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
   </div>
-    </div>
-
-    
-        </div>
-        </div>
-        </div>
-
-        <!-- Tab5: 众包盘点 -->
-        <div id="tab3-crowd" class="tab3-content" style="display:none">
--->
+    </div><div id="tab3-crowd" class="tab3-content" style="display:none">
+--&gt;
         <div id="tab-crowd">
     <div class="matrix-wrap" style="margin-top:12px">
       <table class="station-data-table" id="crowdTable">
@@ -527,47 +533,57 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
             <th>全天</th>
           </tr>
         </thead>
-        <tbody id="crowdBody"></tbody>
+        <tbody id="crowdBody"><tr><td class="ind-name">推完率(%)</td><td>86.61%</td><td>82.20%</td><td>84.02%</td><td>81.15%</td><td>85.92%</td><td>90.21%</td><td>92.40%</td><td>92.66%</td><td>88.35%</td><td>85.65%</td><td>84.23%</td><td style="font-weight:600;background:#f8f9fb">98.88%</td></tr><tr><td class="ind-name">取消单</td><td>124</td><td>63</td><td>27</td><td>72</td><td>195</td><td>488</td><td>92</td><td>111</td><td>438</td><td>308</td><td>310</td><td style="font-weight:600;background:#f8f9fb">2228</td></tr><tr><td class="ind-name">超时单</td><td>501</td><td>165</td><td>74</td><td>195</td><td>694</td><td>3134</td><td>671</td><td>868</td><td>2332</td><td>1252</td><td>1118</td><td>11004</td><td style="font-weight:600;background:#f8f9fb">22008</td></tr><tr><td class="ind-name">超时率(%)</td><td>62.47%</td><td>56.70%</td><td>52.11%</td><td>62.90%</td><td>58.32%</td><td>69.71%</td><td>59.96%</td><td>61.91%</td><td>70.20%</td><td>67.90%</td><td>67.51%</td><td style="font-weight:600;background:#f8f9fb">1.80%</td></tr><tr><td class="ind-name">完成单</td><td>802</td><td>291</td><td>142</td><td>310</td><td>1190</td><td>4496</td><td>1119</td><td>1402</td><td>3322</td><td>1844</td><td>1656</td><td>16574</td><td style="font-weight:600;background:#f8f9fb">33148</td></tr><tr><td class="ind-name">悦跑出勤(人)</td><td>17</td><td>10</td><td>8</td><td>9</td><td>57</td><td>132</td><td>62</td><td>69</td><td>103</td><td>41</td><td>18</td><td style="font-weight:600;background:#f8f9fb">163</td></tr><tr><td class="ind-name">环比出勤</td><td><span style="color:#27ae60">+2</span></td><td><span style="color:#27ae60">+1</span></td><td><span style="color:#e74c3c">-1</span></td><td><span style="color:#e74c3c">-2</span></td><td><span style="color:#e74c3c">-1</span></td><td><span style="color:#e74c3c">-4</span></td><td>±0</td><td><span style="color:#27ae60">+5</span></td><td><span style="color:#e74c3c">-9</span></td><td><span style="color:#e74c3c">-7</span></td><td><span style="color:#e74c3c">-9</span></td><td style="font-weight:600;background:#f8f9fb"><span style="color:#e74c3c">-6</span></td></tr><tr><td class="ind-name">同比出勤</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td style="font-weight:600;background:#f8f9fb">-</td></tr><tr><td class="ind-name">出勤率(%)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td style="font-weight:600;background:#f8f9fb">—</td></tr><tr><td class="ind-name">悦跑排班(人)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td style="font-weight:600;background:#f8f9fb">0</td></tr><tr><td class="ind-name">悦跑排班率(%)</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td style="font-weight:600;background:#f8f9fb">0.00%</td></tr><tr><td class="ind-name">排班出勤(人)</td><td>17</td><td>10</td><td>8</td><td>9</td><td>57</td><td>132</td><td>62</td><td>69</td><td>103</td><td>41</td><td>18</td><td style="font-weight:600;background:#f8f9fb">163</td></tr><tr><td class="ind-name">排班出勤率(%)</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td style="font-weight:600;background:#f8f9fb">0.00%</td></tr><tr><td class="ind-name">排班出勤率*绝(%)</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td style="font-weight:600;background:#f8f9fb">0.00%</td></tr></tbody>
       </table>
     </div>
-    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
+    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完(差值法) 98.88% · 全天数据来源: 订单详情 + 骑手出勤表 · 编制0 · 07-14</div>
   </div>
-    </div>
-
-    
-        </div>
-        </div>
-        </div>
-
-        <!-- Tab6: 站点数据 -->
-        <div id="tab3-station" class="tab3-content" style="display:none">
--->
+    </div><div id="tab3-station" class="tab3-content" style="display:none">
+--&gt;
         <div id="tab-station">
     <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
-    <div class="station-select" id="stationBtns"></div>
+    <div class="station-select" id="stationBtns"><button class="active" onclick="showStation(0)">新能源站</button><button class="" onclick="showStation(1)">金涵站</button><button class="" onclick="showStation(2)">七都站</button><button class="" onclick="showStation(3)">亿利城站</button><button class="" onclick="showStation(4)">天茂站</button><button class="" onclick="showStation(5)">城北站</button><button class="" onclick="showStation(6)">万达站</button></div>
     <div style="font-size:11px;color:#888;margin-bottom:8px">
       各站整体推完率：
-      <span id="stationSummary"></span>
+      <span id="stationSummary">新能源站 97.69% · 金涵站 97.92% · 七都站 98.36% · 亿利城站 98.11% · 天茂站 98.40% · 城北站 97.96% · 万达站 98.22%</span>
     </div>
-    <div class="matrix-wrap" id="stationDataTable"></div>
+    <div class="matrix-wrap" id="stationDataTable"><table class="station-data-table"><thead><tr><th>指标</th><th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th><th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th><th>全天</th></tr></thead><tbody><tr><td class="ind-name">推完率</td><td>97.35%</td><td>100.00%</td><td>100.00%</td><td>97.30%</td><td>96.93%</td><td>98.30%</td><td>94.78%</td><td>97.14%</td><td>97.75%</td><td>97.98%</td><td>97.10%</td><td>97.69%</td><td style="font-weight:600;background:#f8f9fb">97.69%</td></tr><tr><td class="ind-name">取消单(单)</td><td>3</td><td>0</td><td>0</td><td>2</td><td>5</td><td>15</td><td>7</td><td>4</td><td>13</td><td>9</td><td>8</td><td style="font-weight:600;background:#f8f9fb">66</td></tr><tr><td class="ind-name">超时单量D端(单)</td><td>74</td><td>16</td><td>10</td><td>41</td><td>94</td><td>572</td><td>41</td><td>52</td><td>331</td><td>295</td><td>196</td><td style="font-weight:600;background:#f8f9fb">1722</td></tr><tr><td class="ind-name">超时率D端</td><td>65.49%</td><td>59.26%</td><td>47.62%</td><td>55.41%</td><td>57.67%</td><td>64.85%</td><td>30.60%</td><td>37.14%</td><td>57.17%</td><td>66.29%</td><td>71.01%</td><td style="font-weight:600;background:#f8f9fb">60.34%</td></tr><tr><td class="ind-name">有单人数(人)</td><td>20</td><td>9</td><td>8</td><td>16</td><td>36</td><td>72</td><td>37</td><td>44</td><td>75</td><td>63</td><td>38</td><td style="font-weight:600;background:#f8f9fb">84</td></tr><tr><td class="ind-name">5单+人数(人)</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td style="font-weight:600;background:#f8f9fb">—</td></tr><tr><td class="ind-name">出勤率(%)</td><td>23.81%</td><td>10.71%</td><td>9.52%</td><td>19.05%</td><td>42.86%</td><td>85.71%</td><td>44.05%</td><td>52.38%</td><td>89.29%</td><td>75.00%</td><td>45.24%</td><td style="font-weight:600;background:#f8f9fb">100.00%</td></tr><tr><td class="ind-name">C端超时率</td><td>67.27%</td><td>59.26%</td><td>47.62%</td><td>56.94%</td><td>59.49%</td><td>65.97%</td><td>32.28%</td><td>38.24%</td><td>58.48%</td><td>67.66%</td><td>73.13%</td><td style="font-weight:600;background:#f8f9fb">61.72%</td></tr></tbody></table></div>
       </div>
-    </div>
-    </div>
+    </div></div>
 
+        <!-- Tab2: 7月每日运营明细 -->
+        
 
-
+        <!-- Tab3: 三渠道分版面 -->
+        
         </div>
 
-      </div>
-    </div>
-        </div>
-      </div>
-    </div>
+        <!-- Tab5: 众包盘点 -->
+        
+
+    
+        
+        
+        
+
+        <!-- Tab6: 站点数据 -->
+        
+    
+
+
+
+        
+
+      
+    
+        
+      
+    
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
-        </div>
+        
 
-      </div>
-    </div>
+      
+    
 
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
@@ -1246,5 +1262,145 @@ if(document.readyState==='complete'){runInit();}else{window.addEventListener('lo
 
 
 </script>
-</body>
-</html>
+
+
+</body></html>
+---
+Title: 宁德-配送日看板
+URL:   https://kt987v7882-lang.github.io/ningde-kpi-dashboard/index.html?_t=1752643600
+---
+Interactive elements (index[:]info):
+0[:]select | selected="2026-07-14 · 一般恶劣" options=[2026-07-01 · 一般恶劣 / 2026-07-02 · 一般恶劣 / 2026-07-03 · 一般恶劣 / 2026-07-04 · 比较恶劣 / 2026-07-05 · 一般恶劣 / 2026-07-06 · 一般恶劣 / 2026-07-07 · 一般恶劣 / 2026-07-08 · 一般恶劣 / 2026-07-09 · 一般恶劣 / 2026-07-10 · 正常 … (+4)]
+1[:]button | KPI得分总表
+2[:]button | 7月每日运营明细
+3[:]button | 三渠道分版面
+4[:]button | 推完矩阵
+5[:]button | 众包盘点
+6[:]button | 站点数据
+---
+Page Text:
+宁德 · 配送日看板
+数据源：合作商用履约 xlsx · v2.1 · 三步固化口径A
+2026-07-01 · 一般恶劣
+2026-07-02 · 一般恶劣
+2026-07-03 · 一般恶劣
+2026-07-04 · 比较恶劣
+2026-07-05 · 一般恶劣
+2026-07-06 · 一般恶劣
+2026-07-07 · 一般恶劣
+2026-07-08 · 一般恶劣
+2026-07-09 · 一般恶劣
+2026-07-10 · 正常
+2026-07-11 · 比较恶劣
+2026-07-12 · 非常恶劣
+2026-07-13 · 比较恶劣
+2026-07-14 · 一般恶劣
+更新: 2026/7/16 04:21:32
+当日整体推完率
+目标98.55% · 口径B
+99.05%
+完成 34,467 / 推单 34,799 · 天气 一般恶劣
+与目标差 0.60pp
+城代推完率
+美配主力 · 兜底线98.8%
+99.18%
+完成 19,047 / 推单 19,440
+与兜底线差 0.38pp
+众包推完率
+差值法 · 目标98.55%
+98.88%
+(美配n-加盟n) 15,420 / (美配d-加盟d) 15,595
+与目标差 0.33pp
+体验模块满分15分 = 复合超时(6分) + 虚假点(4.5分) + 配取(4.5分) · 权重40:30:30 · 绝对超时口径
+复合超时 3km内
+1.20%
+目标: 2.92%
+达标
+复合超时 3km外
+1.50%
+目标: 3.68%
+达标
+虚假点送达率
+0.0116%
+目标: 0.027%
+达标
+配送取消率
+0.0825%
+目标: 0.077%
+未达标
+体验模块得分
+14.69
+目标: 15分
+达标
+复合超时率 (满分6分)
+3km内完成率
+242.6%
+3km外完成率
+245.0%
+得分率
+100.0%
+6.00
+虚假点送达 (满分4.5分)
+完成率
+100.0%
+得分率
+100.0%
+4.50
+配送取消 (满分4.5分)
+完成率
+92.9%
+得分率
+93.2%
+4.19
+体验模块总分
+超时+虚假点+配取
+6.00 + 4.50 + 4.19
+14.69 / 15
+📈 体验趋势图表
+▶ 展开
+KPI得分总表
+7月每日运营明细
+三渠道分版面
+推完矩阵
+众包盘点
+站点数据
+（首Tab，默认激活） -->
+宁德真一派·7月V5 KPI考核明细表
+军哥模板-v14.17
+得分率[90%,110%]·7/1-7/16 校准·月度 40.43/40
+2026/7/16	模块	项目	项目拆分	考核目标	考核达成	指标完成率	指标得分率	指标得分	月度得分
+(40分)
+月度
+常规	履约-体验
+(15分)	复合超时
+(6分)	3KM内	2.917%	1.8862%	142.86%	110.00%	6.60	40.43
+3KM外	3.681%	7.7605%	128.94%	110.00%
+虚假点
+(4.5分)	虚假点送达	0.027%	0.0234%	109.08%	100.00%	4.50
+配取
+(4.5分)	配送取消	0.077%	0.0737%	102.04%	100.00%	4.50
+履约-推完
+(20分)	推完
+(20分)	推单完成率	98.55%	98.5458%	99.97%	99.97%	19.99
+履约-完结
+(5分)	商家订单
+完结率	餐饮F1	89%	88.05%	98.79%	98.79%	2.47
+商家订单
+完结率	非餐F1	66%	64.38%	94.79%	94.79%	2.37
+考核周期	周期	运力模块	考核目标	考核达成	指标完成率	指标得分率	指标得分	周期得分	整期得分
+(100分)
+第一期	整期	专送（20分）	433	436.3	100.76%	100.00%	20.00	整期	100.97
+W1	普众（10分）	374	418	111.76%	110.00%	11.00	101.62
+(W1得分)
+悦跑（30分）	160	161	100.63%	100.63%	30.19
+W2	普众（10分）	374	429	114.71%	110.00%	11.00	100.31
+(W2得分)
+悦跑（30分）	160	154	96.25%	96.25%	28.88
+考核周期	周期	运力模块	考核目标	考核达成	指标完成率	指标得分率	指标得分	周期得分	整期得分
+(100分)
+第二期	整期	专送（20分）	—	—	—	—	—	整期	待结算
+W3	普众(10分)	—	—	—	—	—	W3得分
+W4	普众(10分)	—	—	—	—	—	W4得分
+W5	普众(10分)	—	—	—	—	—	W5得分
+宁德美团外卖 · 配送数据看板
+宁德美团外卖 · 配送数据看板
