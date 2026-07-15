@@ -144,20 +144,135 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       </div>
     </div>
 
-    <!-- 总览汇总 · 3-Tab模块 -->
+        <!-- 总览汇总 · 6-Tab模块 -->
     <div class="card" style="margin-bottom:12px;padding:0;overflow:visible">
       <div style="padding:12px 16px 0 16px">
-        <div style="display:flex;border-bottom:2px solid #2563eb;gap:0">
-          <button class="tab3-btn active" onclick="switchTab3('dailyDetail')" id="tab3Btn-dailyDetail" style="padding:10px 20px;border:none;background:#fff;font-size:14px;cursor:pointer;color:#2563eb;font-weight:600;border-bottom:2px solid #2563eb;margin-bottom:-2px">7月每日运营明细</button>
-          <button class="tab3-btn" onclick="switchTab3('channels')" id="tab3Btn-channels" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px">三渠道分版面</button>
-          <button class="tab3-btn" onclick="switchTab3('kpiScore')" id="tab3Btn-kpiScore" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px">KPI得分总表</button>
+        <div style="display:flex;border-bottom:2px solid #2563eb;gap:0;overflow-x:auto">
+          <button class="tab3-btn active" onclick="switchTab3('kpiScore')" id="tab3Btn-kpiScore" style="padding:10px 20px;border:none;background:#fff;font-size:14px;cursor:pointer;color:#2563eb;font-weight:600;border-bottom:2px solid #2563eb;margin-bottom:-2px;white-space:nowrap">KPI得分总表</button>
+          <button class="tab3-btn" onclick="switchTab3('dailyDetail')" id="tab3Btn-dailyDetail" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">7月每日运营明细</button>
+          <button class="tab3-btn" onclick="switchTab3('channels')" id="tab3Btn-channels" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">三渠道分版面</button>
+          <button class="tab3-btn" onclick="switchTab3('matrix')" id="tab3Btn-matrix" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">推完矩阵</button>
+          <button class="tab3-btn" onclick="switchTab3('crowd')" id="tab3Btn-crowd" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">众包盘点</button>
+          <button class="tab3-btn" onclick="switchTab3('station')" id="tab3Btn-station" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">站点数据</button>
         </div>
       </div>
       <div style="padding:8px 16px 16px 16px">
 
-        <!-- Tab1: 7月每日运营数据明细 -->
-        <div id="tab3-dailyDetail" class="tab3-content" style="display:block">
-          <div style="margin-top:16px">
+        <!-- Tab1: KPI得分总表（首Tab，默认激活） -->
+        <div id="tab3-kpiScore" class="tab3-content" style="display:block">
+<div style="margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:13px">
+          <span style="color:#333">宁德真一派·7月V5 KPI考核明细表</span>
+          <span style="background:#fef3c7;color:#333;padding:2px 8px;border-radius:4px;font-weight:600">军哥模板-v14.17</span>
+          <span style="color:#333">得分率[90%,110%]·7/1-7/16 校准·月度 <span style="color:#d97706;font-weight:600">40.43</span>/40</span>
+        </div>
+          <style>
+#kpiMonthTable th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
+#kpiMonthTable td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
+#kpiMonthTable .td-label{background:#fef9c3 !important;font-weight:600 !important}
+#kpiMonthTable .td-exp{background:#fef3c7 !important}
+#kpiMonthTable .td-push{background:#ffffff !important}
+#kpiMonthTable .td-fin{background:#e8f5e9 !important}
+#kpiMonthTable .td-total{background:#fce4ec !important;font-weight:700 !important;color:#8d6e63 !important;font-size:15px !important}
+#kpiPeriod1 th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
+#kpiPeriod1 td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
+#kpiPeriod1 .td-label{background:#e8f5e9 !important;font-weight:600 !important}
+#kpiPeriod1 .td-w1{background:#f0f7f0 !important}
+#kpiPeriod1 .td-w2{background:#ffffff !important}
+#kpiPeriod1 .td-score{background:#fef3c7 !important}
+#kpiPeriod1 .td-total{background:#fff9c3 !important;font-weight:700 !important;color:#8d6e63 !important;font-size:15px !important}
+#kpiPeriod1 .td-red{color:#c0392b !important}
+#kpiPeriod2 th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
+#kpiPeriod2 td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
+#kpiPeriod2 .td-label{background:#f5f5f5 !important;font-weight:600 !important}
+#kpiPeriod2 .td-w3{background:#f5f5f5 !important}
+#kpiPeriod2 .td-w4{background:#ffffff !important}
+#kpiPeriod2 .td-w5{background:#f5f5f5 !important}
+#kpiPeriod2 .td-score{background:#fef3c7 !important}
+#kpiPeriod2 .td-total{background:#fff9c3 !important;color:#999 !important;font-weight:600 !important;font-size:14px !important}
+#kpiPeriod2 .td-dash{color:#999 !important}
+</style>
+
+<div style="overflow-x:auto;margin-bottom:16px">
+<table id="kpiMonthTable" class="station-data-table" style="margin-bottom:0;border-bottom:none;border-collapse:collapse">
+<thead><tr>
+<th style="width:60px">2026/7/16</th>
+<th style="width:80px">模块</th>
+<th style="width:100px">项目</th>
+<th style="width:80px">项目拆分</th>
+<th style="width:70px">考核目标</th>
+<th style="width:70px">考核达成</th>
+<th style="width:70px">指标完成率</th>
+<th style="width:70px">指标得分率</th>
+<th style="width:60px">指标得分</th>
+<th style="width:80px">月度得分<br>(40分)</th>
+</tr></thead><tbody>
+<tr><td rowspan="7" class="td-label">月度<br>常规</td>
+<td rowspan="4" class="td-exp">履约-体验<br>(15分)</td>
+<td rowspan="2" class="td-exp">复合超时<br>(6分)</td>
+<td>3KM内</td><td>2.917%</td><td>1.8862%</td><td>142.86%</td><td>110.00%</td><td rowspan="2" style="font-weight:700">6.60</td><td rowspan="7" class="td-total">40.43</td></tr>
+<tr><td>3KM外</td><td>3.681%</td><td>7.7605%</td><td>128.94%</td><td>110.00%</td></tr>
+<tr><td class="td-exp">虚假点<br>(4.5分)</td><td>虚假点送达</td><td>0.027%</td><td>0.0234%</td><td>109.08%</td><td>100.00%</td><td style="font-weight:700">4.50</td></tr>
+<tr><td class="td-exp">配取<br>(4.5分)</td><td>配送取消</td><td>0.077%</td><td>0.0737%</td><td>102.04%</td><td>100.00%</td><td style="font-weight:700">4.50</td></tr>
+<tr><td rowspan="1" class="td-push">履约-推完<br>(20分)</td><td class="td-push">推完<br>(20分)</td><td>推单完成率</td><td>98.55%</td><td>98.5458%</td><td>99.97%</td><td>99.97%</td><td style="font-weight:700">19.99</td></tr>
+<tr><td rowspan="2" class="td-fin">履约-完结<br>(5分)</td><td class="td-fin">商家订单<br>完结率</td><td>餐饮F1</td><td>89%</td><td>88.05%</td><td>98.79%</td><td>98.79%</td><td style="font-weight:700">2.47</td></tr>
+<tr><td>商家订单<br>完结率</td><td>非餐F1</td><td>66%</td><td>64.38%</td><td>94.79%</td><td>94.79%</td><td style="font-weight:700">2.37</td></tr>
+</tbody></table>
+
+<table id="kpiPeriod1" class="station-data-table" style="margin-top:0;margin-bottom:0;border-bottom:none;border-collapse:collapse">
+<thead><tr>
+<th style="width:60px">考核周期</th>
+<th style="width:60px">周期</th>
+<th style="width:120px">运力模块</th>
+<th style="width:70px">考核目标</th>
+<th style="width:70px">考核达成</th>
+<th style="width:70px">指标完成率</th>
+<th style="width:70px">指标得分率</th>
+<th style="width:60px">指标得分</th>
+<th style="width:70px">周期得分</th>
+<th style="width:80px">整期得分<br>(100分)</th>
+</tr></thead><tbody>
+<tr><td rowspan="5" class="td-label">第一期</td>
+<td style="background:#fff">整期</td>
+<td style="background:#fff">专送（20分）</td><td style="background:#fff">433</td><td style="background:#fff">436.3</td><td style="background:#fff">100.76%</td><td style="background:#fff">100.00%</td><td style="background:#fff;font-weight:700">20.00</td><td class="td-score" style="color:#999">整期</td><td rowspan="5" class="td-total">100.97</td></tr>
+<tr><td rowspan="2" class="td-w1">W1</td>
+<td style="background:#f0f7f0">普众（10分）</td><td style="background:#f0f7f0">374</td><td style="background:#f0f7f0">418</td><td style="background:#f0f7f0">111.76%</td><td style="background:#f0f7f0">110.00%</td><td style="background:#f0f7f0;font-weight:700">11.00</td><td rowspan="2" class="td-score td-red">101.62<br><span style="font-size:10px">(W1得分)</span></td></tr>
+<tr><td style="background:#f0f7f0">悦跑（30分）</td><td style="background:#f0f7f0">160</td><td style="background:#f0f7f0">161</td><td style="background:#f0f7f0">100.63%</td><td style="background:#f0f7f0">100.63%</td><td style="background:#f0f7f0;font-weight:700">30.19</td></tr>
+<tr><td rowspan="2" class="td-w2">W2</td>
+<td>普众（10分）</td><td>374</td><td>429</td><td>114.71%</td><td>110.00%</td><td style="font-weight:700">11.00</td><td rowspan="2" class="td-score td-red">100.31<br><span style="font-size:10px">(W2得分)</span></td></tr>
+<tr><td>悦跑（30分）</td><td>160</td><td>154</td><td>96.25%</td><td>96.25%</td><td style="font-weight:700">28.88</td></tr>
+</tbody></table>
+
+<table id="kpiPeriod2" class="station-data-table" style="margin-top:0;margin-bottom:0;border-collapse:collapse">
+<thead><tr>
+<th style="width:60px">考核周期</th>
+<th style="width:60px">周期</th>
+<th style="width:120px">运力模块</th>
+<th style="width:70px">考核目标</th>
+<th style="width:70px">考核达成</th>
+<th style="width:70px">指标完成率</th>
+<th style="width:70px">指标得分率</th>
+<th style="width:60px">指标得分</th>
+<th style="width:70px">周期得分</th>
+<th style="width:80px">整期得分<br>(100分)</th>
+</tr></thead><tbody>
+<tr><td rowspan="7" class="td-label">第二期</td>
+<td style="background:#fff">整期</td>
+<td style="background:#fff">专送（20分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-score" style="color:#999">整期</td><td rowspan="7" class="td-total">待结算</td></tr>
+<tr><td rowspan="2" class="td-w3">W3</td>
+<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W3得分</td></tr>
+<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
+<tr><td rowspan="2" class="td-w4">W4</td>
+<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W4得分</td></tr>
+<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
+<tr><td rowspan="2" class="td-w5">W5</td>
+<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W5得分</td></tr>
+<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
+</tbody></table>
+        </div>
+
+        <!-- Tab2: 7月每日运营明细 -->
+        <div id="tab3-dailyDetail" class="tab3-content" style="display:none">
+<div style="margin-top:16px">
           <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
           <div style="overflow-x:auto">
           <table id="dailySummaryTable" style="width:100%;border-collapse:collapse;font-size:12px">
@@ -342,13 +457,11 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
       </tr>
             </tbody>
           </table>
-          </div>
-          </div>
         </div>
 
-        <!-- Tab2: 三渠道分版面 -->
+        <!-- Tab3: 三渠道分版面 -->
         <div id="tab3-channels" class="tab3-content" style="display:none">
-          <div style="font-size:12px;color:#666;margin:8px 0">三渠道分版面 · 加盟(城代) / 普通众包 / 悦跑 · 众包 = 普通众包 + 悦跑</div>
+<div style="font-size:12px;color:#666;margin:8px 0">三渠道分版面 · 加盟(城代) / 普通众包 / 悦跑 · 众包 = 普通众包 + 悦跑</div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
             <!-- 加盟(城代) -->
             <div style="border:1px solid #d4e6f1;border-radius:8px;overflow:hidden">
@@ -368,131 +481,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
             <div style="border:1px solid #d1fae5;border-radius:8px;overflow:hidden">
               <div style="background:#ecfdf5;padding:8px 12px;font-size:13px;font-weight:600;color:#065f46">悦跑</div>
               <div style="padding:8px" id="channelYP">
-                <div class="exp-cat-content" id="expCat-yp"></div>
-              </div>
-            </div>
-          </div>
+                <div class="exp-cat-content" id="expCat-yp">
         </div>
 
-        <!-- Tab3: KPI得分总表 -->
-        <div id="tab3-kpiScore" class="tab3-content" style="display:none">
-          <div style="margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:13px">
-          <span style="color:#333">宁德真一派·7月V5 KPI考核明细表</span>
-          <span style="background:#fef3c7;color:#333;padding:2px 8px;border-radius:4px;font-weight:600">军哥模板-v14.17</span>
-          <span style="color:#333">得分率[90%,110%]·7/1-7/16 校准·月度 <span style="color:#d97706;font-weight:600">40.43</span>/40</span>
-        </div>
-          <style>
-#kpiMonthTable th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
-#kpiMonthTable td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
-#kpiMonthTable .td-label{background:#fef9c3 !important;font-weight:600 !important}
-#kpiMonthTable .td-exp{background:#fef3c7 !important}
-#kpiMonthTable .td-push{background:#ffffff !important}
-#kpiMonthTable .td-fin{background:#e8f5e9 !important}
-#kpiMonthTable .td-total{background:#fce4ec !important;font-weight:700 !important;color:#8d6e63 !important;font-size:15px !important}
-#kpiPeriod1 th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
-#kpiPeriod1 td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
-#kpiPeriod1 .td-label{background:#e8f5e9 !important;font-weight:600 !important}
-#kpiPeriod1 .td-w1{background:#f0f7f0 !important}
-#kpiPeriod1 .td-w2{background:#ffffff !important}
-#kpiPeriod1 .td-score{background:#fef3c7 !important}
-#kpiPeriod1 .td-total{background:#fff9c3 !important;font-weight:700 !important;color:#8d6e63 !important;font-size:15px !important}
-#kpiPeriod1 .td-red{color:#c0392b !important}
-#kpiPeriod2 th{background:#fff !important;color:#666 !important;font-weight:600 !important;border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important}
-#kpiPeriod2 td{border:1px solid #ddd !important;padding:6px 8px !important;text-align:center !important;font-size:13px !important;color:#333 !important}
-#kpiPeriod2 .td-label{background:#f5f5f5 !important;font-weight:600 !important}
-#kpiPeriod2 .td-w3{background:#f5f5f5 !important}
-#kpiPeriod2 .td-w4{background:#ffffff !important}
-#kpiPeriod2 .td-w5{background:#f5f5f5 !important}
-#kpiPeriod2 .td-score{background:#fef3c7 !important}
-#kpiPeriod2 .td-total{background:#fff9c3 !important;color:#999 !important;font-weight:600 !important;font-size:14px !important}
-#kpiPeriod2 .td-dash{color:#999 !important}
-</style>
-
-<div style="overflow-x:auto;margin-bottom:16px">
-<table id="kpiMonthTable" class="station-data-table" style="margin-bottom:0;border-bottom:none;border-collapse:collapse">
-<thead><tr>
-<th style="width:60px">2026/7/16</th>
-<th style="width:80px">模块</th>
-<th style="width:100px">项目</th>
-<th style="width:80px">项目拆分</th>
-<th style="width:70px">考核目标</th>
-<th style="width:70px">考核达成</th>
-<th style="width:70px">指标完成率</th>
-<th style="width:70px">指标得分率</th>
-<th style="width:60px">指标得分</th>
-<th style="width:80px">月度得分<br>(40分)</th>
-</tr></thead><tbody>
-<tr><td rowspan="7" class="td-label">月度<br>常规</td>
-<td rowspan="4" class="td-exp">履约-体验<br>(15分)</td>
-<td rowspan="2" class="td-exp">复合超时<br>(6分)</td>
-<td>3KM内</td><td>2.917%</td><td>1.8862%</td><td>142.86%</td><td>110.00%</td><td rowspan="2" style="font-weight:700">6.60</td><td rowspan="7" class="td-total">40.43</td></tr>
-<tr><td>3KM外</td><td>3.681%</td><td>7.7605%</td><td>128.94%</td><td>110.00%</td></tr>
-<tr><td class="td-exp">虚假点<br>(4.5分)</td><td>虚假点送达</td><td>0.027%</td><td>0.0234%</td><td>109.08%</td><td>100.00%</td><td style="font-weight:700">4.50</td></tr>
-<tr><td class="td-exp">配取<br>(4.5分)</td><td>配送取消</td><td>0.077%</td><td>0.0737%</td><td>102.04%</td><td>100.00%</td><td style="font-weight:700">4.50</td></tr>
-<tr><td rowspan="1" class="td-push">履约-推完<br>(20分)</td><td class="td-push">推完<br>(20分)</td><td>推单完成率</td><td>98.55%</td><td>98.5458%</td><td>99.97%</td><td>99.97%</td><td style="font-weight:700">19.99</td></tr>
-<tr><td rowspan="2" class="td-fin">履约-完结<br>(5分)</td><td class="td-fin">商家订单<br>完结率</td><td>餐饮F1</td><td>89%</td><td>88.05%</td><td>98.79%</td><td>98.79%</td><td style="font-weight:700">2.47</td></tr>
-<tr><td>商家订单<br>完结率</td><td>非餐F1</td><td>66%</td><td>64.38%</td><td>94.79%</td><td>94.79%</td><td style="font-weight:700">2.37</td></tr>
-</tbody></table>
-
-<table id="kpiPeriod1" class="station-data-table" style="margin-top:0;margin-bottom:0;border-bottom:none;border-collapse:collapse">
-<thead><tr>
-<th style="width:60px">考核周期</th>
-<th style="width:60px">周期</th>
-<th style="width:120px">运力模块</th>
-<th style="width:70px">考核目标</th>
-<th style="width:70px">考核达成</th>
-<th style="width:70px">指标完成率</th>
-<th style="width:70px">指标得分率</th>
-<th style="width:60px">指标得分</th>
-<th style="width:70px">周期得分</th>
-<th style="width:80px">整期得分<br>(100分)</th>
-</tr></thead><tbody>
-<tr><td rowspan="5" class="td-label">第一期</td>
-<td style="background:#fff">整期</td>
-<td style="background:#fff">专送（20分）</td><td style="background:#fff">433</td><td style="background:#fff">436.3</td><td style="background:#fff">100.76%</td><td style="background:#fff">100.00%</td><td style="background:#fff;font-weight:700">20.00</td><td class="td-score" style="color:#999">整期</td><td rowspan="5" class="td-total">100.97</td></tr>
-<tr><td rowspan="2" class="td-w1">W1</td>
-<td style="background:#f0f7f0">普众（10分）</td><td style="background:#f0f7f0">374</td><td style="background:#f0f7f0">418</td><td style="background:#f0f7f0">111.76%</td><td style="background:#f0f7f0">110.00%</td><td style="background:#f0f7f0;font-weight:700">11.00</td><td rowspan="2" class="td-score td-red">101.62<br><span style="font-size:10px">(W1得分)</span></td></tr>
-<tr><td style="background:#f0f7f0">悦跑（30分）</td><td style="background:#f0f7f0">160</td><td style="background:#f0f7f0">161</td><td style="background:#f0f7f0">100.63%</td><td style="background:#f0f7f0">100.63%</td><td style="background:#f0f7f0;font-weight:700">30.19</td></tr>
-<tr><td rowspan="2" class="td-w2">W2</td>
-<td>普众（10分）</td><td>374</td><td>429</td><td>114.71%</td><td>110.00%</td><td style="font-weight:700">11.00</td><td rowspan="2" class="td-score td-red">100.31<br><span style="font-size:10px">(W2得分)</span></td></tr>
-<tr><td>悦跑（30分）</td><td>160</td><td>154</td><td>96.25%</td><td>96.25%</td><td style="font-weight:700">28.88</td></tr>
-</tbody></table>
-
-<table id="kpiPeriod2" class="station-data-table" style="margin-top:0;margin-bottom:0;border-collapse:collapse">
-<thead><tr>
-<th style="width:60px">考核周期</th>
-<th style="width:60px">周期</th>
-<th style="width:120px">运力模块</th>
-<th style="width:70px">考核目标</th>
-<th style="width:70px">考核达成</th>
-<th style="width:70px">指标完成率</th>
-<th style="width:70px">指标得分率</th>
-<th style="width:60px">指标得分</th>
-<th style="width:70px">周期得分</th>
-<th style="width:80px">整期得分<br>(100分)</th>
-</tr></thead><tbody>
-<tr><td rowspan="7" class="td-label">第二期</td>
-<td style="background:#fff">整期</td>
-<td style="background:#fff">专送（20分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-score" style="color:#999">整期</td><td rowspan="7" class="td-total">待结算</td></tr>
-<tr><td rowspan="2" class="td-w3">W3</td>
-<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W3得分</td></tr>
-<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
-<tr><td rowspan="2" class="td-w4">W4</td>
-<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W4得分</td></tr>
-<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
-<tr><td rowspan="2" class="td-w5">W5</td>
-<td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W5得分</td></tr>
-<tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
-</tbody></table>
-</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- 推完矩阵 · 独立版面 -->
-    <div class="card" style="margin-bottom:12px;padding:16px">
-    <div id="tab-matrix">
+        <!-- Tab4: 推完矩阵 -->
+        <div id="tab3-matrix" class="tab3-content" style="display:none">
+<div id="tab-matrix">
     <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
@@ -505,9 +499,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   </div>
     </div>
 
-    <!-- 众包盘点 · 独立版面 -->
-    <div class="card" style="margin-bottom:12px;padding:16px">
-    <div id="tab-crowd">
+    
+        </div>
+
+        <!-- Tab5: 众包盘点 -->
+        <div id="tab3-crowd" class="tab3-content" style="display:none">
+<div id="tab-crowd">
     <div class="matrix-wrap" style="margin-top:12px">
       <table class="station-data-table" id="crowdTable">
         <thead>
@@ -525,9 +522,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   </div>
     </div>
 
-    <!-- 站点数据 · 独立版面 -->
-    <div class="card" style="margin-bottom:12px;padding:16px">
-    <div id="tab-station">
+    
+        </div>
+
+        <!-- Tab6: 站点数据 -->
+        <div id="tab3-station" class="tab3-content" style="display:none">
+<div id="tab-station">
     <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
     <div class="station-select" id="stationBtns"></div>
     <div style="font-size:11px;color:#888;margin-bottom:8px">
@@ -540,6 +540,11 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     </div>
 
 
+
+        </div>
+
+      </div>
+    </div>
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
 <script>// ===== 总览汇总 3-Tab切换 =====
