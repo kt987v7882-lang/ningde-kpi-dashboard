@@ -10,7 +10,7 @@ html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple
 .container{max-width:1400px;margin:0 auto;padding:16px 32px}
 
 /* Banner */
-.banner{background:#1e3a5f;color:#ffffff;padding:8px 24px;border-radius:6px;margin:0 0 16px 0;box-shadow:none;position:relative;overflow:hidden;width:100%}
+.banner{background:#1e3a5f;color:#ffffff;padding:8px 24px;border-radius:6px;margin:0 0 16px 0;box-shadow:none;position:relative;overflow:hidden;max-width:fit-content}
 /* banner装饰已去除 */
 .banner h1{font-size:20px;font-weight:800;margin-bottom:2px;letter-spacing:3px;text-shadow:0 1px 2px rgba(0,0,0,0.1);position:relative;z-index:1}
 .banner .header-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
@@ -48,7 +48,7 @@ html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple
 .tab-content.active{display:block;width:100%;padding-top:0}
 
 /* W1/W2 Sub Tabs inside period1 */
-.sub-tabs{display:flex;gap:6px;margin-bottom:12px;border:none;overflow:visible;width:100%}
+.sub-tabs{display:flex;gap:6px;margin-bottom:12px;border:none;overflow:visible;width:fit-content}
 .sub-tab-btn{padding:8px 18px;border:1px solid #e5e7eb;cursor:pointer;font-size:13px;font-weight:500;background:#ffffff;color:#6b7280;transition:all 0.15s;border-radius:4px}
 .sub-tab-btn:hover{background:#eff6ff;color:#1d2129}
 .sub-tab-btn.active{background:#eff6ff;color:#1e3a5f;font-weight:600;border-color:#bfdbfe}
@@ -58,7 +58,7 @@ html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple
 .sub-tab-content.active{display:block}
 
 /* Cards */
-.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:16px 18px;margin-bottom:12px;box-shadow:none;width:100%}
+.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:16px 24px;margin-bottom:12px;box-shadow:none;width:100%}
 .card-title{font-size:14px;font-weight:700;color:#1f2937;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .card-sub{font-size:12px;color:#6b7280;margin-bottom:6px}
 .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;font-weight:500;line-height:1.6}
@@ -222,10 +222,6 @@ tr:hover{background:#ffffff}
 .q17{background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600}
 .q18{flex:1;background:#ffffff;color:#6b7280;padding:8px 12px;border-radius:5px;text-align:center;font-size:13px;font-weight:600}
 .q19{display:inline-block;margin-left:24px}
-
-/* Width alignment: daily tables in padding-reset cards */
-.card[style*="padding-left:0"] table{table-layout:fixed;width:100%}
-.card[style*="padding-left:0"] table th,.card[style*="padding-left:0"] table td{width:11.1%}
 </style>
 </head>
 <body>
@@ -817,9 +813,9 @@ tr:hover{background:#ffffff}
 </div>
 
 <!-- W1 日快照 (修正数据) -->
-<div class="card" style="padding-left:0;padding-right:0">
-  <div class="card-title">W1 · 7/1-7/5 已收官（5 天）</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+<div class="card" style="padding:16px 0">
+  <div class="card-title" style="padding:0 24px;margin-bottom:8px">W1 · 7/1-7/5 已收官（5 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 24px">
     <span style="background:#fef2f2;color:#dc2626;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">🔴 7/1（一般恶劣）</span>
     <span style="background:#fffef5;color:#d97706;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">⚠ 7/2（一般恶劣）</span>
     <span class="q17">🟢 7/3（一般恶劣）</span>
@@ -904,9 +900,9 @@ tr:hover{background:#ffffff}
 </div>
 
 <!-- W2 日快照 (修正数据) -->
-<div class="card" style="padding-left:0;padding-right:0">
-  <div class="card-title">W2 · 7/6-7/12 进行中（7 天）</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+<div class="card" style="padding:16px 0">
+  <div class="card-title" style="padding:0 24px;margin-bottom:8px">W2 · 7/6-7/12 进行中（7 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 24px">
     <span class="q17">✅ 7/6</span>
     <span class="q17">✅ 7/7</span>
     <span class="q17">✅ 7/8</span>
