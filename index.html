@@ -1191,7 +1191,7 @@ function renderExpDailyTable(){
   var _mpr=KPI.trend.reduce(function(s,t){return s+(t.pr||0);},0)/KPI.trend.length;html+='<td>'+(_mpr*100).toFixed(2)+'%</td>';
   html+='<td style="color:'+(ms.total_exp_score>=10?'#059669':'#d97706')+'">'+ms.total_exp_score.toFixed(2)+'</td></tr>';
   html+='</tbody></table>';
-  document.getElementById('expDailyTable').innerHTML=html;
+  var expContainer=document.getElementById('expDailyTable');if(expContainer)expContainer.innerHTML=html;
 }
 
 function renderExpCatTable(cat, catLabel){
