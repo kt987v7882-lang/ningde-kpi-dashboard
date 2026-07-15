@@ -152,10 +152,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           <button class="exp-cat-btn" onclick="switchExpCat('jm')">加盟(城代)</button>
           <button class="exp-cat-btn" onclick="switchExpCat('zb')">普通众包</button>
           <button class="exp-cat-btn" onclick="switchExpCat('yp')">悦跑</button>
-          <button class="exp-cat-btn" onclick="switchExpCat('matrix')">📊 推完矩阵</button>
-          <button class="exp-cat-btn" onclick="switchExpCat('crowd')">🏃 众包盘点</button>
-          <button class="exp-cat-btn" onclick="switchExpCat('station')">🏬 站点数据</button>
-        </div>
+          </div>
       </div>
       <div style="padding:8px 16px 16px 16px">
         <div id="expCat-daily" class="exp-cat-content active">
@@ -269,57 +266,200 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
 </tbody></table>
 </div></div>
+<!-- 每日履约明细表 -->
+<div style="margin-top:16px">
+  <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
+  <div style="overflow-x:auto">
+  <table id="dailySummaryTable" style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead>
+      <tr style="background:#e8f4fd;color:#666">
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">日期</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总推单</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总完成</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km内</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km外</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">虚假点率</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">配取率</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">推完率</th>
+        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">体验分</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-01</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,281</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">37,127</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.99%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.15%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0134%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">0.1099%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.43%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">11.10</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-02</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,812</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">37,526</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.95%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.19%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0159%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0928%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.26%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.16</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-03</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,472</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,176</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.02%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.20%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0279%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0584%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.58%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.50</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-04</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">44,174</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,938</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.66%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.18%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0142%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0664%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.68%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-05</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">45,859</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">43,279</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.33%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.89%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0207%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0966%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.21%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">11.10</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-06</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">40,051</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">37,989</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.54%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.19%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0210%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0551%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.50%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-07</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">40,443</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,314</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.03%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.90%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0234%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0598%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.66%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-08</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,407</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,279</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.07%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">3.59%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0380%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0507%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.62%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">10.87</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-09</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">40,970</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,558</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.59%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">6.19%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0284%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0723%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.21%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;">12.14</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-10</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,663</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">36,607</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.18%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">4.04%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">0.0435%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0680%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.58%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">10.53</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-11</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">30,421</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">28,871</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.68%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.33%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0207%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0827%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.18%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.44</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-12</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">34,808</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">33,106</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.42%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.74%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0240%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0601%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.71%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-13</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">35,313</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">33,386</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.08%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.05%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0270%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0538%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.04%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.00</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-14</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">36,384</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">34,467</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.20%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.50%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0116%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0825%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.05%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;">14.69</td>
+      </tr>
+      <tr style="background:#e8f4fd;font-weight:700;color:#333">
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">月度汇总</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">512,674</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">485,156</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.93%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.63%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0244%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0716%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">98.55%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">15.60</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
         
         
 
-          <div style="overflow-x:auto">
-            <table class="station-data-table" id="expDailyTable">
-              <thead></thead><tbody></tbody>
-            </table>
           </div>
-        </div>
-        <div id="expCat-jm" class="exp-cat-content"></div>
-        <div id="expCat-zb" class="exp-cat-content"></div>
-        <div id="expCat-yp" class="exp-cat-content"></div>
-
-<div class="exp-cat-content" id="tab-matrix">
-    <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
-    </div>
-    <div class="matrix-wrap" id="matrixTable"></div>
-    <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
-  </div>
-  <div class="exp-cat-content" id="tab-crowd">
-    <div class="matrix-wrap" style="margin-top:12px">
-      <table class="station-data-table" id="crowdTable">
-        <thead>
-          <tr>
-            <th>指标 \ 时段</th>
-            <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
-            <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
-            <th>全天</th>
-          </tr>
-        </thead>
-        <tbody id="crowdBody"></tbody>
-      </table>
-    </div>
-    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
-  </div>
-  <div class="exp-cat-content" id="tab-station">
-    <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
-    <div class="station-select" id="stationBtns"></div>
-    <div style="font-size:11px;color:#888;margin-bottom:8px">
-      各站整体推完率：
-      <span id="stationSummary"></span>
-    </div>
-    <div class="matrix-wrap" id="stationDataTable"></div>
-      </div>
-    </div>
-
+        
 
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
