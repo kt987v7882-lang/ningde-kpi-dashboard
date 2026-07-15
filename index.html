@@ -151,7 +151,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
     <button class="tab-btn active" onclick="switchTab('matrix')">📊 推完率矩阵</button>
     <button class="tab-btn" onclick="switchTab('crowd')">🏃 众包盘点</button>
     <button class="tab-btn" onclick="switchTab('experience')">⭐ 体验KPI</button>
-    <button class="tab-btn" onclick="switchTab('experience')">⭐ 体验KPI</button>
     <button class="tab-btn" onclick="switchTab('station')">🏬 站点数据</button>
   </div>
 
@@ -203,36 +202,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f2f5;c
     <div style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
   </div>
 
-  <!-- Tab 4: 体验KPI -->
-  <div class="tab-content" id="tab-experience">
-    <div style="font-size:12px;color:#666;margin:8px 0">体验模块满分15分 = 复合超时(6分) + 虚假点(4.5分) + 配取(4.5分) · 权重40:30:30 · 绝对超时口径</div>
-
-    <!-- 体验得分总览 -->
-    <div id="expKpiSummary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px"></div>
-
-    <!-- 体验得分拆解 -->
-    <div id="expKpiScoreDetail" style="margin-bottom:12px"></div>
-
-    <!-- 体验图表 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="card"><div class="card-title">复合超时率趋势（分距离）</div><div class="chart-container"><canvas id="expOtChart"></canvas></div></div>
-      <div class="card"><div class="card-title">虚假点 + 配送取消趋势</div><div class="chart-container"><canvas id="expFcChart"></canvas></div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div class="card"><div class="card-title">各渠道绝对超时率</div><div class="chart-container"><canvas id="expCatOtChart"></canvas></div></div>
-      <div class="card"><div class="card-title">体验得分趋势</div><div class="chart-container"><canvas id="expScoreChart"></canvas></div></div>
-    </div>
-
-    <!-- 体验每日汇总表 -->
-    <div style="overflow-x:auto;margin-bottom:12px">
-      <table class="station-data-table" id="expDailyTable">
-        <thead></thead><tbody></tbody>
-      </table>
-    </div>
-
-    <!-- 渠道明细 -->
-    <div id="expCatTables" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px"></div>
-  </div>
 
   <!-- Tab 4: 体验KPI -->
   <div class="tab-content" id="tab-experience">
@@ -756,12 +725,12 @@ function renderJSON(){
   document.getElementById('expKpiScoreDetail').innerHTML=
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">'+
     '<div class="exp-score-card"><div class="score-title">复合超时率 (满分6分)</div>'+
-    '<div class="score-row"><span>3km内完成率</span><span class="score-val" style="color:'+(s.ot_in_comp>=1?'#059669':'#dc2626')+'">'+(s.ot_in_comp*100).toFixed(1)+'%</span></div>'+
-    '<div class="score-row"><span>3km外完成率</span><span class="score-val" style="color:'+(s.ot_out_comp>=1?'#059669':'#dc2626')+'">'+(s.ot_out_comp*100).toFixed(1)+'%</span></div>'+
-    '<div class="score-row"><span>得分率</span><span class="score-val">'+(s.ot_score_rate*100).toFixed(1)+'%</span></div>'+
+    '<div class="score-row"><span>3km内完成率</span><span class="score-val" style="color:'+(s.ot_in_comp>=1?'#059669':'#dc2626')+'">'+s.ot_in_comp.toFixed(3)+'</span></div>'+
+    '<div class="score-row"><span>3km外完成率</span><span class="score-val" style="color:'+(s.ot_out_comp>=1?'#059669':'#dc2626')+'">'+s.ot_out_comp.toFixed(3)+'</span></div>'+
+    '<div class="score-row"><span>得分率</span><span class="score-val">'+(s.ot_in_score_rate>=1?'110.0':'')+'</span></div>'+
     '<div class="score-total">'+s.ot_score.toFixed(2)+'</div></div>'+
     '<div class="exp-score-card"><div class="score-title">虚假点送达 (满分4.5分)</div>'+
-    '<div class="score-row"><span>完成率</span><span class="score-val" style="color:'+(s.fake_comp>=1?'#059669':'#dc2626')+'">'+(s.fake_comp*100).toFixed(1)+'%</span></div>'+
+    '<div class="score-row"><span>完成率</span><span class="score-val" style="color:'+(s.fake_comp>=1?'#059669':'#dc2626')+'">'+s.fake_comp.toFixed(3)+'</span></div>'+
     '<div class="score-row"><span>得分率</span><span class="score-val">'+(s.fake_score_rate*100).toFixed(1)+'%</span></div>'+
     '<div class="score-total">'+s.fake_score.toFixed(2)+'</div></div>'+
     '<div class="exp-score-card"><div class="score-title">配送取消 (满分4.5分)</div>'+
@@ -784,6 +753,7 @@ function renderJSON(){
   renderExpCatTable('yp','悦跑');
 }
 
+var expOtChartObj,expFcChartObj,expCatOtChartObj,expScoreChartObj;
 function renderExpCharts(){
   const daily=EXP_KPI.daily;
   const T=EXP_KPI.targets;
