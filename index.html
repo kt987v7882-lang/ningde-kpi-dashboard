@@ -152,7 +152,10 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           <button class="exp-cat-btn" onclick="switchExpCat('jm')">加盟(城代)</button>
           <button class="exp-cat-btn" onclick="switchExpCat('zb')">普通众包</button>
           <button class="exp-cat-btn" onclick="switchExpCat('yp')">悦跑</button>
-          </div>
+          <button class="exp-cat-btn" onclick="switchExpCat('matrix')">📊 推完矩阵</button>
+          <button class="exp-cat-btn" onclick="switchExpCat('crowd')">🏃 众包盘点</button>
+          <button class="exp-cat-btn" onclick="switchExpCat('station')">🏬 站点数据</button>
+        </div>
       </div>
       <div style="padding:8px 16px 16px 16px">
         <div id="expCat-daily" class="exp-cat-content active">
@@ -454,12 +457,57 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
   </table>
   </div>
 </div>
-
         
         
 
+          <div style="overflow-x:auto">
+            <table class="station-data-table" id="expDailyTable">
+              <thead></thead><tbody></tbody>
+            </table>
           </div>
-        
+        </div>
+        <div id="expCat-jm" class="exp-cat-content"></div>
+        <div id="expCat-zb" class="exp-cat-content"></div>
+        <div id="expCat-yp" class="exp-cat-content"></div>
+
+<div class="exp-cat-content" id="tab-matrix">
+    <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
+    </div>
+    <div class="matrix-wrap" id="matrixTable"></div>
+    <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
+  </div>
+  <div class="exp-cat-content" id="tab-crowd">
+    <div class="matrix-wrap" style="margin-top:12px">
+      <table class="station-data-table" id="crowdTable">
+        <thead>
+          <tr>
+            <th>指标 \ 时段</th>
+            <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
+            <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
+            <th>全天</th>
+          </tr>
+        </thead>
+        <tbody id="crowdBody"></tbody>
+      </table>
+    </div>
+    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
+  </div>
+  <div class="exp-cat-content" id="tab-station">
+    <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
+    <div class="station-select" id="stationBtns"></div>
+    <div style="font-size:11px;color:#888;margin-bottom:8px">
+      各站整体推完率：
+      <span id="stationSummary"></span>
+    </div>
+    <div class="matrix-wrap" id="stationDataTable"></div>
+      </div>
+    </div>
+
 
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
