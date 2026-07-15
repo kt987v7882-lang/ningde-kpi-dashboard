@@ -7,10 +7,10 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;font-size:13px;line-height:1.5}
-.container{max-width:1400px;margin:0 auto;padding:16px 32px}
+.container{max-width:1400px;margin:0 auto;padding:16px 32px;overflow-x:hidden}
 
 /* Banner */
-.banner{background:#1e3a5f;color:#ffffff;padding:8px 24px;border-radius:6px;margin:0 0 16px 0;box-shadow:none;position:relative;overflow:hidden;max-width:fit-content}
+.banner{background:#1e3a5f;color:#ffffff;padding:8px 24px;border-radius:6px;margin:0 0 16px 0;box-shadow:none;position:relative;overflow:hidden;width:100%}
 /* banner装饰已去除 */
 .banner h1{font-size:20px;font-weight:800;margin-bottom:2px;letter-spacing:3px;text-shadow:0 1px 2px rgba(0,0,0,0.1);position:relative;z-index:1}
 .banner .header-row{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
@@ -44,11 +44,11 @@ html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple
 .tw-calib{flex:0.9 1 0}
 .tw-target{flex:0.9 1 0}
 @media(max-width:900px){.tw-period1,.tw-period2{flex:0 0 22%}.tw-overview,.tw-gz{flex:0 0 13%}}
-.tab-content{display:none;width:100%}
-.tab-content.active{display:block;width:100%;padding-top:0}
+.tab-content{display:none}
+.tab-content.active{display:block;padding-top:0}
 
 /* W1/W2 Sub Tabs inside period1 */
-.sub-tabs{display:flex;gap:6px;margin-bottom:12px;border:none;overflow:visible;width:fit-content}
+.sub-tabs{display:flex;gap:6px;margin-bottom:12px;border:none;overflow:visible;width:100%}
 .sub-tab-btn{padding:8px 18px;border:1px solid #e5e7eb;cursor:pointer;font-size:13px;font-weight:500;background:#ffffff;color:#6b7280;transition:all 0.15s;border-radius:4px}
 .sub-tab-btn:hover{background:#eff6ff;color:#1d2129}
 .sub-tab-btn.active{background:#eff6ff;color:#1e3a5f;font-weight:600;border-color:#bfdbfe}
@@ -58,7 +58,7 @@ html{background:#ffffff}body{background:#ffffff;color:#374151;font-family:-apple
 .sub-tab-content.active{display:block}
 
 /* Cards */
-.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:16px 24px;margin-bottom:12px;box-shadow:none;width:100%}
+.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;padding:16px 18px;margin-bottom:12px;box-shadow:none;width:100%}
 .card-title{font-size:14px;font-weight:700;color:#1f2937;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .card-sub{font-size:12px;color:#6b7280;margin-bottom:6px}
 .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;font-weight:500;line-height:1.6}
@@ -222,6 +222,10 @@ tr:hover{background:#ffffff}
 .q17{background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600}
 .q18{flex:1;background:#ffffff;color:#6b7280;padding:8px 12px;border-radius:5px;text-align:center;font-size:13px;font-weight:600}
 .q19{display:inline-block;margin-left:24px}
+
+/* Width alignment: daily tables in padding-reset cards */
+.card[style*="padding-left:0"] table{table-layout:fixed;width:100%}
+.card[style*="padding-left:0"] table th,.card[style*="padding-left:0"] table td{width:11.1%}
 </style>
 </head>
 <body>
@@ -813,16 +817,16 @@ tr:hover{background:#ffffff}
 </div>
 
 <!-- W1 日快照 (修正数据) -->
-<div class="card" style="padding:16px 0">
-  <div class="card-title" style="padding:0 24px;margin-bottom:8px">W1 · 7/1-7/5 已收官（5 天）</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 24px">
+<div class="card" style="padding-left:0;padding-right:0">
+  <div class="card-title">W1 · 7/1-7/5 已收官（5 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
     <span style="background:#fef2f2;color:#dc2626;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">🔴 7/1（一般恶劣）</span>
     <span style="background:#fffef5;color:#d97706;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">⚠ 7/2（一般恶劣）</span>
     <span class="q17">🟢 7/3（一般恶劣）</span>
     <span class="q17">🟢 7/4（W1 最低复合 1.71%）</span>
     <span style="background:#fffef5;color:#ea580c;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600">🟠 7/5（W1 双短板）</span>
   </div>
-  <table style=margin-left:-10px;width:calc(100% + 20px)>
+  <table>
     <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
     <tr><td class="text-cell">7/1</td><td class="num-cell"><span class="cell-yellow">98.4253%</span></td><td class="num-cell"><span class="cell-green">2.0066%</span></td><td class="num-cell"><span class="cell-green">2.00%</span></td><td class="num-cell"><span class="cell-green">2.15%</span></td><td class="num-cell"><span class="cell-green">0.0135%</span></td><td class="num-cell"><span class="cell-yellow">0.1104%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,281</td><td class="num-cell">37,127</td></tr>
     <tr><td class="text-cell">7/2</td><td class="num-cell"><span class="cell-yellow">98.2588%</span></td><td class="num-cell"><span class="cell-green">1.9746%</span></td><td class="num-cell"><span class="cell-green">1.96%</span></td><td class="num-cell"><span class="cell-green">2.19%</span></td><td class="num-cell"><span class="cell-green">0.0160%</span></td><td class="num-cell"><span class="cell-yellow">0.0933%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">39,812</td><td class="num-cell">37,526</td></tr>
@@ -900,9 +904,9 @@ tr:hover{background:#ffffff}
 </div>
 
 <!-- W2 日快照 (修正数据) -->
-<div class="card" style="padding:16px 0">
-  <div class="card-title" style="padding:0 24px;margin-bottom:8px">W2 · 7/6-7/12 进行中（7 天）</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 24px">
+<div class="card" style="padding-left:0;padding-right:0">
+  <div class="card-title">W2 · 7/6-7/12 进行中（7 天）</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
     <span class="q17">✅ 7/6</span>
     <span class="q17">✅ 7/7</span>
     <span class="q17">✅ 7/8</span>
@@ -911,7 +915,7 @@ tr:hover{background:#ffffff}
     <span class="q17">✅ 7/11</span>
     <span class="q17">✅ 7/12</span>
   </div>
-  <table style=margin-left:-10px;width:calc(100% + 20px)>
+  <table>
     <tr><th>日期</th><th>推单率</th><th>复合超时</th><th>3km内</th><th>3km外</th><th>虚假点</th><th>配取</th><th>天气</th><th>推单量</th><th>完成量</th></tr>
     <tr><td class="text-cell">7/6 W2 D1</td><td class="num-cell"><span class="cell-yellow">98.4962%</span></td><td class="num-cell"><span class="cell-green">1.5162%</span></td><td class="num-cell"><span class="cell-green">1.54%</span></td><td class="num-cell"><span class="cell-green">1.19%</span></td><td class="num-cell"><span class="cell-green">0.0211%</span></td><td class="num-cell"><span class="cell-green">0.0553%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,051</td><td class="num-cell">37,989</td></tr>
     <tr><td class="text-cell">7/7 W2 D2</td><td class="num-cell"><span class="cell-green">98.6559%</span></td><td class="num-cell"><span class="cell-green">2.0306%</span></td><td class="num-cell"><span class="cell-green">2.04%</span></td><td class="num-cell"><span class="cell-green">1.90%</span></td><td class="num-cell"><span class="cell-green">0.0235%</span></td><td class="num-cell"><span class="cell-green">0.0600%</span></td><td><span class="weather-badge weather-bad">一般恶劣</span></td><td class="num-cell">40,443</td><td class="num-cell">38,314</td></tr>
