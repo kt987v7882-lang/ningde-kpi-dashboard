@@ -155,11 +155,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           <button class="tab3-btn" onclick="switchTab3('crowd')" id="tab3Btn-crowd" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">众包盘点</button>
           <button class="tab3-btn" onclick="switchTab3('station')" id="tab3Btn-station" style="padding:10px 20px;border:none;background:transparent;font-size:14px;cursor:pointer;color:#666;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap">站点数据</button>
         </div>
+      </div>
       <div style="padding:8px 16px 16px 16px">
         <!-- Tab1: KPI得分总表（首Tab，默认激活） -->
         <div id="tab3-kpiScore" class="tab3-content" style="display:block">
-        <div id="tab3-kpiScore" class="tab3-content" style="display:block">
-<div style="margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:13px">
+（首Tab，默认激活） -->
+        <div style="margin:8px 0;display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-size:13px">
           <span style="color:#333">宁德真一派·7月V5 KPI考核明细表</span>
           <span style="background:#fef3c7;color:#333;padding:2px 8px;border-radius:4px;font-weight:600">军哥模板-v14.17</span>
           <span style="color:#333">得分率[90%,110%]·7/1-7/16 校准·月度 <span style="color:#d97706;font-weight:600">40.43</span>/40</span>
@@ -269,11 +270,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 </tbody></table>
         </div>
         </div>
+        </div>
 
         <!-- Tab2: 7月每日运营明细 -->
         <div id="tab3-dailyDetail" class="tab3-content" style="display:none">
-        <div id="tab3-dailyDetail" class="tab3-content" style="display:none">
-<div style="margin-top:16px">
+-->
+        <div style="margin-top:16px">
           <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
           <div style="overflow-x:auto">
           <table id="dailySummaryTable" style="width:100%;border-collapse:collapse;font-size:12px">
@@ -460,11 +462,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
           </table>
         </div>
         </div>
+        </div>
 
         <!-- Tab3: 三渠道分版面 -->
         <div id="tab3-channels" class="tab3-content" style="display:none">
-        <div id="tab3-channels" class="tab3-content" style="display:none">
-<div style="font-size:12px;color:#666;margin:8px 0">三渠道分版面 · 加盟(城代) / 普通众包 / 悦跑 · 众包 = 普通众包 + 悦跑</div>
+-->
+        <div style="font-size:12px;color:#666;margin:8px 0">三渠道分版面 · 加盟(城代) / 普通众包 / 悦跑 · 众包 = 普通众包 + 悦跑</div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
             <!-- 加盟(城代) -->
             <div style="border:1px solid #d4e6f1;border-radius:8px;overflow:hidden">
@@ -487,11 +490,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
                 <div class="exp-cat-content" id="expCat-yp">
         </div>
         </div>
+        </div>
 
         <!-- Tab4: 推完矩阵 -->
         <div id="tab3-matrix" class="tab3-content" style="display:none">
-        <div id="tab3-matrix" class="tab3-content" style="display:none">
-<div id="tab-matrix">
+-->
+        <div id="tab-matrix">
     <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
@@ -507,11 +511,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     
         </div>
         </div>
+        </div>
 
         <!-- Tab5: 众包盘点 -->
         <div id="tab3-crowd" class="tab3-content" style="display:none">
-        <div id="tab3-crowd" class="tab3-content" style="display:none">
-<div id="tab-crowd">
+-->
+        <div id="tab-crowd">
     <div class="matrix-wrap" style="margin-top:12px">
       <table class="station-data-table" id="crowdTable">
         <thead>
@@ -532,11 +537,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     
         </div>
         </div>
+        </div>
 
         <!-- Tab6: 站点数据 -->
         <div id="tab3-station" class="tab3-content" style="display:none">
-        <div id="tab3-station" class="tab3-content" style="display:none">
-<div id="tab-station">
+-->
+        <div id="tab-station">
     <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
     <div class="station-select" id="stationBtns"></div>
     <div style="font-size:11px;color:#888;margin-bottom:8px">
@@ -552,6 +558,9 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 
         </div>
 
+      </div>
+    </div>
+        </div>
       </div>
     </div>
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
