@@ -145,7 +145,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
     </div>
 
     <!-- 总览汇总 · 3-Tab模块 -->
-    <div class="card" style="margin-bottom:12px;padding:0;overflow:hidden">
+    <div class="card" style="margin-bottom:12px;padding:0;overflow:visible">
       <div style="padding:12px 16px 0 16px">
         <div style="display:flex;border-bottom:2px solid #2563eb;gap:0">
           <button class="tab3-btn active" onclick="switchTab3('dailyDetail')" id="tab3Btn-dailyDetail" style="padding:10px 20px;border:none;background:#fff;font-size:14px;cursor:pointer;color:#2563eb;font-weight:600;border-bottom:2px solid #2563eb;margin-bottom:-2px">7月每日运营明细</button>
@@ -157,42 +157,41 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 
         <!-- Tab1: 7月每日运营数据明细 -->
         <div id="tab3-dailyDetail" class="tab3-content" style="display:block">
-          <!-- 每日履约明细表 -->
-<div style="margin-top:16px">
-  <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
-  <div style="overflow-x:auto">
-  <table id="dailySummaryTable" style="width:100%;border-collapse:collapse;font-size:12px">
-    <thead>
-      <tr style="background:#e8f4fd;color:#666">
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">日期</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总推单</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总完成</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km内</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km外</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">虚假点率</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">配取率</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">推完率</th>
-        <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">体验分</th>
-      </tr>
-    </thead>
-    <tbody>
+          <div style="margin-top:16px">
+          <div style="font-size:12px;color:#666;margin:8px 0">7月每日运营数据明细 · 07-01 ~ 07-14</div>
+          <div style="overflow-x:auto">
+          <table id="dailySummaryTable" style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead>
+              <tr style="background:#e8f4fd;color:#666">
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">日期</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总推单</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">总完成</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km内</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">超时3km外</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">虚假点率</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">配取率</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">推完率</th>
+                <th style="padding:6px 8px;border:1px solid #ddd;text-align:center">体验分</th>
+              </tr>
+            </thead>
+            <tbody>
       <tr>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-01</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,281</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">37,127</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.99%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.15%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.15%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0134%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">0.1099%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.1099%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.43%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">11.10</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;">11.10</td>
       </tr>
       <tr>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-02</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,812</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">37,526</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.95%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.19%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.19%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0159%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0928%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.26%</td>
@@ -202,8 +201,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-03</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,472</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,176</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.02%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.20%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.02%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.20%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0279%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0584%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.58%</td>
@@ -214,7 +213,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">44,174</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,938</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.66%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.18%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.18%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0142%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0664%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.68%</td>
@@ -224,12 +223,12 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-05</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">45,859</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">43,279</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.33%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.89%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.33%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.89%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0207%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0966%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.21%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">11.10</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;">11.10</td>
       </tr>
       <tr>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-06</td>
@@ -246,7 +245,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-07</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">40,443</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,314</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.03%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.03%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.90%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0234%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0598%</td>
@@ -257,8 +256,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-08</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">41,407</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">39,279</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.07%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">3.59%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.07%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">3.59%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0380%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0507%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.62%</td>
@@ -268,8 +267,8 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-09</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">40,970</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,558</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.59%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">6.19%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.59%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">6.19%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0284%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0723%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.21%</td>
@@ -279,9 +278,9 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-10</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">38,663</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">36,607</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.18%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">4.04%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#c0392b">0.0435%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.18%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">4.04%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0435%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0680%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.58%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#e67e22">10.53</td>
@@ -291,7 +290,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">30,421</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">28,871</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.68%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">2.33%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.33%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0207%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0827%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.18%</td>
@@ -305,35 +304,35 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.74%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0240%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0601%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.71%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">98.65%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
       </tr>
       <tr>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-13</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">35,313</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">33,386</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.08%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.05%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0270%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0538%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.04%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.00</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">33,390</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.36%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.36%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0268%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0567%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.07%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.60</td>
       </tr>
       <tr>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600">07-14</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">36,384</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">34,467</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.20%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.50%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.33%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.98%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0116%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0825%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.05%</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;">14.69</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;">0.0870%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#333">99.0459%</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;font-weight:600;color:#006100">15.53</td>
       </tr>
       <tr style="background:#e8f4fd;font-weight:700;color:#333">
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">月度汇总</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">512,674</td>
-        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">485,156</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">549,058</td>
+        <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">519,627</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">1.93%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">2.63%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">0.0244%</td>
@@ -341,9 +340,10 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center">98.55%</td>
         <td style="padding:6px 8px;border:1px solid #ddd;text-align:center;color:#006100">15.60</td>
       </tr>
-    </tbody>
-  </table>
-
+            </tbody>
+          </table>
+          </div>
+          </div>
         </div>
 
         <!-- Tab2: 三渠道分版面 -->
@@ -370,48 +370,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
               <div style="padding:8px" id="channelYP">
                 <div class="exp-cat-content" id="expCat-yp"></div>
               </div>
-            </div>
-          </div>
-          <div style="margin-top:12px">
-            <div class="exp-cat-content" id="tab-matrix">
-              <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
-              <div class="legend">
-                <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
-              </div>
-              <div class="matrix-wrap" id="matrixTable"></div>
-              <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
-            </div>
-          </div>
-          <div style="margin-top:12px">
-            <div class="exp-cat-content" id="tab-crowd">
-              <div class="matrix-wrap" style="margin-top:12px">
-                <table class="station-data-table" id="crowdTable">
-                  <thead>
-                    <tr>
-                      <th>指标 \ 时段</th>
-                      <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
-                      <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
-                      <th>全天</th>
-                    </tr>
-                  </thead>
-                  <tbody id="crowdBody"></tbody>
-                </table>
-              </div>
-              <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
-            </div>
-          </div>
-          <div style="margin-top:12px">
-            <div class="exp-cat-content" id="tab-station">
-              <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
-              <div class="station-select" id="stationBtns"></div>
-              <div style="font-size:11px;color:#888;margin-bottom:8px">
-                各站整体推完率：
-                <span id="stationSummary"></span>
-              </div>
-              <div class="matrix-wrap" id="stationDataTable"></div>
             </div>
           </div>
         </div>
@@ -450,8 +408,6 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 #kpiPeriod2 .td-dash{color:#999 !important}
 </style>
 
-          <div style="overflow-x:auto;margin-bottom:0">
-          <!-- 静态 KPI 考核明细表 -->
 <div style="overflow-x:auto;margin-bottom:16px">
 <table id="kpiMonthTable" class="station-data-table" style="margin-bottom:0;border-bottom:none;border-collapse:collapse">
 <thead><tr>
@@ -478,7 +434,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <tr><td>商家订单<br>完结率</td><td>非餐F1</td><td>66%</td><td>64.38%</td><td>94.79%</td><td>94.79%</td><td style="font-weight:700">2.37</td></tr>
 </tbody></table>
 
-          <table id="kpiPeriod1" class="station-data-table" style="margin-top:0;margin-bottom:0;border-bottom:none;border-collapse:collapse">
+<table id="kpiPeriod1" class="station-data-table" style="margin-top:0;margin-bottom:0;border-bottom:none;border-collapse:collapse">
 <thead><tr>
 <th style="width:60px">考核周期</th>
 <th style="width:60px">周期</th>
@@ -502,7 +458,7 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <tr><td>悦跑（30分）</td><td>160</td><td>154</td><td>96.25%</td><td>96.25%</td><td style="font-weight:700">28.88</td></tr>
 </tbody></table>
 
-          <table id="kpiPeriod2" class="station-data-table" style="margin-top:0;margin-bottom:0;border-collapse:collapse">
+<table id="kpiPeriod2" class="station-data-table" style="margin-top:0;margin-bottom:0;border-collapse:collapse">
 <thead><tr>
 <th style="width:60px">考核周期</th>
 <th style="width:60px">周期</th>
@@ -528,17 +484,65 @@ body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f0f7ff;c
 <td>普众(10分)</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td rowspan="2" class="td-score" style="color:#999">W5得分</td></tr>
 <tr><td>悦跑（30分）</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td><td class="td-dash">—</td></tr>
 </tbody></table>
-
-          </div>
+</div>
         </div>
 
       </div>
     </div>
 
+    <!-- 推完矩阵 · 独立版面 -->
+    <div class="card" style="margin-bottom:12px;padding:16px">
+    <div id="tab-matrix">
+    <div style="font-size:12px;color:#666;margin:8px 0">KPI 官方分段（11 时段）· 三步固化口径 A</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c6efce"></div> ≥98.55%（目标线以上）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffeb9c"></div> 97%-98.55%（目标-门槛区间）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ffc7ce"></div> &lt;97%（破门槛）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d9d9d9"></div> 无订单</div>
+    </div>
+    <div class="matrix-wrap" id="matrixTable"></div>
+    <div style="font-size:10px;color:#999;margin-top:8px">时段口径：夜宵3(00-02)/夜宵4(02-04)/夜宵5(04-06)/早餐1(06-08)/早餐2(08-10:30)/午高峰(10:30-13:30)/下午茶1(13:30-15:00)/下午茶2(15-17)/晚高峰(17-20)/夜宵1(20-22)/夜宵2(22-24) — 按商家推单时间归入</div>
+  </div>
+    </div>
+
+    <!-- 众包盘点 · 独立版面 -->
+    <div class="card" style="margin-bottom:12px;padding:16px">
+    <div id="tab-crowd">
+    <div class="matrix-wrap" style="margin-top:12px">
+      <table class="station-data-table" id="crowdTable">
+        <thead>
+          <tr>
+            <th>指标 \ 时段</th>
+            <th>夜宵3</th><th>夜宵4</th><th>夜宵5</th><th>早餐1</th><th>早餐2</th>
+            <th>午高峰</th><th>下午茶1</th><th>下午茶2</th><th>晚高峰</th><th>夜宵1</th><th>夜宵2</th>
+            <th>全天</th>
+          </tr>
+        </thead>
+        <tbody id="crowdBody"></tbody>
+      </table>
+    </div>
+    <div id="crowdFootnote" style="font-size:10px;color:#999;margin-top:6px">众包推完 87.42% · 总推单 15,848 · 完成 13,855 · 悦跑排班169/出勤153 · 编制180 · 数据源：订单详情+骑手出勤表(68期) 07-12</div>
+  </div>
+    </div>
+
+    <!-- 站点数据 · 独立版面 -->
+    <div class="card" style="margin-bottom:12px;padding:16px">
+    <div id="tab-station">
+    <div style="font-size:12px;color:#666;margin:8px 0">城代7站 · 分时段运营数据 · 统计范围：城代7站</div>
+    <div class="station-select" id="stationBtns"></div>
+    <div style="font-size:11px;color:#888;margin-bottom:8px">
+      各站整体推完率：
+      <span id="stationSummary"></span>
+    </div>
+    <div class="matrix-wrap" id="stationDataTable"></div>
+      </div>
+    </div>
+    </div>
+
+
 <div class="footer">宁德美团外卖 · 配送数据看板</div>
 
-<script>
-// ===== 总览汇总 3-Tab切换 =====
+<script>// ===== 总览汇总 3-Tab切换 =====
 function switchTab3(tabId){
   document.querySelectorAll('.tab3-content').forEach(el=>el.style.display='none');
   document.querySelectorAll('.tab3-btn').forEach(el=>{el.style.color='#666';el.style.background='transparent';el.style.borderBottom='2px solid transparent';el.style.fontWeight='400';});
@@ -547,6 +551,7 @@ function switchTab3(tabId){
   const btn=document.getElementById('tab3Btn-'+tabId);
   if(btn){btn.style.color='#2563eb';btn.style.background='#fff';btn.style.borderBottom='2px solid #2563eb';btn.style.fontWeight='600';}
 }
+
 
 // 每日分时段矩阵数据（来自订单详情·三步固化口径A·按商家推单时间·送达优先去重）
 const DAILY_MATRIX = {"20260701": {"整体(美配口径)": {"comp": [1869, 776, 1423, 3246, 7632, 3948, 3469, 5566, 4773, 3946, 1546], "push": [2083, 874, 1557, 3416, 8119, 4125, 3659, 5838, 5201, 4273, 1733]}, "加盟": {"comp": [814, 357, 798, 1706, 4110, 2106, 1943, 3186, 2578, 2094, 753], "push": [829, 364, 800, 1718, 4142, 2118, 1964, 3211, 2608, 2116, 765]}, "众包(悦跑+普众合并)": {"comp": [1055, 419, 625, 1540, 3522, 1842, 1526, 2380, 2195, 1852, 793], "push": [1254, 510, 757, 1698, 3977, 2007, 1695, 2627, 2593, 2157, 968]}, "新能源站": {"comp": [142, 53, 157, 334, 745, 240, 217, 484, 553, 476, 163], "push": [142, 54, 158, 336, 746, 241, 218, 487, 558, 480, 164]}, "金涵站": {"comp": [0, 4, 13, 28, 125, 58, 57, 83, 68, 89, 36], "push": [0, 4, 13, 29, 125, 58, 57, 83, 68, 91, 37]}, "七都站": {"comp": [2, 1, 8, 53, 103, 45, 35, 85, 103, 87, 18], "push": [2, 1, 8, 53, 103, 45, 36, 85, 105, 87, 19]}, "亿利城站": {"comp": [69, 7, 116, 234, 452, 237, 236, 370, 236, 253, 81], "push": [72, 7, 116, 235, 455, 237, 237, 370, 238, 258, 81]}, "天茂站": {"comp": [119, 45, 146, 301, 640, 368, 361, 540, 396, 270, 98], "push": [121, 46, 147, 302, 645, 368, 366, 543, 402, 272, 101]}, "城北站": {"comp": [187, 116, 240, 370, 1022, 475, 421, 785, 512, 368, 163], "push": [189, 118, 240, 371, 1030, 483, 428, 795, 516, 370, 164]}, "万达站": {"comp": [295, 131, 118, 386, 1023, 683, 616, 839, 710, 551, 194], "push": [303, 134, 118, 392, 1038, 686, 622, 848, 721, 558, 199]}}, "20260702": {"整体(美配口径)": {"comp": [1846, 820, 1425, 3256, 8111, 3944, 3286, 5688, 4801, 3892, 1481], "push": [2061, 911, 1591, 3479, 8691, 4140, 3444, 6040, 5140, 4129, 1602]}, "加盟": {"comp": [802, 353, 817, 1720, 4518, 2261, 1920, 3309, 2705, 2046, 766], "push": [814, 358, 828, 1738, 4559, 2278, 1932, 3324, 2717, 2072, 781]}, "众包(悦跑+普众合并)": {"comp": [1044, 467, 608, 1536, 3593, 1683, 1366, 2379, 2096, 1846, 715], "push": [1247, 553, 763, 1741, 4132, 1862, 1512, 2716, 2423, 2057, 821]}, "新能源站": {"comp": [144, 62, 142, 293, 789, 287, 183, 483, 566, 499, 163], "push": [148, 65, 145, 294, 798, 287, 183, 485, 571, 503, 164]}, "金涵站": {"comp": [0, 1, 22, 36, 148, 69, 55, 76, 76, 47, 26], "push": [0, 1, 22, 36, 148, 69, 56, 76, 77, 47, 26]}, "七都站": {"comp": [1, 2, 15, 54, 123, 67, 35, 98, 97, 79, 19], "push": [1, 2, 15, 54, 123, 67, 35, 98, 97, 79, 20]}, "亿利城站": {"comp": [70, 8, 110, 238, 495, 241, 234, 372, 245, 181, 84], "push": [70, 8, 110, 238, 501, 241, 235, 374, 245, 181, 87]}, "天茂站": {"comp": [88, 26, 134, 340, 793, 470, 376, 603, 498, 367, 112], "push": [89, 26, 138, 343, 802, 471, 379, 608, 500, 376, 117]}, "城北站": {"comp": [203, 132, 252, 354, 1100, 480, 461, 831, 553, 365, 171], "push": [204, 132, 256, 358, 1105, 485, 465, 832, 555, 371, 173]}, "万达站": {"comp": [296, 122, 142, 405, 1070, 647, 576, 846, 670, 508, 191], "push": [302, 124, 142, 415, 1082, 658, 579, 851, 672, 515, 194]}}, "20260703": {"整体(美配口径)": {"comp": [1893, 852, 1564, 3398, 8191, 4068, 3561, 5865, 5028, 4135, 1610], "push": [2058, 927, 1711, 3573, 8620, 4304, 3770, 6227, 5348, 4389, 1759]}, "加盟": {"comp": [884, 439, 933, 1877, 4501, 2201, 2065, 3427, 2899, 2203, 822], "push": [897, 446, 943, 1896, 4528, 2215, 2077, 3453, 2924, 2230, 839]}, "众包(悦跑+普众合并)": {"comp": [1009, 413, 631, 1521, 3690, 1867, 1496, 2438, 2129, 1932, 788], "push": [1161, 481, 768, 1677, 4092, 2089, 1693, 2774, 2424, 2159, 920]}, "新能源站": {"comp": [134, 81, 190, 333, 803, 251, 262, 535, 663, 438, 117], "push": [136, 81, 191, 334, 809, 253, 262, 537, 667, 441, 120]}, "金涵站": {"comp": [1, 1, 20, 50, 149, 62, 50, 83, 70, 81, 46], "push": [1, 1, 20, 52, 150, 62, 50, 83, 70, 81, 46]}, "七都站": {"comp": [2, 0, 27, 71, 98, 58, 40, 75, 131, 96, 19], "push": [2, 0, 27, 72, 99, 58, 40, 76, 131, 98, 20]}, "亿利城站": {"comp": [78, 8, 118, 211, 496, 238, 225, 418, 266, 185, 107], "push": [79, 8, 119, 211, 498, 240, 225, 421, 270, 187, 109]}, "天茂站": {"comp": [166, 58, 164, 364, 804, 448, 412, 604, 459, 408, 135], "push": [167, 62, 166, 369, 809, 451, 416, 610, 468, 418, 136]}, "城北站": {"comp": [202, 150, 285, 413, 1064, 461, 454, 828, 548, 431, 191], "push": [205, 150, 288, 418, 1070, 463, 458, 837, 551, 436, 192]}, "万达站": {"comp": [301, 141, 129, 435, 1087, 683, 622, 884, 762, 564, 207], "push": [307, 144, 132, 440, 1093, 688, 626, 889, 767, 569, 216]}}, "20260704": {"整体(美配口径)": {"comp": [2088, 971, 1536, 3753, 8645, 4622, 4182, 6065, 5368, 4343, 1712], "push": [2201, 1045, 1692, 3972, 9027, 4841, 4389, 6385, 5794, 4749, 1960]}, "加盟": {"comp": [926, 484, 884, 2149, 4843, 2637, 2486, 3534, 3074, 2366, 891], "push": [937, 487, 900, 2172, 4883, 2670, 2510, 3562, 3099, 2389, 904]}, "众包(悦跑+普众合并)": {"comp": [1162, 487, 652, 1604, 3802, 1985, 1696, 2531, 2294, 1977, 821], "push": [1264, 558, 792, 1800, 4144, 2171, 1879, 2823, 2695, 2360, 1056]}, "新能源站": {"comp": [131, 68, 169, 386, 942, 352, 316, 547, 769, 404, 152], "push": [132, 68, 172, 390, 947, 354, 316, 550, 775, 406, 152]}, "金涵站": {"comp": [1, 1, 21, 49, 123, 60, 73, 75, 87, 146, 52], "push": [1, 1, 21, 51, 124, 60, 74, 75, 88, 146, 53]}, "七都站": {"comp": [2, 1, 12, 83, 158, 61, 50, 92, 123, 108, 24], "push": [2, 1, 12, 83, 158, 62, 52, 92, 123, 111, 24]}, "亿利城站": {"comp": [87, 13, 119, 257, 495, 286, 286, 390, 269, 238, 76], "push": [88, 13, 121, 259, 505, 287, 287, 395, 272, 238, 76]}, "天茂站": {"comp": [143, 86, 167, 429, 830, 489, 483, 639, 495, 425, 161], "push": [144, 86, 171, 438, 835, 500, 492, 648, 501, 432, 166]}, "城北站": {"comp": [214, 158, 243, 430, 1074, 597, 493, 863, 531, 446, 188], "push": [216, 160, 248, 432, 1083, 609, 498, 869, 533, 453, 190]}, "万达站": {"comp": [348, 157, 153, 515, 1221, 792, 785, 928, 800, 599, 238], "push": [354, 158, 155, 519, 1231, 798, 791, 933, 807, 603, 243]}}, "20260705": {"整体(美配口径)": {"comp": [2156, 923, 1508, 3874, 9128, 5022, 4422, 6411, 5419, 4234, 1565], "push": [2406, 1002, 1621, 4083, 9624, 5310, 4737, 6825, 5811, 4610, 1771]}, "加盟": {"comp": [1037, 458, 898, 2212, 5244, 3039, 2687, 3908, 3206, 2386, 864], "push": [1051, 464, 907, 2226, 5282, 3064, 2722, 3935, 3230, 2409, 877]}, "众包(悦跑+普众合并)": {"comp": [1119, 465, 610, 1662, 3884, 1983, 1735, 2503, 2213, 1848, 701], "push": [1355, 538, 714, 1857, 4342, 2246, 2015, 2890, 2581, 2201, 894]}, "新能源站": {"comp": [163, 61, 183, 463, 1117, 470, 380, 830, 789, 533, 173], "push": [165, 62, 186, 464, 1123, 472, 381, 834, 794, 539, 175]}, "金涵站": {"comp": [0, 2, 12, 45, 150, 88, 52, 95, 132, 133, 43], "push": [0, 2, 12, 45, 150, 88, 54, 96, 132, 134, 45]}, "七都站": {"comp": [0, 0, 19, 90, 177, 99, 66, 124, 128, 101, 28], "push": [0, 0, 19, 92, 181, 100, 66, 125, 128, 102, 29]}, "亿利城站": {"comp": [94, 6, 106, 253, 528, 293, 289, 399, 277, 222, 72], "push": [97, 6, 107, 255, 532, 298, 296, 401, 281, 224, 73]}, "天茂站": {"comp": [162, 82, 187, 441, 878, 575, 491, 610, 520, 423, 132], "push": [162, 83, 188, 444, 880, 583, 495, 612, 527, 427, 136]}, "城北站": {"comp": [254, 158, 257, 457, 1182, 637, 611, 881, 569, 442, 185], "push": [256, 160, 261, 460, 1188, 643, 619, 892, 571, 446, 186]}, "万达站": {"comp": [364, 149, 134, 463, 1212, 877, 798, 969, 791, 532, 231], "push": [371, 151, 134, 466, 1228, 880, 811, 975, 797, 537, 233]}}, "20260706": {"整体(美配口径)": {"comp": [1972, 955, 1505, 3305, 8012, 3854, 3493, 5814, 4764, 4055, 1447], "push": [2209, 1047, 1646, 3479, 8538, 4049, 3660, 6073, 5141, 4291, 1588]}, "加盟": {"comp": [930, 489, 839, 1816, 4518, 2112, 1977, 3340, 2831, 2343, 805], "push": [953, 502, 848, 1829, 4553, 2126, 1990, 3364, 2858, 2368, 815]}, "众包(悦跑+普众合并)": {"comp": [1042, 466, 666, 1489, 3494, 1742, 1516, 2474, 1933, 1712, 642], "push": [1256, 545, 798, 1650, 3985, 1923, 1670, 2709, 2283, 1923, 773]}, "新能源站": {"comp": [165, 76, 156, 362, 799, 277, 223, 452, 571, 471, 138], "push": [168, 77, 159, 365, 805, 277, 225, 455, 574, 480, 141]}, "金涵站": {"comp": [1, 3, 24, 31, 132, 61, 42, 150, 139, 123, 51], "push": [1, 3, 24, 31, 133, 61, 42, 151, 139, 123, 54]}, "七都站": {"comp": [0, 2, 16, 45, 91, 44, 42, 100, 84, 89, 15], "push": [0, 2, 16, 45, 94, 44, 42, 100, 84, 89, 15]}, "亿利城站": {"comp": [91, 6, 91, 214, 481, 212, 191, 384, 250, 268, 89], "push": [91, 7, 91, 215, 485, 213, 192, 388, 256, 269, 89]}, "天茂站": {"comp": [134, 73, 151, 393, 850, 382, 410, 576, 512, 393, 140], "push": [141, 74, 153, 398, 856, 386, 413, 580, 523, 397, 142]}, "城北站": {"comp": [193, 174, 250, 359, 1072, 459, 466, 780, 543, 405, 161], "push": [198, 182, 254, 361, 1078, 462, 467, 784, 545, 412, 162]}, "万达站": {"comp": [346, 155, 151, 412, 1093, 677, 603, 898, 732, 594, 211], "push": [354, 157, 151, 414, 1102, 683, 609, 906, 737, 598, 212]}}, "20260707": {"整体(美配口径)": {"comp": [1934, 938, 1565, 3307, 8008, 3826, 3385, 5773, 5041, 4062, 1622], "push": [2090, 995, 1710, 3489, 8411, 4038, 3590, 6128, 5372, 4359, 1760]}, "加盟": {"comp": [864, 430, 881, 1809, 4382, 2172, 1955, 3359, 2920, 2339, 921], "push": [875, 438, 887, 1826, 4417, 2187, 1973, 3385, 2946, 2362, 937]}, "众包(悦跑+普众合并)": {"comp": [1070, 508, 684, 1498, 3626, 1654, 1430, 2414, 2121, 1723, 701], "push": [1215, 557, 823, 1663, 3994, 1851, 1617, 2743, 2426, 1997, 823]}, "新能源站": {"comp": [144, 45, 173, 325, 716, 206, 155, 373, 532, 481, 188], "push": [144, 46, 173, 328, 723, 210, 156, 375, 535, 485, 190]}, "金涵站": {"comp": [1, 2, 26, 43, 128, 67, 54, 165, 159, 140, 44], "push": [1, 2, 27, 43, 128, 68, 54, 166, 162, 142, 46]}, "七都站": {"comp": [0, 2, 12, 64, 99, 52, 36, 92, 98, 88, 21], "push": [0, 2, 12, 65, 99, 53, 37, 92, 99, 88, 21]}, "亿利城站": {"comp": [50, 7, 115, 223, 484, 254, 213, 359, 272, 281, 90], "push": [50, 7, 115, 223, 489, 256, 213, 362, 274, 286, 91]}, "天茂站": {"comp": [160, 78, 161, 360, 840, 434, 414, 621, 528, 402, 135], "push": [163, 78, 162, 362, 846, 436, 417, 627, 535, 405, 138]}, "城北站": {"comp": [182, 150, 266, 367, 1044, 487, 462, 815, 550, 401, 201], "push": [184, 155, 268, 372, 1052, 490, 469, 820, 553, 404, 204]}, "万达站": {"comp": [327, 146, 128, 427, 1071, 672, 621, 934, 781, 546, 242], "push": [333, 148, 130, 433, 1080, 674, 627, 943, 788, 552, 247]}}, "20260708": {"整体(美配口径)": {"comp": [1974, 911, 1623, 3413, 8357, 3952, 3502, 5973, 5064, 4200, 1626], "push": [2187, 997, 1738, 3609, 8847, 4209, 3694, 6264, 5449, 4549, 1783]}, "加盟": {"comp": [908, 448, 950, 1885, 4645, 2225, 2035, 3452, 2888, 2309, 918], "push": [920, 457, 954, 1897, 4682, 2242, 2057, 3478, 2925, 2333, 934]}, "众包(悦跑+普众合并)": {"comp": [1066, 463, 673, 1528, 3712, 1727, 1467, 2521, 2176, 1891, 708], "push": [1267, 540, 784, 1712, 4165, 1967, 1637, 2786, 2524, 2216, 849]}, "新能源站": {"comp": [149, 68, 192, 354, 771, 226, 192, 399, 562, 524, 191], "push": [150, 68, 194, 355, 774, 227, 193, 400, 567, 532, 194]}, "金涵站": {"comp": [2, 1, 22, 37, 142, 62, 76, 161, 127, 145, 45], "push": [2, 1, 22, 38, 143, 62, 76, 163, 130, 147, 45]}, "七都站": {"comp": [2, 1, 14, 41, 114, 51, 35, 78, 122, 76, 19], "push": [2, 1, 14, 41, 116, 52, 38, 78, 122, 78, 19]}, "亿利城站": {"comp": [69, 10, 102, 253, 440, 232, 187, 432, 257, 267, 80], "push": [70, 10, 102, 254, 443, 233, 189, 434, 259, 271, 84]}, "天茂站": {"comp": [147, 76, 196, 378, 875, 437, 415, 642, 485, 403, 149], "push": [149, 77, 196, 382, 882, 441, 417, 646, 490, 406, 149]}, "城北站": {"comp": [183, 145, 278, 372, 1115, 518, 478, 804, 551, 343, 215], "push": [186, 149, 279, 375, 1119, 521, 485, 817, 555, 345, 217]}, "万达站": {"comp": [356, 147, 146, 450, 1188, 699, 652, 936, 784, 551, 219], "push": [361, 151, 147, 452, 1205, 706, 659, 940, 802, 554, 226]}}, "20260709": {"整体(美配口径)": {"comp": [1966, 994, 1516, 3166, 8478, 4128, 3434, 6081, 4788, 4028, 1674], "push": [2197, 1127, 1690, 3378, 9017, 4423, 3675, 6478, 5232, 4473, 1851]}, "加盟": {"comp": [821, 488, 876, 1702, 4764, 2355, 2037, 3684, 2827, 2255, 892], "push": [830, 490, 883, 1719, 4790, 2378, 2061, 3724, 2863, 2329, 912]}, "众包(悦跑+普众合并)": {"comp": [1145, 506, 640, 1464, 3714, 1773, 1397, 2397, 1961, 1773, 782], "push": [1367, 637, 807, 1659, 4227, 2045, 1614, 2754, 2369, 2144, 939]}, "新能源站": {"comp": [115, 59, 188, 303, 876, 246, 186, 548, 585, 540, 172], "push": [116, 59, 189, 305, 883, 247, 186, 552, 588, 553, 177]}, "金涵站": {"comp": [0, 1, 15, 29, 155, 82, 79, 175, 157, 118, 56], "push": [0, 1, 15, 30, 157, 85, 79, 176, 160, 120, 56]}, "七都站": {"comp": [0, 2, 18, 55, 111, 58, 42, 94, 106, 89, 15], "push": [0, 2, 18, 57, 112, 58, 42, 94, 107, 92, 15]}, "亿利城站": {"comp": [67, 7, 103, 202, 488, 280, 245, 397, 289, 238, 99], "push": [67, 7, 104, 203, 490, 282, 248, 401, 293, 246, 104]}, "天茂站": {"comp": [141, 104, 171, 383, 904, 463, 425, 661, 461, 373, 143], "push": [145, 104, 174, 388, 912, 465, 427, 669, 468, 392, 149]}, "城北站": {"comp": [185, 171, 227, 331, 1080, 512, 461, 814, 488, 363, 198], "push": [187, 171, 228, 336, 1082, 518, 474, 833, 499, 377, 198]}, "万达站": {"comp": [313, 144, 154, 399, 1150, 714, 599, 995, 741, 534, 209], "push": [315, 146, 155, 400, 1154, 723, 605, 999, 748, 549, 213]}}, "20260710": {"整体(美配口径)": {"comp": [1880, 820, 1543, 3262, 7510, 4000, 3518, 5608, 4893, 3871, 1493], "push": [2048, 892, 1710, 3472, 7979, 4192, 3725, 5961, 5192, 4210, 1722]}, "加盟": {"comp": [884, 428, 857, 1769, 4149, 2256, 2035, 3302, 2891, 2147, 762], "push": [906, 433, 873, 1798, 4183, 2283, 2063, 3334, 2927, 2176, 769]}, "众包(悦跑+普众合并)": {"comp": [996, 392, 686, 1493, 3361, 1744, 1483, 2306, 2002, 1724, 731], "push": [1142, 459, 837, 1674, 3796, 1909, 1662, 2627, 2265, 2034, 953]}, "新能源站": {"comp": [135, 63, 139, 282, 645, 167, 171, 515, 656, 420, 148], "push": [137, 64, 139, 282, 650, 167, 172, 519, 659, 426, 149]}, "金涵站": {"comp": [1, 0, 15, 45, 96, 40, 85, 157, 142, 127, 43], "push": [1, 0, 15, 45, 98, 41, 87, 160, 145, 129, 43]}, "七都站": {"comp": [0, 1, 18, 49, 83, 46, 47, 82, 97, 76, 21], "push": [0, 1, 19, 49, 84, 46, 47, 83, 101, 78, 21]}, "亿利城站": {"comp": [51, 8, 96, 239, 450, 235, 220, 365, 249, 219, 89], "push": [51, 8, 97, 241, 454, 236, 220, 366, 251, 222, 89]}, "天茂站": {"comp": [162, 77, 150, 396, 809, 498, 416, 596, 487, 437, 132], "push": [167, 77, 157, 398, 817, 507, 423, 600, 495, 442, 134]}, "城北站": {"comp": [186, 131, 258, 338, 978, 509, 466, 700, 495, 346, 145], "push": [189, 133, 262, 355, 987, 518, 474, 710, 501, 351, 147]}, "万达站": {"comp": [349, 148, 181, 420, 1088, 761, 630, 887, 765, 522, 184], "push": [361, 150, 184, 428, 1093, 768, 640, 896, 775, 528, 186]}}, "20260711": {"整体(美配口径)": {"comp": [1662, 751, 1211, 3077, 6560, 4002, 3726, 5687, 3452, 29, 24], "push": [1863, 816, 1318, 3325, 6961, 4244, 3938, 5990, 3753, 46, 36]}, "加盟": {"comp": [792, 416, 741, 1849, 3925, 2478, 2390, 3670, 2302, 20, 10], "push": [800, 424, 749, 1875, 3960, 2507, 2419, 3709, 2328, 21, 12]}, "众包(悦跑+普众合并)": {"comp": [870, 335, 470, 1228, 2635, 1524, 1336, 2017, 1150, 9, 14], "push": [1063, 392, 569, 1450, 3001, 1737, 1519, 2281, 1425, 25, 24]}, "新能源站": {"comp": [114, 58, 135, 355, 955, 413, 325, 901, 666, 3, 0], "push": [116, 58, 136, 357, 959, 416, 327, 906, 669, 3, 0]}, "金涵站": {"comp": [0, 0, 18, 31, 76, 51, 79, 97, 82, 0, 0], "push": [0, 0, 18, 31, 76, 52, 81, 102, 82, 0, 0]}, "七都站": {"comp": [0, 1, 19, 77, 128, 78, 76, 131, 111, 0, 0], "push": [0, 1, 19, 78, 130, 80, 77, 132, 111, 0, 0]}, "亿利城站": {"comp": [56, 5, 111, 234, 382, 291, 286, 372, 217, 3, 1], "push": [56, 5, 113, 235, 390, 296, 289, 377, 218, 3, 1]}, "天茂站": {"comp": [134, 80, 140, 401, 740, 488, 462, 649, 397, 6, 0], "push": [136, 82, 141, 405, 742, 493, 464, 656, 402, 6, 0]}, "城北站": {"comp": [166, 123, 175, 351, 779, 567, 581, 740, 393, 3, 3], "push": [168, 129, 177, 365, 787, 578, 594, 748, 406, 3, 3]}, "万达站": {"comp": [322, 149, 143, 400, 865, 590, 581, 780, 436, 5, 6], "push": [324, 149, 145, 404, 876, 592, 587, 788, 440, 6, 8]}}, "20260712": {"整体(美配口径)": {"comp": [1, 3, 1264, 2788, 6761, 4213, 3673, 5867, 4774, 3581, 1344], "push": [5, 8, 1421, 2931, 7128, 4381, 3867, 6200, 5063, 3848, 1471]}, "加盟": {"comp": [0, 1, 750, 1535, 4019, 2560, 2229, 3606, 2912, 2054, 744], "push": [0, 1, 763, 1552, 4046, 2581, 2245, 3630, 2929, 2084, 756]}, "众包(悦跑+普众合并)": {"comp": [1, 2, 514, 1253, 2742, 1653, 1444, 2261, 1862, 1527, 600], "push": [5, 7, 658, 1379, 3082, 1800, 1622, 2570, 2134, 1764, 715]}, "新能源站": {"comp": [0, 0, 209, 351, 1030, 459, 269, 782, 813, 522, 161], "push": [0, 0, 210, 355, 1037, 459, 270, 784, 816, 533, 163]}, "金涵站": {"comp": [0, 0, 11, 29, 100, 71, 53, 78, 71, 52, 22], "push": [0, 0, 12, 29, 101, 71, 53, 79, 73, 54, 23]}, "七都站": {"comp": [0, 0, 23, 77, 168, 65, 64, 102, 118, 60, 20], "push": [0, 0, 23, 79, 168, 66, 64, 104, 118, 60, 20]}, "亿利城站": {"comp": [0, 0, 82, 179, 381, 264, 226, 375, 222, 168, 68], "push": [0, 0, 83, 179, 385, 269, 228, 379, 223, 170, 70]}, "天茂站": {"comp": [0, 0, 146, 322, 650, 479, 403, 558, 447, 364, 134], "push": [0, 0, 149, 325, 653, 485, 403, 559, 453, 370, 138]}, "城北站": {"comp": [0, 0, 205, 291, 772, 506, 502, 757, 462, 375, 147], "push": [0, 0, 210, 295, 780, 510, 509, 766, 464, 379, 148]}, "万达站": {"comp": [0, 1, 74, 286, 918, 716, 712, 954, 779, 513, 192], "push": [0, 1, 76, 290, 922, 721, 718, 959, 782, 518, 194]}}, "20260713": {"整体(美配口径)": {"comp": [1293, 586, 285, 692, 2351, 9285, 2481, 3065, 7453, 3811, 3291], "push": [1408, 644, 309, 781, 2547, 9848, 2607, 3248, 7964, 4155, 3701]}, "加盟": {"comp": [595, 263, 142, 426, 1193, 4907, 1337, 1703, 4171, 2032, 1621], "push": [617, 272, 143, 438, 1209, 4989, 1361, 1733, 4237, 2065, 1664]}, "众包(悦跑+普众合并)": {"comp": [698, 323, 143, 266, 1158, 4378, 1144, 1362, 3282, 1779, 1670], "push": [791, 372, 166, 343, 1338, 4859, 1246, 1515, 3727, 2090, 2037]}, "新能源站": {"comp": [92, 45, 25, 88, 159, 852, 146, 168, 618, 413, 314], "push": [97, 47, 25, 93, 160, 859, 152, 172, 625, 418, 322]}, "金涵站": {"comp": [0, 1, 0, 5, 20, 127, 39, 40, 226, 114, 96], "push": [0, 1, 0, 6, 21, 135, 40, 44, 229, 116, 100]}, "七都站": {"comp": [0, 0, 0, 2, 54, 111, 26, 36, 114, 87, 32], "push": [0, 1, 0, 2, 56, 113, 27, 37, 116, 88, 33]}, "亿利城站": {"comp": [51, 11, 0, 37, 153, 501, 137, 176, 360, 154, 158], "push": [52, 11, 0, 37, 153, 505, 138, 180, 373, 157, 161]}, "天茂站": {"comp": [109, 49, 31, 93, 272, 904, 251, 360, 774, 374, 283], "push": [114, 49, 31, 95, 276, 919, 256, 362, 784, 385, 290]}, "城北站": {"comp": [117, 43, 48, 119, 259, 1130, 255, 372, 874, 313, 309], "push": [122, 45, 49, 122, 260, 1144, 259, 381, 882, 320, 323]}, "万达站": {"comp": [226, 114, 38, 82, 276, 1282, 483, 551, 1205, 577, 429], "push": [232, 118, 38, 83, 283, 1314, 489, 557, 1228, 581, 435]}}, "20260714": {"整体(美配口径)": {"comp": [1421, 542, 287, 748, 2449, 9579, 2476, 3046, 7661, 3994, 3357], "push": [1563, 620, 316, 826, 2676, 10153, 2592, 3184, 8178, 4346, 3702]}, "加盟": {"comp": [619, 251, 145, 438, 1259, 5083, 1357, 1644, 4339, 2150, 1701], "push": [637, 266, 147, 444, 1291, 5169, 1381, 1671, 4418, 2193, 1736]}, "众包(悦跑+普众合并)": {"comp": [802, 291, 142, 310, 1190, 4496, 1119, 1402, 3322, 1844, 1656], "push": [926, 354, 169, 382, 1385, 4984, 1211, 1513, 3760, 2153, 1966]}, "新能源站": {"comp": [110, 27, 21, 72, 158, 867, 127, 136, 566, 436, 268], "push": [113, 27, 21, 74, 163, 882, 134, 140, 579, 445, 276]}, "金涵站": {"comp": [1, 0, 0, 4, 28, 119, 29, 25, 187, 121, 99], "push": [1, 0, 0, 4, 29, 121, 30, 26, 190, 125, 100]}, "七都站": {"comp": [0, 0, 1, 3, 53, 116, 32, 40, 110, 84, 41], "push": [0, 0, 1, 3, 54, 117, 32, 40, 115, 85, 41]}, "亿利城站": {"comp": [72, 12, 1, 37, 171, 552, 141, 133, 419, 174, 211], "push": [73, 14, 1, 38, 176, 564, 142, 135, 425, 177, 215]}, "天茂站": {"comp": [108, 43, 23, 103, 284, 960, 253, 369, 815, 419, 312], "push": [114, 46, 24, 103, 295, 969, 254, 375, 824, 425, 320]}, "城北站": {"comp": [116, 41, 44, 141, 284, 1136, 296, 371, 1029, 335, 344], "push": [120, 45, 44, 142, 290, 1152, 301, 381, 1056, 342, 350]}, "万达站": {"comp": [212, 128, 55, 78, 281, 1333, 479, 570, 1213, 581, 426], "push": [216, 134, 56, 80, 284, 1364, 488, 574, 1229, 594, 434]}}};
